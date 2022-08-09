@@ -94,7 +94,7 @@ VSCodeとgdbを使用してデバッグするには, まず, 以下の拡張機�
 }
 ```
 
-あとは, terminalでOpenOCDを起動し,
+次に, terminalでOpenOCDを起動する.
 
 ```
 openocd -f interface/picoprobe.cfg -f target/rp2040.cfg -s C:/openocd/tcl
