@@ -2,7 +2,7 @@
 title = "WindowsのVivadoのテキストエディタとしてNeovimを使用する方法"
 date = 2022-07-13
 [taxonomies]
-categories = ["blog"]
+categories = ["posts"]
 tags = ["vivado", "fpga"]
 +++
 

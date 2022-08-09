@@ -27,7 +27,7 @@ items = [
     { lang = "ja", links = [
         { url = "/", name = "Home" },
 	{ url = "/about/about-me", name = "About me"},
-	{ url = "/blog", name = "Blog"},
+	{ url = "/posts", name = "Posts"},
         { url = "/categories", name = "Categories" },
         { url = "/tags", name = "Tags" },
     ] }

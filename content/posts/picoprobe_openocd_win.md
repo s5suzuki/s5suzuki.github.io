@@ -2,7 +2,7 @@
 title = "WindowsでPicoprobe用のOpenOCDをビルドする"
 date = 2022-08-09
 [taxonomies]
-categories = ["blog"]
+categories = ["posts"]
 tags = ["Picoprobe", "OpenOCD", "Windows", "Raspberry Pi Pico"]
 [extra]
 toc = true

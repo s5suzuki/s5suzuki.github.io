@@ -2,7 +2,7 @@
 title = "C++で型を使ってコンパイル時に値がセットされているか確認するBuilderパターン"
 date = 2022-07-30
 [taxonomies]
-categories = ["blog"]
+categories = ["posts"]
 tags = ["C++", "programming", "design pattern"]
 +++
 

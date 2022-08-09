@@ -2,7 +2,7 @@
 title = "Vitis 2022.1で自作IPを使うとビルド時にエラーが出る"
 date = 2022-07-14
 [taxonomies]
-categories = ["blog"]
+categories = ["posts"]
 tags = ["vivado", "vitis", "zynq", "fpga"]
 +++
 

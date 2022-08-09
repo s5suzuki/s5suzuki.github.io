@@ -2,7 +2,7 @@
 title = "Windows Terminalを自分でビルドしてインストールする方法"
 date = 2022-07-28
 [taxonomies]
-categories = ["blog"]
+categories = ["posts"]
 tags = ["Windows Terminal"]
 [extra]
 toc = true

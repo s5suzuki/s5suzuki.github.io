@@ -1644,3 +1644,7 @@ blockquote {
   display: flex;
   flex-wrap: wrap;
 }
+
+:not(#page-content)>ul>li {
+  list-style-type: none
+}

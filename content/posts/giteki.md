@@ -2,7 +2,7 @@
 title = "技適マークのない無線機器を使う"
 date = 2022-07-31
 [taxonomies]
-categories = ["blog"]
+categories = ["posts"]
 tags = ["Wi-Fi", "Bluetooth"]
 +++
 

@@ -2,14 +2,14 @@
 title = "RustでRaspberry Pi Picoの開発 (Windows + VSCode + OpenOCD + GDB)"
 date = 2022-08-09
 [taxonomies]
-categories = ["blog"]
+categories = ["posts"]
 tags = ["Picoprobe", "OpenOCD", "Windows", "Raspberry Pi Pico", "Rust", "VSCode", "GDB"]
 [extra]
 toc = true
 +++
 
 
-以下は, [この記事](https://sssssssuzuki.github.io/blog/picoprobe-openocd-win/)に従ってOpenOCDがインストールされていることが前提である.
+以下は, [この記事](https://sssssssuzuki.github.io/posts/picoprobe-openocd-win/)に従ってOpenOCDがインストールされていることが前提である.
 
 # 事前準備
 
