@@ -27,7 +27,7 @@ toc = true
 
 ```
 rustup target install thumbv6m-none-eabi
-cargo install flip-link elf2uf2-rs
+cargo install flip-link
 ```
 
 あと, templateを使用するために, `cargo-generate`もインストールする.
@@ -53,14 +53,6 @@ cargo build
 ```
 
 すると, `target/thumbv6m-none-eabi/debug/rp2040-project-template` (ELF形式) が生成される.
-
-# OpenOCDで書き込み
-
-上記のELFファイルをOpenOCDで書き込む.
-
-```
-openocd -f interface/picoprobe.cfg -f target/rp2040.cfg -s C:/openocd/tcl -c "program target/thumbv6m-none-eabi/debug/rp2040-project-template verify reset exit"
-```
 
 # VSCode + GDBを使用してデバッグ
 
@@ -102,9 +94,24 @@ openocd -f interface/picoprobe.cfg -f target/rp2040.cfg -s C:/openocd/tcl
 
 あとは, `main.rs`を開き, 適当なところにブレークポイントを貼り, `F5`を押せばデバッグが始まる.
 
-# UF2を書き込む
+# OpenOCDで書き込み
 
-UF2を書き込む場合は, BOOTSELボタンを押した状態でRaspberry Pi Picoを接続しておく.
+上記のELFファイルをOpenOCDで書き込むには以下のようにすれば良い.
+
+```
+openocd -f interface/picoprobe.cfg -f target/rp2040.cfg -s C:/openocd/tcl -c "program target/thumbv6m-none-eabi/debug/rp2040-project-template verify reset exit"
+```
+
+# UF2で書き込み
+
+或いは, UF2で書き込む場合は`elf2uf2-rs`を使用する.
+まず, `elf2uf2-rs`をインストールする.
+
+```
+cargo install elf2uf2-rs
+```
+
+次に, BOOTSELボタンを押した状態でRaspberry Pi Picoを接続しておく.
 
 また, `.cargo/config.toml`を書き換え, `runner = "probe-run --chip RP2040"`をコメントアウトし, `runner = "elf2uf2-rs -d"`のコメントを外す.
 
