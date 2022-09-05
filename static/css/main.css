@@ -1648,3 +1648,7 @@ blockquote {
 :not(#page-content)>ul>li {
   list-style-type: none
 }
+
+table {
+  margin-bottom: 2em;
+}
