@@ -6,8 +6,70 @@ categories = ["posts"]
 tags = ["CPU", "TD4"]
 +++
 
-![td4-blink](https://raw.githubusercontent.com/sssssssuzuki/sssssssuzuki.github.io/master/content/fig/posts/td4-blink.gif)
+<figure>
+    <img src="https://raw.githubusercontent.com/sssssssuzuki/sssssssuzuki.github.io/master/content/fig/posts/td4-blink.gif"
+         alt="td4-blink">
+    <figcaption>TD4によるLチカ. ROM部分はRaspberry Pi Picoにより代用. (プログラムカウンタ用の74HC161の配線をミスったので無理やり修正している.)</figcaption>
+</figure>
+
+「CPUの創りかた」はだいぶ前に読んだが, 実際には作っていなかった.
+この度, 重い腰を上げて実際に作ってみることにした.
+ついでに, 気になっていた中国の基板メーカーを試しに使ってみた.
+これはその備忘録である.
+
+なお, 基板データとLチカプログラム[GitHub](https://github.com/sssssssuzuki/TD4)においてある.
+  - 配線ミスは修正済み
+
+# 部品の購入
+
+部品は「秋月電子通商」と「樫木総業株式会社」で購入. すべて, オンラインストアから購入できる.
+
+- 秋月電子通商
+  - 【P-04624】　オーディオ用無極性電解コンデンサー１０μＦ２５Ｖ８５℃　ニチコンＭＵＳＥ・ＥＳ
+  - 【P-04065】　絶縁ラジアルリード型積層セラミックコンデンサー　０．１μＦ５０Ｖ２．５４ｍｍ
+  - 【P-02724】　電源用電解コンデンサー１００μＦ３５Ｖ１０５℃　ルビコンＺＬＨ
+  - 【P-03116】　電解コンデンサー１０μＦ５０Ｖ８５℃　ルビコンＰＫ
+  - 【R-07803】　カーボン抵抗（炭素皮膜抵抗）　１／２Ｗ１００Ω　（１００本入）
+  - 【R-07820】　カーボン抵抗（炭素皮膜抵抗）　１／２Ｗ１ｋΩ　（１００本入）
+  - 【R-07829】　カーボン抵抗（炭素皮膜抵抗）　１／２Ｗ３．３ｋΩ　（１００本入）
+  - 【R-07838】　カーボン抵抗（炭素皮膜抵抗）　１／２Ｗ１０ｋΩ　（１００本入）
+  - 【R-07847】　カーボン抵抗（炭素皮膜抵抗）　１／２Ｗ３３ｋΩ　（１００本入）
+  - 【R-07853】　カーボン抵抗（炭素皮膜抵抗）　１／２Ｗ１００ｋΩ　（１００本入）
+  - 【I-11333】　３ｍｍ赤色ＬＥＤ　６２５ｎｍ　７０度　ＯＳＲ５ＪＡ３Ｚ７４Ａ　（１００個入）
+  - 【P-03647】　タクトスイッチ（黒色）
+  - 【P-03646】　タクトスイッチ（赤色）
+  - 【P-00300】　基板用小型３Ｐトグルスイッチ　１回路２接点
+  - 【K-16149】　Ｒａｓｐｂｅｒｒｙ　Ｐｉ　Ｐｉｃｏ　ベーシックセット
+
+- 樫木総業株式会社
+  - 74HC10(DIP品)
+  - 74HC14(DIP品)
+  - 74HC32(DIP品)
+  - 74HC74(DIP品)
+  - 74HC153(DIP品)
+  - 74HC161(DIP品)
+  - 74HC283(DIP品)
+  - 金メッキディップスイッチ　DC04
+
+# 基板データ
+
+[KiCadではじめる プリント基板設計入門](https://www.zep.co.jp/nbeppu/article/z-kicad-da1/)を参考に回路図の作成/配線を行う.
+ROMは流石に面倒なのでRaspberry Pi Picoで代用した. 電源もここから取ることにした. 74HCシリーズを使用するので3.3Vでも問題ない.
+
+基板の作成は[PCBGOGO](https://www.pcbgogo.jp/)にお願いした.
+パラメータとかはすべてデフォルトのまま.
+
+基板データは[GitHub](https://github.com/sssssssuzuki/TD4)においてある.
+- 配線はかなり適当. クロックが十分に遅いので適当でも動く.
+
+# Lチカプログラム
+
+プログラムは[Raspberry Pi Picoで組込みRust開発（開発環境構築編）](https://qiita.com/ochaochaocha3/items/1969d76debd6d3b42269)を参考にRustで作ってみた. アドレスの読み込みとデータの出力が同期してないので, 誤作動の危険性はある. が, ラズパイのほうが圧倒的に動作が速いので基本的に問題ないと思われる. まあ, お遊びなので誤動作しても問題ない.
+
+プログラムも[GitHub](https://github.com/sssssssuzuki/TD4)においてある.
 
 # 参考文献
 
 - 渡波 郁,「CPUの創りかた」, 毎日コミュニケーションズ, 2003
+- [KiCadではじめる プリント基板設計入門](https://www.zep.co.jp/nbeppu/article/z-kicad-da1/)
+- [Raspberry Pi Picoで組込みRust開発（開発環境構築編）](https://qiita.com/ochaochaocha3/items/1969d76debd6d3b42269)
