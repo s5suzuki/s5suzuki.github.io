@@ -9,7 +9,7 @@ toc = true
 +++
 
 
-以下は, [この記事](https://sssssssuzuki.github.io/posts/picoprobe-openocd-win/)に従ってOpenOCDがインストールされていることが前提である.
+以下は, [この記事](https://s5suzuki.github.io/posts/picoprobe-openocd-win/)に従ってOpenOCDがインストールされていることが前提である.
 
 # 事前準備
 

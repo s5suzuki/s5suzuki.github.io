@@ -7,7 +7,7 @@ tags = ["CPU", "TD4"]
 +++
 
 <figure>
-    <img src="https://raw.githubusercontent.com/sssssssuzuki/sssssssuzuki.github.io/master/content/fig/posts/td4-blink.gif"
+    <img src="https://raw.githubusercontent.com/s5suzuki/s5suzuki.github.io/master/content/fig/posts/td4-blink.gif"
          alt="td4-blink">
     <figcaption>TD4によるLチカ. ROM部分はRaspberry Pi Picoにより代用. (プログラムカウンタ用の74HC161の配線をミスったので無理やり修正している.)</figcaption>
 </figure>
@@ -17,7 +17,7 @@ tags = ["CPU", "TD4"]
 ついでに, 気になっていた中国の基板メーカーを試しに使ってみた.
 これはその備忘録である.
 
-なお, 基板データとLチカプログラム[GitHub](https://github.com/sssssssuzuki/TD4)においてある.
+なお, 基板データとLチカプログラム[GitHub](https://github.com/s5suzuki/TD4)においてある.
   - 配線ミスは修正済み
 
 # 部品の購入
@@ -59,14 +59,14 @@ ROMは流石に面倒なのでRaspberry Pi Picoで代用した. 電源もここ�
 基板の作成は[PCBGOGO](https://www.pcbgogo.jp/)にお願いした.
 パラメータとかはすべてデフォルトのまま.
 
-基板データは[GitHub](https://github.com/sssssssuzuki/TD4)においてある.
+基板データは[GitHub](https://github.com/s5suzuki/TD4)においてある.
 - 配線はかなり適当. クロックが十分に遅いので適当でも動く.
 
 # Lチカプログラム
 
 プログラムは[Raspberry Pi Picoで組込みRust開発（開発環境構築編）](https://qiita.com/ochaochaocha3/items/1969d76debd6d3b42269)を参考にRustで作ってみた. アドレスの読み込みとデータの出力が同期してないので, 誤作動の危険性はある. が, ラズパイのほうが圧倒的に動作が速いので基本的に問題ないと思われる. まあ, お遊びなので誤動作しても問題ない.
 
-プログラムも[GitHub](https://github.com/sssssssuzuki/TD4)においてある.
+プログラムも[GitHub](https://github.com/s5suzuki/TD4)においてある.
 
 # 参考文献
 

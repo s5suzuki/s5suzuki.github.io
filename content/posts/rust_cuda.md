@@ -10,7 +10,7 @@ toc = true
 
 RustでCUDA/cuBLAS/cuSOLVERを使う備忘録.
 
-ソースは[ここ](https://github.com/sssssssuzuki/cuda-sample).
+ソースは[ここ](https://github.com/s5suzuki/cuda-sample).
 
 # CUDA
 

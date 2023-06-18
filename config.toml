@@ -1,4 +1,4 @@
-base_url = "https://sssssssuzuki.github.io"
+base_url = "https://s5suzuki.github.io"
 compile_sass = false
 build_search_index = false
 title = "Suzuki Shun's homepage"
@@ -36,13 +36,13 @@ title = "Suzuki Shun's homepage"
 
 [extra.index]
 title = "Suzuki Shun"
-image = "https://sssssssuzuki.github.io/logo.svg"
+image = "https://s5suzuki.github.io/logo.svg"
 
 [extra.default_author]
 name = "Suzuki Shun"
 
 [extra.social]
-github = "https://github.com/sssssssuzuki"
+github = "https://github.com/s5suzuki"
 gitlab = ""
 twitter = ""
 linkedin = ""

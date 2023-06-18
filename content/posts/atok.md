@@ -8,7 +8,7 @@ tags = ["ATOK", "PowerToys"]
 toc = false
 +++
 
-[以前](https://sssssssuzuki.github.io/posts/winterm-build/), Google日本語入力を使用している際にWindows Terminalの入力モードが半角英数になってしまう問題について述べた.
+[以前](https://s5suzuki.github.io/posts/winterm-build/), Google日本語入力を使用している際にWindows Terminalの入力モードが半角英数になってしまう問題について述べた.
 
 これを回避するためにWindows Terminalを修正して自分でビルドしたが, アップデートがあるたびにビルドし直すのも正直面倒くさく, どうしたものかと思っていたところ, ATOKならこの問題が発生しないことに気がついた.
 
