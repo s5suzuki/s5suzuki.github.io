@@ -26,11 +26,11 @@ enable_adsense = false
 items = [
     { lang = "ja", links = [
         { url = "/", name = "Home" },
-	{ url = "/about/about-me", name = "About me"},
-	{ url = "/posts", name = "Posts"},
+        { url = "/about/about-me", name = "About me"},
+        { url = "/posts", name = "Posts"},
         { url = "/categories", name = "Categories" },
         { url = "/tags", name = "Tags" },
-    ] }
+      ] }
 ]
 title = "Suzuki Shun's homepage"
 
@@ -47,4 +47,3 @@ gitlab = ""
 twitter = ""
 linkedin = ""
 email = "suzuki@hapis.k.u-tokyo.ac.jp"
-
