@@ -5,10 +5,7 @@ title = "Suzuki Shun's homepage"
 theme = "blow"
 default_language = "ja"
 
-taxonomies = [
-    {name = "tags", paginate_by = 5, feed = true},
-    {name = "categories", paginate_by = 5, feed = true},
-]
+taxonomies = [{ name = "tags", paginate_by = 5, feed = true }, { name = "categories", paginate_by = 5, feed = true }]
 
 [markdown]
 highlight_code = true
@@ -26,11 +23,11 @@ enable_adsense = false
 items = [
     { lang = "ja", links = [
         { url = "/", name = "Home" },
-        { url = "/about/about-me", name = "About me"},
-        { url = "/posts", name = "Posts"},
+        { url = "/about/about-me", name = "About me" },
+        { url = "/posts", name = "Posts" },
         { url = "/categories", name = "Categories" },
         { url = "/tags", name = "Tags" },
-      ] }
+    ] },
 ]
 title = "Suzuki Shun's homepage"
 
@@ -40,6 +37,8 @@ image = "https://s5suzuki.github.io/logo.svg"
 
 [extra.default_author]
 name = "Suzuki Shun"
+avatar = "https://gravatar.com/avatar/0719f3a8e0f8b04f863dac4693580ec1"
+avatar_alt = "Suzuki Shun's avatar"
 
 [extra.social]
 github = "https://github.com/s5suzuki"

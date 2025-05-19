@@ -7,7 +7,7 @@ tags = ["CPU", "TD4"]
 +++
 
 <figure>
-    <img src="https://raw.githubusercontent.com/s5suzuki/s5suzuki.github.io/master/content/fig/posts/td4-blink.gif"
+    <img src="https://raw.githubusercontent.com/s5suzuki/s5suzuki.github.io/main/content/fig/posts/td4-blink.gif"
          alt="td4-blink">
     <figcaption>TD4によるLチカ. ROM部分はRaspberry Pi Picoにより代用. (プログラムカウンタ用の74HC161の配線をミスったので無理やり修正している.)</figcaption>
 </figure>

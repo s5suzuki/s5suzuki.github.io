@@ -6,7 +6,7 @@ toc = true
 +++
 
 <figure>
-  <img src="https://github.com/s5suzuki/s5suzuki.github.io/blob/master/content/fig/face_2023.jpg?raw=true" width="180" height="240"/>
+  <img src="https://github.com/s5suzuki/s5suzuki.github.io/blob/main/content/fig/face_2023.jpg?raw=true" width="180" height="240"/>
 </figure>
 
 鈴木 颯 (Suzuki, Shun)<br>

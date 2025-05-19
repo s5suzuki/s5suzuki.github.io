@@ -433,17 +433,17 @@ struct Callback {
 
 - Windows
 
-    ![win60fps](https://raw.githubusercontent.com/s5suzuki/s5suzuki.github.io/master/content/fig/posts/timer/win_with_timebeginperiod/16.666667ms.svg)
+    ![win60fps](https://raw.githubusercontent.com/s5suzuki/s5suzuki.github.io/main/content/fig/posts/timer/win_with_timebeginperiod/16.666667ms.svg)
 
     - MultiMedia Timer, TimerQueue Timer, ThreadPool Timerは単位指定が$\SI{1}{ms}$なので周期が$\SI{16}{ms}$でちょっと短くなっている.
 
 - Linux
 
-    ![linux60fps](https://raw.githubusercontent.com/s5suzuki/s5suzuki.github.io/master/content/fig/posts/timer/linux/16.666667ms.svg)
+    ![linux60fps](https://raw.githubusercontent.com/s5suzuki/s5suzuki.github.io/main/content/fig/posts/timer/linux/16.666667ms.svg)
 
 - macOS
 
-    ![mac60fps](https://raw.githubusercontent.com/s5suzuki/s5suzuki.github.io/master/content/fig/posts/timer/mac/16.666667ms.svg)
+    ![mac60fps](https://raw.githubusercontent.com/s5suzuki/s5suzuki.github.io/main/content/fig/posts/timer/mac/16.666667ms.svg)
 
 ## 周期1ms (1000 FPS)
 
@@ -451,17 +451,17 @@ struct Callback {
 
 - Windows
 
-    ![win60fps](https://raw.githubusercontent.com/s5suzuki/s5suzuki.github.io/master/content/fig/posts/timer/win_with_timebeginperiod/1.0ms.svg)
+    ![win60fps](https://raw.githubusercontent.com/s5suzuki/s5suzuki.github.io/main/content/fig/posts/timer/win_with_timebeginperiod/1.0ms.svg)
 
     - ThreadPool Timerは$\SI{16}{ms}$未満を指定しても意味がないらしい. なお, TimerQueue TimerもThreadPool Timerに隠れて見えていないが同様である.
 
 - Linux
 
-    ![linux60fps](https://raw.githubusercontent.com/s5suzuki/s5suzuki.github.io/master/content/fig/posts/timer/linux/1.0ms.svg)
+    ![linux60fps](https://raw.githubusercontent.com/s5suzuki/s5suzuki.github.io/main/content/fig/posts/timer/linux/1.0ms.svg)
 
 - macOS
 
-    ![mac60fps](https://raw.githubusercontent.com/s5suzuki/s5suzuki.github.io/master/content/fig/posts/timer/mac/1.0ms.svg)
+    ![mac60fps](https://raw.githubusercontent.com/s5suzuki/s5suzuki.github.io/main/content/fig/posts/timer/mac/1.0ms.svg)
 
 ## 周期500us (2000 FPS)
 
@@ -469,17 +469,17 @@ struct Callback {
 
 - Windows
 
-    ![win60fps](https://raw.githubusercontent.com/s5suzuki/s5suzuki.github.io/master/content/fig/posts/timer/win_with_timebeginperiod/500.0us.svg)
+    ![win60fps](https://raw.githubusercontent.com/s5suzuki/s5suzuki.github.io/main/content/fig/posts/timer/win_with_timebeginperiod/500.0us.svg)
 
     - Waitable Timerはこのあたりまで対応できる.
 
 - Linux
 
-    ![linux60fps](https://raw.githubusercontent.com/s5suzuki/s5suzuki.github.io/master/content/fig/posts/timer/linux/500.0us.svg)
+    ![linux60fps](https://raw.githubusercontent.com/s5suzuki/s5suzuki.github.io/main/content/fig/posts/timer/linux/500.0us.svg)
 
 - macOS
 
-    ![mac60fps](https://raw.githubusercontent.com/s5suzuki/s5suzuki.github.io/master/content/fig/posts/timer/mac/500.0us.svg)
+    ![mac60fps](https://raw.githubusercontent.com/s5suzuki/s5suzuki.github.io/main/content/fig/posts/timer/mac/500.0us.svg)
 
 ## 周期100us (10000 FPS)
 
@@ -487,17 +487,17 @@ struct Callback {
 
 - Windows
 
-    ![win60fps](https://raw.githubusercontent.com/s5suzuki/s5suzuki.github.io/master/content/fig/posts/timer/win_with_timebeginperiod/100.0us.svg)
+    ![win60fps](https://raw.githubusercontent.com/s5suzuki/s5suzuki.github.io/main/content/fig/posts/timer/win_with_timebeginperiod/100.0us.svg)
 
     - ThreadPool TimerとTimerQueue Timerは論外で, MultiMedia Timerも$\SI{1}{ms}$単位なので使えない. `std::this_thread::sleep_for`とWaitable Timerを使った場合は, かなりガタつくが意外と頑張ってる. PerformanceCounterとSoftware Sleepはまだまだ大丈夫そう.
 
 - Linux
 
-    ![linux60fps](https://raw.githubusercontent.com/s5suzuki/s5suzuki.github.io/master/content/fig/posts/timer/linux/100.0us.svg)
+    ![linux60fps](https://raw.githubusercontent.com/s5suzuki/s5suzuki.github.io/main/content/fig/posts/timer/linux/100.0us.svg)
 
 - macOS
 
-    ![mac60fps](https://raw.githubusercontent.com/s5suzuki/s5suzuki.github.io/master/content/fig/posts/timer/mac/100.0us.svg)
+    ![mac60fps](https://raw.githubusercontent.com/s5suzuki/s5suzuki.github.io/main/content/fig/posts/timer/mac/100.0us.svg)
 
 
 LinuxとmacOSはこの程度なら全く問題ない.
@@ -510,17 +510,17 @@ LinuxとmacOSはこの程度なら全く問題ない.
 
 - Windows
 
-    ![win60fps](https://raw.githubusercontent.com/s5suzuki/s5suzuki.github.io/master/content/fig/posts/timer/win_with_timebeginperiod/1.0us.svg)
+    ![win60fps](https://raw.githubusercontent.com/s5suzuki/s5suzuki.github.io/main/content/fig/posts/timer/win_with_timebeginperiod/1.0us.svg)
 
     - PerformanceCounterとSoftware Sleepの組み合わせはかなり頑張ってるが, 途中ちょっとおかしくなる.
 
 - Linux
 
-    ![linux60fps](https://raw.githubusercontent.com/s5suzuki/s5suzuki.github.io/master/content/fig/posts/timer/linux/1.0us.svg)
+    ![linux60fps](https://raw.githubusercontent.com/s5suzuki/s5suzuki.github.io/main/content/fig/posts/timer/linux/1.0us.svg)
 
 - macOS
 
-    ![mac60fps](https://raw.githubusercontent.com/s5suzuki/s5suzuki.github.io/master/content/fig/posts/timer/mac/1.0us.svg)
+    ![mac60fps](https://raw.githubusercontent.com/s5suzuki/s5suzuki.github.io/main/content/fig/posts/timer/mac/1.0us.svg)
 
 # まとめ
 
@@ -536,15 +536,15 @@ LinuxとmacOSはこの程度なら全く問題ない.
 
 - $\SI{16.666667}{ms}$
 
-    ![win60fps](https://raw.githubusercontent.com/s5suzuki/s5suzuki.github.io/master/content/fig/posts/timer/win_without_timebeginperiod/16.666667ms.svg)
+    ![win60fps](https://raw.githubusercontent.com/s5suzuki/s5suzuki.github.io/main/content/fig/posts/timer/win_without_timebeginperiod/16.666667ms.svg)
 
 - $\SI{1}{ms}$
 
-    ![win60fps](https://raw.githubusercontent.com/s5suzuki/s5suzuki.github.io/master/content/fig/posts/timer/win_without_timebeginperiod/1.0ms.svg)
+    ![win60fps](https://raw.githubusercontent.com/s5suzuki/s5suzuki.github.io/main/content/fig/posts/timer/win_without_timebeginperiod/1.0ms.svg)
 
 - $\SI{500}{us}$
 
-    ![win60fps](https://raw.githubusercontent.com/s5suzuki/s5suzuki.github.io/master/content/fig/posts/timer/win_without_timebeginperiod/500.0us.svg)
+    ![win60fps](https://raw.githubusercontent.com/s5suzuki/s5suzuki.github.io/main/content/fig/posts/timer/win_without_timebeginperiod/500.0us.svg)
 
 $\SI{1}{ms}$あたりから, `std::this_thread::sleep_until`とWaitable Timerを使用する場合の呼び出し間隔がガタつき始める.
 
