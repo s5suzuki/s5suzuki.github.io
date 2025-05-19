@@ -1,6 +1,5 @@
 +++
 title = "About"
-date = 2022-02-07
 description = "About"
 template = "section.html"
 page_template = "page.html"
