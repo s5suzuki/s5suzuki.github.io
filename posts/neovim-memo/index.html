@@ -1,0 +1,737 @@
+<!doctype html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- FAVICON -->
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-16x16.png' rel="icon" sizes="16x16" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-32x32.png' rel="icon" sizes="32x32" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;android-chrome-512x512.png' rel="android-chrome" sizes="512x512" />
+  
+  
+  <link href='&#x2F;icons&#x2F;android-chrome-192x192.png' rel="android-chrome" sizes="192x192" />
+  
+  
+  <link href='&#x2F;icons&#x2F;apple-touch-icon.png' rel="apple-touch-icon" sizes="180x180" />
+  
+  
+  <link href='&#x2F;icons&#x2F;apple-touch-icon.png' rel="apple-touch-icon" sizes="180x180" />
+  
+
+  <link href="/css/main.css" rel="stylesheet">
+  <link id="syntax_highlight" href="#" rel="stylesheet">
+
+  
+
+<title>
+    
+    Windows開発環境設定メモ
+    
+</title>
+
+
+
+</head>
+
+<body class="dark:bg-gray-700 flex flex-col h-screen justify-between">
+  <!---------------------------------------------------------->
+  <!------------------------- NAVBAR ------------------------->
+  <!---------------------------------------------------------->
+  <nav id="navbar" class="bg-gray-200 dark:bg-gray-800">
+    <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+      <div class="relative flex items-center justify-between h-16">
+        <div class="flex items-center sm:hidden">
+          <!-- Mobile menu button-->
+          <button id="toggle-mobile-menu" type="button"
+            class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+            aria-controls="mobile-menu" aria-expanded="false">
+            <span class="sr-only">Open main menu</span>
+            <!--
+              Icon when menu is closed.
+              Heroicon name: outline/menu
+              Menu open: "hidden", Menu closed: "block"
+            -->
+            <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+              stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+            <!--
+              Icon when menu is open.
+              Heroicon name: outline/x
+              Menu open: "block", Menu closed: "hidden"
+            -->
+            <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+              stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+        <div class="flex-1 flex items-center">
+          <div class="flex-shrink-0 flex items-center ml-2">
+            <a href="/" class="text-xl text-gray-800 dark:text-white">Suzuki Shun&#x27;s homepage</a>
+            <!-- <img class="block lg:hidden h-8 w-auto" src="https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg" alt="Workflow">
+            <img class="hidden lg:block h-8 w-auto" src="https://tailwindui.com/img/logos/workflow-logo-indigo-500-mark-white-text.svg" alt="Workflow"> -->
+          </div>
+          <div class="hidden sm:block sm:ml-6">
+            <div class="nav-links flex space-x-4">
+              <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
+              
+              
+              
+              <a href="&#x2F;"
+                class="text-gray-800 dark:text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Home</a>
+              
+              <a href="&#x2F;about&#x2F;about-me"
+                class="text-gray-800 dark:text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">About me</a>
+              
+              <a href="&#x2F;posts"
+                class="text-gray-800 dark:text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Posts</a>
+              
+              <a href="&#x2F;categories"
+                class="text-gray-800 dark:text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Categories</a>
+              
+              <a href="&#x2F;tags"
+                class="text-gray-800 dark:text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Tags</a>
+              
+              
+              
+
+              
+            </div>
+          </div>
+
+          
+
+          <!---------------------------- Sidebar Menu ---------------------------->
+          
+
+          
+          <!-- Theme switch button -->
+          <div class="flex p-2">
+            <button id="switch-theme" type="button"
+              class="bg-gray-200 text-gray-800 hover:text-gray-900 dark:bg-gray-800 dark:text-gray-400 dark:hover:text-white p-1 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+              <span class="sr-only">Switch Theme</span>
+              <!-- Heroicon name: outline/light -->
+              <svg id="light" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z">
+                </path>
+              </svg>
+              <!-- Heroicon name: outline/dark -->
+              <svg id="dark" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+              </svg>
+            </button>
+
+            <!-- Profile dropdown -->
+            <!-- <div class="ml-3 relative">
+            <div>
+              <button type="button" class="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+                <span class="sr-only">Open user menu</span>
+                <img class="h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
+              </button>
+            </div> -->
+
+            <!--
+              Dropdown menu, show/hide based on menu state.
+
+              Entering: "transition ease-out duration-100"
+                From: "transform opacity-0 scale-95"
+                To: "transform opacity-100 scale-100"
+              Leaving: "transition ease-in duration-75"
+                From: "transform opacity-100 scale-100"
+                To: "transform opacity-0 scale-95"
+            -->
+            <!-- Active: "bg-gray-100", Not Active: "" -->
+            <!-- <div class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
+              <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-0">Your Profile</a>
+              <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-1">Settings</a>
+              <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-2">Sign out</a>
+            </div> -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!----------------------------- Mobile menu ----------------------------->
+    <div id="mobile-menu" class="sm:hidden fixed z-10 overflow-hidden">
+      <div
+        class="nav-links flex flex-col space-y-4 items-center w-screen dark:bg-gray-800 transition-all ease-out duration-500 h-0">
+        <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
+        
+        
+        
+        <a href="&#x2F;"
+          class="text-gray-800 dark:text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Home</a>
+        
+        <a href="&#x2F;about&#x2F;about-me"
+          class="text-gray-800 dark:text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">About me</a>
+        
+        <a href="&#x2F;posts"
+          class="text-gray-800 dark:text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Posts</a>
+        
+        <a href="&#x2F;categories"
+          class="text-gray-800 dark:text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Categories</a>
+        
+        <a href="&#x2F;tags"
+          class="text-gray-800 dark:text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Tags</a>
+        
+        
+        
+
+        
+      </div>
+    </div>
+  </nav>
+  <!----------------------------------------------------------->
+  <!------------------------- CONTENT ------------------------->
+  <!----------------------------------------------------------->
+  <main class="max-w-7xl mx-auto text-black dark:text-gray-200 w-full mb-auto">
+    
+<div class="flex">
+   <h1 class="text-2xl text-bold my-6 mx-auto">
+      Windows開発環境設定メモ
+    </h1>
+</div>
+<div class="flex gap-x-8">
+  <div class="flex flex-col sm:w-3/4 w-full border border-2 border-gray-200 dark:border-black rounded-xl p-5 shadow-2xl bg-gray-200 dark:bg-gray-800">
+
+    <div class="flex flex-col py-2 justify-center">
+     <!-- <h2 class="text-2xl text-bold"><a href='https:&#x2F;&#x2F;s5suzuki.github.io&#x2F;posts&#x2F;neovim-memo&#x2F;'>Windows開発環境設定メモ</a></h2> -->
+      <p class="text-bold"></p>
+    </div>
+
+    <!-- Read time and word count -->
+    <div class="flex flex-wrap py-2">
+      <div class="flex items-center w-1/3">
+        <div class="flex flex-col sm:flex-row sm:space-x-3 text-gray-900 dark:text-gray-400">
+          <span class="flex">
+            <!-- Icon clock -->
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <span class="ml-1">5 min</span>
+          </span>
+          <span class="flex">
+            <!-- Icon pencil -->
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+            </svg>
+            <span class="ml-1">842 words</span>
+          </span>
+        </div>
+      </div>
+      <!-- Author and publish date -->
+      <div class="flex w-2/3 sm:space-x-3 text-gray-900 dark:text-gray-400 justify-end">
+         <span class="flex items-center">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+          </svg>
+          <span class="ml-1"><time datetime="2022-09-04">Published on September 04, 2022</time></span>
+        </span>
+        <span class="flex items-center">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+          </svg>
+          
+            <span class="ml-1">Suzuki Shun</span>
+            <img class="rounded-full h-9 w-9 ml-1" src="https:&#x2F;&#x2F;gravatar.com&#x2F;avatar&#x2F;0719f3a8e0f8b04f863dac4693580ec1" alt="Suzuki Shun&#x27;s avatar">
+          
+        </span>
+      </div>
+    </div>
+
+    <!-- Categories and Tags -->
+    <div class="flex flex-wrap py-2">
+      <div class="w-2/3">
+        
+          <p>
+            Categories:
+            
+            <a class="text-gray-900 dark:text-gray-400 flex py-1 items-center" href="https://s5suzuki.github.io/categories/posts/">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+              </svg>
+              <span class="pl-1">posts</span>
+            </a>
+            
+          </p>
+        
+      </div>
+      <div class="w-1/3">
+        
+        <p>
+          Tags:
+          
+          <a class="text-gray-900 dark:text-gray-400 flex py-1 items-center" href="https://s5suzuki.github.io/tags/neovim/">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+            </svg>
+            <span class="pl-1">Neovim</span>
+          </a>
+          
+          <a class="text-gray-900 dark:text-gray-400 flex py-1 items-center" href="https://s5suzuki.github.io/tags/wezterm/">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+            </svg>
+            <span class="pl-1">WezTerm</span>
+          </a>
+          
+          <a class="text-gray-900 dark:text-gray-400 flex py-1 items-center" href="https://s5suzuki.github.io/tags/nu/">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+            </svg>
+            <span class="pl-1">nu</span>
+          </a>
+          
+        </p>
+        
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div id="page-content" class="text-bold mt-2">
+      <p>随時アップデート予定.</p>
+<h1 id="wezterm">WezTerm</h1>
+<p><a href="https://wezfurlong.org/wezterm/index.html">ドキュメント</a>が充実しているので, これを読めば大丈夫.</p>
+<h2 id="install">Install</h2>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>winget install wez.wezterm
+</span></code></pre>
+<h2 id="setting">Setting</h2>
+<p>設定ファイルは<code>~/.config/wezterm/wezterm.lua</code>に書く.</p>
+<pre data-lang="lua" style="background-color:#2b303b;color:#c0c5ce;" class="language-lua "><code class="language-lua" data-lang="lua"><span style="color:#b48ead;">local </span><span style="color:#bf616a;">wezterm </span><span>= </span><span style="color:#96b5b4;">require </span><span>&#39;</span><span style="color:#a3be8c;">wezterm</span><span>&#39;;
+</span><span style="color:#b48ead;">local </span><span style="color:#bf616a;">mux </span><span>= </span><span style="color:#bf616a;">wezterm</span><span>.mux
+</span><span>
+</span><span style="color:#bf616a;">wezterm</span><span>.</span><span style="color:#bf616a;">on</span><span>(&#39;</span><span style="color:#a3be8c;">gui-startup</span><span>&#39;, </span><span style="color:#b48ead;">function</span><span>(cmd)
+</span><span>  </span><span style="color:#b48ead;">local </span><span style="color:#bf616a;">tab</span><span>, </span><span style="color:#bf616a;">pane</span><span>, </span><span style="color:#bf616a;">window </span><span>= </span><span style="color:#bf616a;">mux</span><span>.</span><span style="color:#bf616a;">spawn_window</span><span>(</span><span style="color:#bf616a;">cmd </span><span>or {})
+</span><span>  </span><span style="color:#bf616a;">window</span><span>:</span><span style="color:#bf616a;">gui_window</span><span>():</span><span style="color:#bf616a;">set_position</span><span>(</span><span style="color:#d08770;">200</span><span>, </span><span style="color:#d08770;">200</span><span>)
+</span><span>  </span><span style="color:#bf616a;">window</span><span>:</span><span style="color:#bf616a;">gui_window</span><span>():</span><span style="color:#bf616a;">set_inner_size</span><span>(</span><span style="color:#d08770;">1280</span><span>, </span><span style="color:#d08770;">640</span><span>)
+</span><span>  </span><span style="color:#bf616a;">pane</span><span>:</span><span style="color:#bf616a;">split </span><span>{ </span><span style="color:#a3be8c;">size </span><span>= </span><span style="color:#d08770;">0.7</span><span>, </span><span style="color:#a3be8c;">direction </span><span>= &#39;</span><span style="color:#a3be8c;">Top</span><span>&#39;  }
+</span><span style="color:#b48ead;">end</span><span>)
+</span><span>
+</span><span style="color:#b48ead;">return </span><span>{
+</span><span>  </span><span style="color:#a3be8c;">font </span><span>= </span><span style="color:#bf616a;">wezterm</span><span>.</span><span style="color:#bf616a;">font</span><span>(&#39;</span><span style="color:#a3be8c;">HackGenNerd Console</span><span>&#39;),
+</span><span>  </span><span style="color:#a3be8c;">use_ime </span><span>= </span><span style="color:#d08770;">true</span><span>,
+</span><span>  </span><span style="color:#a3be8c;">font_size </span><span>= </span><span style="color:#d08770;">12.0</span><span>,
+</span><span>  </span><span style="color:#a3be8c;">color_scheme </span><span>= &#39;</span><span style="color:#a3be8c;">VSCodeDark+ (Gogh)</span><span>&#39;,
+</span><span>  </span><span style="color:#a3be8c;">hide_tab_bar_if_only_one_tab </span><span>= </span><span style="color:#d08770;">true</span><span>,
+</span><span>  </span><span style="color:#a3be8c;">adjust_window_size_when_changing_font_size </span><span>= </span><span style="color:#d08770;">false</span><span>,
+</span><span>  </span><span style="color:#a3be8c;">default_prog </span><span>= { &#39;</span><span style="color:#a3be8c;">nu</span><span>&#39; },
+</span><span>  </span><span style="color:#a3be8c;">window_close_confirmation </span><span>= &#39;</span><span style="color:#a3be8c;">NeverPrompt</span><span>&#39;,
+</span><span>  </span><span style="color:#a3be8c;">skip_close_confirmation_for_processes_named </span><span>= {
+</span><span>    &#39;</span><span style="color:#a3be8c;">nu.exe</span><span>&#39;,
+</span><span>  },
+</span><span>  </span><span style="color:#a3be8c;">keys </span><span>= {
+</span><span>    { </span><span style="color:#a3be8c;">key </span><span>= &#39;</span><span style="color:#a3be8c;">;</span><span>&#39;, </span><span style="color:#a3be8c;">mods </span><span>= &#39;</span><span style="color:#a3be8c;">CTRL</span><span>&#39;, </span><span style="color:#a3be8c;">action </span><span>= </span><span style="color:#bf616a;">wezterm</span><span>.action.</span><span style="color:#bf616a;">ActivatePaneDirection </span><span>&#39;</span><span style="color:#a3be8c;">Next</span><span>&#39; },
+</span><span>  },
+</span><span>}
+</span></code></pre>
+<p>WezTermを開いたときにPaneを上下に分割するようにしてある.</p>
+<p>また, Shellは<a href="https://github.com/nushell/nushell">nu</a>を使っているので, それをデフォルトにしてある.
+設定しない場合, <code>cmd.exe</code>になる.</p>
+<p>フォントやカラースキームは適当に選ぶ.</p>
+<p>あと, 終了時に確認が求められるが, 面倒なのでスキップするようにした.</p>
+<p>さらに, <code>Ctrl+;</code>でPane間を遷移できるようにしてある.</p>
+<h2 id="usage">Usage</h2>
+<p>使い方は, ドキュメントを参照.</p>
+<p>よく使うコマンドをいかに抜粋する.</p>
+<table><thead><tr><th>Keybinding</th><th>Command</th></tr></thead><tbody>
+<tr><td><code>Ctrl-Shift-Alt-%</code></td><td>Pane水平分割</td></tr>
+<tr><td><code>Ctrl-Shift-Alt-"</code></td><td>Pane垂直分割</td></tr>
+<tr><td><code>Ctrl-Shift-ArrowKey</code></td><td>Pane間移動</td></tr>
+<tr><td><code>Ctrl-Shift-t</code></td><td>新しいタブを開く</td></tr>
+<tr><td><code>Ctrl-Shift-w</code></td><td>現在のタブを閉じる</td></tr>
+<tr><td><code>Ctrl-Tab</code></td><td>次のタブに移動</td></tr>
+<tr><td><code>Ctrl-Shift-Tab</code></td><td>前のタブに移動</td></tr>
+</tbody></table>
+<h1 id="neovim">Neovim</h1>
+<p>neovimの設定ファイルは<code>~/AppData/Local/nvim/init.lua</code>となる.</p>
+<h2 id="install-1">Install</h2>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>winget install neovim
+</span></code></pre>
+<h2 id="plugins">Plugins</h2>
+<h3 id="packer-nvim"><a href="https://github.com/wbthomason/packer.nvim">packer.nvim</a></h3>
+<p>プラグインを管理するためのプラグイン.</p>
+<p>PowerShellで以下のコマンドを入力し, インストールする.</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>git clone https://github.com/wbthomason/packer.nvim &quot;~\AppData\Local\nvim-data\site\pack\packer\start\packer.nvim&quot;
+</span></code></pre>
+<p>また, <code>init.lua</code>に以下を書く.</p>
+<ul>
+<li>
+<p><code>init.lua</code></p>
+<pre data-lang="lua" style="background-color:#2b303b;color:#c0c5ce;" class="language-lua "><code class="language-lua" data-lang="lua"><span style="color:#96b5b4;">require</span><span>(&#39;</span><span style="color:#a3be8c;">plugins</span><span>&#39;)
+</span></code></pre>
+</li>
+</ul>
+<p>さらに, <code>~/AppData/Local/nvim/lua/plugins.lua</code>ファイルを作り, ここにプラグインの設定を書いていく.</p>
+<ul>
+<li>
+<p><code>lua/plugins.lua</code></p>
+<pre data-lang="lua" style="background-color:#2b303b;color:#c0c5ce;" class="language-lua "><code class="language-lua" data-lang="lua"><span style="color:#bf616a;">vim</span><span>.</span><span style="color:#bf616a;">cmd </span><span>[[</span><span style="color:#a3be8c;">packadd packer.nvim</span><span>]]
+</span><span style="color:#b48ead;">return </span><span style="color:#96b5b4;">require</span><span>(&#39;</span><span style="color:#a3be8c;">packer</span><span>&#39;).</span><span style="color:#bf616a;">startup</span><span>(</span><span style="color:#b48ead;">function</span><span>()    
+</span><span>    </span><span style="color:#bf616a;">use</span><span>(&#39;</span><span style="color:#a3be8c;">wbthomason/packer.nvim</span><span>&#39;)
+</span><span style="color:#b48ead;">end</span><span>)
+</span></code></pre>
+</li>
+</ul>
+<p>プラグインのインストールは, <code>plugins.lua</code>に追記した後, Neovimを開き,</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>:PackerInstall
+</span></code></pre>
+<p>で行う.</p>
+<h3 id="fern-vim"><a href="https://github.com/lambdalisue/fern.vim">fern.vim</a></h3>
+<p>ファイラープラグイン.</p>
+<pre data-lang="lua" style="background-color:#2b303b;color:#c0c5ce;" class="language-lua "><code class="language-lua" data-lang="lua"><span>    </span><span style="color:#bf616a;">use</span><span>(&#39;</span><span style="color:#a3be8c;">lambdalisue/fern.vim</span><span>&#39;)
+</span><span>    </span><span style="color:#bf616a;">use</span><span>(&#39;</span><span style="color:#a3be8c;">lambdalisue/fern-git-status.vim</span><span>&#39;)
+</span><span>    </span><span style="color:#bf616a;">use</span><span>(&#39;</span><span style="color:#a3be8c;">lambdalisue/nerdfont.vim</span><span>&#39;)
+</span><span>    </span><span style="color:#bf616a;">use</span><span>(&#39;</span><span style="color:#a3be8c;">lambdalisue/fern-renderer-nerdfont.vim</span><span>&#39;)
+</span><span>    </span><span style="color:#bf616a;">use</span><span>(&#39;</span><span style="color:#a3be8c;">lambdalisue/glyph-palette.vim</span><span>&#39;)
+</span><span>    </span><span style="color:#bf616a;">use</span><span>(&#39;</span><span style="color:#a3be8c;">antoinemadec/FixCursorHold.nvim</span><span>&#39;)
+</span></code></pre>
+<p>2番目は, gitの情報を表示するためのもの.
+3-5番目のやつは, アイコンを表示するためのもの.</p>
+<p>最後のプラグインに関しては,</p>
+<blockquote>
+<p>Neovim users SHOULD add <a href="https://github.com/antoinemadec/FixCursorHold.nvim">antoinemadec/FixCursorHold.nvim</a> for now (See <a href="https://github.com/lambdalisue/fern.vim/issues/120">#120</a>)
+となっていたので.</p>
+</blockquote>
+<ul>
+<li>
+<p><code>Ctrl+n</code>でファイラーの表示非表示の切り替るようにする. また, アイコン用の設定もする.</p>
+<pre data-lang="lua" style="background-color:#2b303b;color:#c0c5ce;" class="language-lua "><code class="language-lua" data-lang="lua"><span style="color:#bf616a;">vim</span><span>.keymap.</span><span style="color:#bf616a;">set</span><span>(&#39;</span><span style="color:#a3be8c;">n</span><span>&#39;, &#39;</span><span style="color:#a3be8c;">&lt;C-n&gt;</span><span>&#39;, &#39;</span><span style="color:#a3be8c;">:Fern . -reveal=% -drawer -toggle -width=30&lt;CR&gt;</span><span>&#39;)
+</span><span style="color:#bf616a;">vim</span><span>.g[&#39;</span><span style="color:#a3be8c;">fern#renderer</span><span>&#39;] = &#39;</span><span style="color:#a3be8c;">nerdfont</span><span>&#39;
+</span><span style="color:#bf616a;">vim</span><span>.</span><span style="color:#bf616a;">cmd</span><span>(&#39;</span><span style="color:#a3be8c;">augroup my-glyph-palette</span><span>&#39;)
+</span><span style="color:#bf616a;">vim</span><span>.</span><span style="color:#bf616a;">cmd</span><span>(&#39;</span><span style="color:#a3be8c;">autocmd! *</span><span>&#39;)
+</span><span style="color:#bf616a;">vim</span><span>.</span><span style="color:#bf616a;">cmd</span><span>(&#39;</span><span style="color:#a3be8c;">autocmd FileType fern call glyph_palette#apply()</span><span>&#39;)
+</span><span style="color:#bf616a;">vim</span><span>.</span><span style="color:#bf616a;">cmd</span><span>(&#39;</span><span style="color:#a3be8c;">autocmd FileType nerdtree,startify call glyph_palette#apply()</span><span>&#39;)
+</span><span style="color:#bf616a;">vim</span><span>.</span><span style="color:#bf616a;">cmd</span><span>(&#39;</span><span style="color:#a3be8c;">augroup END</span><span>&#39;)
+</span></code></pre>
+</li>
+</ul>
+<table><thead><tr><th>Keybinding</th><th>Command</th></tr></thead><tbody>
+<tr><td><code>l</code></td><td>フォルダを開く</td></tr>
+<tr><td><code>h</code></td><td>フォルダを閉じる</td></tr>
+<tr><td><code>e</code></td><td>ファイルを開く</td></tr>
+<tr><td><code>Ctrl-m</code></td><td>フォルダへ移動</td></tr>
+<tr><td><code>Ctrl-h</code></td><td>親フォルダへ移動</td></tr>
+<tr><td><code>N</code></td><td>ファイル新規作成</td></tr>
+<tr><td><code>K</code></td><td>フォルダ新規作成</td></tr>
+<tr><td><code>D</code></td><td>ファイル削除</td></tr>
+<tr><td><code>R</code></td><td>リネーム</td></tr>
+<tr><td><code>m</code></td><td>移動</td></tr>
+</tbody></table>
+<h3 id="lualine-nvim"><a href="https://github.com/nvim-lualine/lualine.nvim">lualine.nvim</a></h3>
+<p>ステータスラインの見た目変更.</p>
+<pre data-lang="lua" style="background-color:#2b303b;color:#c0c5ce;" class="language-lua "><code class="language-lua" data-lang="lua"><span>    </span><span style="color:#bf616a;">use </span><span>{
+</span><span>        &#39;</span><span style="color:#a3be8c;">nvim-lualine/lualine.nvim</span><span>&#39;,
+</span><span>        </span><span style="color:#a3be8c;">requires </span><span>= { &#39;</span><span style="color:#a3be8c;">kyazdani42/nvim-web-devicons</span><span>&#39;, </span><span style="color:#a3be8c;">opt </span><span>= </span><span style="color:#d08770;">true </span><span>}
+</span><span>    }
+</span></code></pre>
+<p>見た目の設定は適当に選ぶ.</p>
+<ul>
+<li>
+<p><code>lua/lualine_config.lua</code></p>
+<pre data-lang="lua" style="background-color:#2b303b;color:#c0c5ce;" class="language-lua "><code class="language-lua" data-lang="lua"><span style="color:#96b5b4;">require</span><span>(&#39;</span><span style="color:#a3be8c;">lualine</span><span>&#39;).</span><span style="color:#bf616a;">setup </span><span>{
+</span><span>    </span><span style="color:#a3be8c;">options </span><span>= {
+</span><span>        </span><span style="color:#a3be8c;">icons_enabled </span><span>= </span><span style="color:#d08770;">true</span><span>,
+</span><span>        </span><span style="color:#a3be8c;">theme </span><span>= &#39;</span><span style="color:#a3be8c;">nord</span><span>&#39;,
+</span><span>        </span><span style="color:#a3be8c;">component_separators </span><span>= { </span><span style="color:#a3be8c;">left </span><span>= &#39;</span><span style="color:#a3be8c;"></span><span>&#39;, </span><span style="color:#a3be8c;">right </span><span>= &#39;</span><span style="color:#a3be8c;"></span><span>&#39; },
+</span><span>        </span><span style="color:#a3be8c;">section_separators </span><span>= { </span><span style="color:#a3be8c;">left </span><span>= &#39;</span><span style="color:#a3be8c;"></span><span>&#39;, </span><span style="color:#a3be8c;">right </span><span>= &#39;</span><span style="color:#a3be8c;"></span><span>&#39; },
+</span><span>        </span><span style="color:#a3be8c;">disabled_filetypes </span><span>= {},
+</span><span>        </span><span style="color:#a3be8c;">always_divide_middle </span><span>= </span><span style="color:#d08770;">true</span><span>,
+</span><span>        </span><span style="color:#a3be8c;">globalstatus </span><span>= </span><span style="color:#d08770;">false</span><span>,
+</span><span>    },
+</span><span>    </span><span style="color:#a3be8c;">sections </span><span>= {
+</span><span>        </span><span style="color:#a3be8c;">lualine_a </span><span>= { &#39;</span><span style="color:#a3be8c;">mode</span><span>&#39; },
+</span><span>        </span><span style="color:#a3be8c;">lualine_b </span><span>= { &#39;</span><span style="color:#a3be8c;">branch</span><span>&#39;, &#39;</span><span style="color:#a3be8c;">diff</span><span>&#39;, &#39;</span><span style="color:#a3be8c;">diagnostics</span><span>&#39; },
+</span><span>        </span><span style="color:#a3be8c;">lualine_c </span><span>= { &#39;</span><span style="color:#a3be8c;">filename</span><span>&#39; },
+</span><span>        </span><span style="color:#a3be8c;">lualine_x </span><span>= { &#39;</span><span style="color:#a3be8c;">encoding</span><span>&#39;, &#39;</span><span style="color:#a3be8c;">fileformat</span><span>&#39;, &#39;</span><span style="color:#a3be8c;">filetype</span><span>&#39; },
+</span><span>        </span><span style="color:#a3be8c;">lualine_y </span><span>= { &#39;</span><span style="color:#a3be8c;">progress</span><span>&#39; },
+</span><span>        </span><span style="color:#a3be8c;">lualine_z </span><span>= { &#39;</span><span style="color:#a3be8c;">location</span><span>&#39; }
+</span><span>    },
+</span><span>    </span><span style="color:#a3be8c;">inactive_sections </span><span>= {
+</span><span>        </span><span style="color:#a3be8c;">lualine_a </span><span>= {},
+</span><span>        </span><span style="color:#a3be8c;">lualine_b </span><span>= {},
+</span><span>        </span><span style="color:#a3be8c;">lualine_c </span><span>= { &#39;</span><span style="color:#a3be8c;">filename</span><span>&#39; },
+</span><span>        </span><span style="color:#a3be8c;">lualine_x </span><span>= { &#39;</span><span style="color:#a3be8c;">location</span><span>&#39; },
+</span><span>        </span><span style="color:#a3be8c;">lualine_y </span><span>= {},
+</span><span>        </span><span style="color:#a3be8c;">lualine_z </span><span>= {}
+</span><span>    },
+</span><span>    </span><span style="color:#a3be8c;">tabline </span><span>= {},
+</span><span>    </span><span style="color:#a3be8c;">extensions </span><span>= {}
+</span><span>}
+</span></code></pre>
+</li>
+</ul>
+<h3 id="telescope-nvim"><a href="https://github.com/nvim-telescope/telescope.nvim">telescope.nvim</a></h3>
+<p>ファジーファインダー.</p>
+<pre data-lang="lua" style="background-color:#2b303b;color:#c0c5ce;" class="language-lua "><code class="language-lua" data-lang="lua"><span>    </span><span style="color:#bf616a;">use</span><span>(&#39;</span><span style="color:#a3be8c;">nvim-lua/plenary.nvim</span><span>&#39;)
+</span><span>    </span><span style="color:#bf616a;">use</span><span>(&#39;</span><span style="color:#a3be8c;">nvim-telescope/telescope.nvim</span><span>&#39;)
+</span></code></pre>
+<p><code>Ctrl-p</code>で曖昧検索, <code>Ctrl-g</code>でgrep検索</p>
+<pre data-lang="lua" style="background-color:#2b303b;color:#c0c5ce;" class="language-lua "><code class="language-lua" data-lang="lua"><span style="color:#bf616a;">vim</span><span>.keymap.</span><span style="color:#bf616a;">set</span><span>(&#39;</span><span style="color:#a3be8c;">n</span><span>&#39;, &#39;</span><span style="color:#a3be8c;">&lt;C-p&gt;</span><span>&#39;, &#39;</span><span style="color:#a3be8c;">:Telescope find_files&lt;CR&gt;</span><span>&#39;)
+</span><span style="color:#bf616a;">vim</span><span>.keymap.</span><span style="color:#bf616a;">set</span><span>(&#39;</span><span style="color:#a3be8c;">n</span><span>&#39;, &#39;</span><span style="color:#a3be8c;">&lt;C-g&gt;</span><span>&#39;, &#39;</span><span style="color:#a3be8c;">:Telescope live_grep&lt;CR&gt;</span><span>&#39;)
+</span></code></pre>
+<h3 id="lsp">LSP</h3>
+<p>Language Server Protocol系.</p>
+<pre data-lang="lua" style="background-color:#2b303b;color:#c0c5ce;" class="language-lua "><code class="language-lua" data-lang="lua"><span>    </span><span style="color:#bf616a;">use</span><span>(&#39;</span><span style="color:#a3be8c;">neovim/nvim-lspconfig</span><span>&#39;)
+</span><span>    </span><span style="color:#bf616a;">use</span><span>(&#39;</span><span style="color:#a3be8c;">williamboman/mason.nvim</span><span>&#39;)
+</span><span>    </span><span style="color:#bf616a;">use</span><span>(&#39;</span><span style="color:#a3be8c;">williamboman/mason-lspconfig.nvim</span><span>&#39;)
+</span><span>    </span><span style="color:#bf616a;">use</span><span>(&#39;</span><span style="color:#a3be8c;">hrsh7th/nvim-cmp</span><span>&#39;)
+</span><span>    </span><span style="color:#bf616a;">use</span><span>(&#39;</span><span style="color:#a3be8c;">hrsh7th/cmp-nvim-lsp</span><span>&#39;)
+</span><span>    </span><span style="color:#bf616a;">use</span><span>(&#39;</span><span style="color:#a3be8c;">hrsh7th/vim-vsnip</span><span>&#39;)
+</span></code></pre>
+<ul>
+<li>
+<p><code>lua/lsp_config.lua</code></p>
+<pre data-lang="lua" style="background-color:#2b303b;color:#c0c5ce;" class="language-lua "><code class="language-lua" data-lang="lua"><span style="color:#96b5b4;">require</span><span>(&#39;</span><span style="color:#a3be8c;">mason</span><span>&#39;).</span><span style="color:#bf616a;">setup</span><span>()
+</span><span style="color:#96b5b4;">require</span><span>(&#39;</span><span style="color:#a3be8c;">mason-lspconfig</span><span>&#39;).</span><span style="color:#bf616a;">setup_handlers</span><span>({ </span><span style="color:#b48ead;">function</span><span>(server)
+</span><span>    </span><span style="color:#b48ead;">local </span><span style="color:#bf616a;">opt </span><span>= {
+</span><span>        </span><span style="color:#a3be8c;">capabilities </span><span>= </span><span style="color:#96b5b4;">require</span><span>(&#39;</span><span style="color:#a3be8c;">cmp_nvim_lsp</span><span>&#39;).</span><span style="color:#bf616a;">update_capabilities</span><span>(
+</span><span>            </span><span style="color:#bf616a;">vim</span><span>.lsp.protocol.</span><span style="color:#bf616a;">make_client_capabilities</span><span>()
+</span><span>        )
+</span><span>    }
+</span><span>    </span><span style="color:#96b5b4;">require</span><span>(&#39;</span><span style="color:#a3be8c;">lspconfig</span><span>&#39;)[</span><span style="color:#bf616a;">server</span><span>].</span><span style="color:#bf616a;">setup</span><span>(</span><span style="color:#bf616a;">opt</span><span>)
+</span><span style="color:#b48ead;">end </span><span>})
+</span><span>
+</span><span style="color:#bf616a;">vim</span><span>.keymap.</span><span style="color:#bf616a;">set</span><span>(&#39;</span><span style="color:#a3be8c;">n</span><span>&#39;, &#39;</span><span style="color:#a3be8c;">K</span><span>&#39;, &#39;</span><span style="color:#a3be8c;">&lt;cmd&gt;lua vim.lsp.buf.hover()&lt;CR&gt;</span><span>&#39;)
+</span><span style="color:#bf616a;">vim</span><span>.keymap.</span><span style="color:#bf616a;">set</span><span>(&#39;</span><span style="color:#a3be8c;">n</span><span>&#39;, &#39;</span><span style="color:#a3be8c;">gf</span><span>&#39;, &#39;</span><span style="color:#a3be8c;">&lt;cmd&gt;lua vim.lsp.buf.formatting()&lt;CR&gt;</span><span>&#39;)
+</span><span style="color:#bf616a;">vim</span><span>.keymap.</span><span style="color:#bf616a;">set</span><span>(&#39;</span><span style="color:#a3be8c;">n</span><span>&#39;, &#39;</span><span style="color:#a3be8c;">gr</span><span>&#39;, &#39;</span><span style="color:#a3be8c;">&lt;cmd&gt;lua vim.lsp.buf.references()&lt;CR&gt;</span><span>&#39;)
+</span><span style="color:#bf616a;">vim</span><span>.keymap.</span><span style="color:#bf616a;">set</span><span>(&#39;</span><span style="color:#a3be8c;">n</span><span>&#39;, &#39;</span><span style="color:#a3be8c;">gd</span><span>&#39;, &#39;</span><span style="color:#a3be8c;">&lt;cmd&gt;lua vim.lsp.buf.definition()&lt;CR&gt;</span><span>&#39;)
+</span><span style="color:#bf616a;">vim</span><span>.keymap.</span><span style="color:#bf616a;">set</span><span>(&#39;</span><span style="color:#a3be8c;">n</span><span>&#39;, &#39;</span><span style="color:#a3be8c;">gD</span><span>&#39;, &#39;</span><span style="color:#a3be8c;">&lt;cmd&gt;lua vim.lsp.buf.declaration()&lt;CR&gt;</span><span>&#39;)
+</span><span style="color:#bf616a;">vim</span><span>.keymap.</span><span style="color:#bf616a;">set</span><span>(&#39;</span><span style="color:#a3be8c;">n</span><span>&#39;, &#39;</span><span style="color:#a3be8c;">gi</span><span>&#39;, &#39;</span><span style="color:#a3be8c;">&lt;cmd&gt;lua vim.lsp.buf.implementation()&lt;CR&gt;</span><span>&#39;)
+</span><span style="color:#bf616a;">vim</span><span>.keymap.</span><span style="color:#bf616a;">set</span><span>(&#39;</span><span style="color:#a3be8c;">n</span><span>&#39;, &#39;</span><span style="color:#a3be8c;">gt</span><span>&#39;, &#39;</span><span style="color:#a3be8c;">&lt;cmd&gt;lua vim.lsp.buf.type_definition()&lt;CR&gt;</span><span>&#39;)
+</span><span style="color:#bf616a;">vim</span><span>.keymap.</span><span style="color:#bf616a;">set</span><span>(&#39;</span><span style="color:#a3be8c;">n</span><span>&#39;, &#39;</span><span style="color:#a3be8c;">gn</span><span>&#39;, &#39;</span><span style="color:#a3be8c;">&lt;cmd&gt;lua vim.lsp.buf.rename()&lt;CR&gt;</span><span>&#39;)
+</span><span style="color:#bf616a;">vim</span><span>.keymap.</span><span style="color:#bf616a;">set</span><span>(&#39;</span><span style="color:#a3be8c;">n</span><span>&#39;, &#39;</span><span style="color:#a3be8c;">ga</span><span>&#39;, &#39;</span><span style="color:#a3be8c;">&lt;cmd&gt;lua vim.lsp.buf.code_action()&lt;CR&gt;</span><span>&#39;)
+</span><span style="color:#bf616a;">vim</span><span>.keymap.</span><span style="color:#bf616a;">set</span><span>(&#39;</span><span style="color:#a3be8c;">n</span><span>&#39;, &#39;</span><span style="color:#a3be8c;">ge</span><span>&#39;, &#39;</span><span style="color:#a3be8c;">&lt;cmd&gt;lua vim.diagnostic.open_float()&lt;CR&gt;</span><span>&#39;)
+</span><span style="color:#bf616a;">vim</span><span>.keymap.</span><span style="color:#bf616a;">set</span><span>(&#39;</span><span style="color:#a3be8c;">n</span><span>&#39;, &#39;</span><span style="color:#a3be8c;">g]</span><span>&#39;, &#39;</span><span style="color:#a3be8c;">&lt;cmd&gt;lua vim.diagnostic.goto_next()&lt;CR&gt;</span><span>&#39;)
+</span><span style="color:#bf616a;">vim</span><span>.keymap.</span><span style="color:#bf616a;">set</span><span>(&#39;</span><span style="color:#a3be8c;">n</span><span>&#39;, &#39;</span><span style="color:#a3be8c;">g[</span><span>&#39;, &#39;</span><span style="color:#a3be8c;">&lt;cmd&gt;lua vim.diagnostic.goto_prev()&lt;CR&gt;</span><span>&#39;)
+</span><span>
+</span><span style="color:#bf616a;">vim</span><span>.lsp.handlers[&quot;</span><span style="color:#a3be8c;">textDocument/publishDiagnostics</span><span>&quot;] = </span><span style="color:#bf616a;">vim</span><span>.lsp.</span><span style="color:#bf616a;">with</span><span>(
+</span><span>    </span><span style="color:#bf616a;">vim</span><span>.lsp.diagnostic.on_publish_diagnostics, { </span><span style="color:#a3be8c;">virtual_text </span><span>= </span><span style="color:#d08770;">false </span><span>}
+</span><span>)
+</span><span>
+</span><span style="color:#bf616a;">vim</span><span>.</span><span style="color:#bf616a;">cmd </span><span>[[
+</span><span style="color:#a3be8c;">set updatetime=500
+</span><span style="color:#a3be8c;">highlight LspReferenceText  cterm=underline ctermfg=1 ctermbg=8 gui=underline guifg=#A00000 guibg=#104040
+</span><span style="color:#a3be8c;">highlight LspReferenceRead  cterm=underline ctermfg=1 ctermbg=8 gui=underline guifg=#A00000 guibg=#104040
+</span><span style="color:#a3be8c;">highlight LspReferenceWrite cterm=underline ctermfg=1 ctermbg=8 gui=underline guifg=#A00000 guibg=#104040
+</span><span style="color:#a3be8c;">augroup lsp_document_highlight
+</span><span style="color:#a3be8c;">  autocmd!
+</span><span style="color:#a3be8c;">  autocmd CursorHold,CursorHoldI * lua vim.lsp.buf.document_highlight()
+</span><span style="color:#a3be8c;">  autocmd CursorMoved,CursorMovedI * lua vim.lsp.buf.clear_references()
+</span><span style="color:#a3be8c;">augroup END
+</span><span>]]
+</span><span>
+</span><span style="color:#b48ead;">local </span><span style="color:#bf616a;">cmp </span><span>= </span><span style="color:#96b5b4;">require</span><span>(&quot;</span><span style="color:#a3be8c;">cmp</span><span>&quot;)
+</span><span style="color:#bf616a;">cmp</span><span>.</span><span style="color:#bf616a;">setup</span><span>({
+</span><span>    </span><span style="color:#a3be8c;">snippet </span><span>= {
+</span><span>        </span><span style="color:#8fa1b3;">expand </span><span>= </span><span style="color:#b48ead;">function</span><span>(args)
+</span><span>            </span><span style="color:#bf616a;">vim</span><span>.fn[&quot;</span><span style="color:#a3be8c;">vsnip#anonymous</span><span>&quot;](</span><span style="color:#bf616a;">args</span><span>.body)
+</span><span>        </span><span style="color:#b48ead;">end</span><span>,
+</span><span>    },
+</span><span>    </span><span style="color:#a3be8c;">sources </span><span>= {
+</span><span>        { </span><span style="color:#a3be8c;">name </span><span>= &quot;</span><span style="color:#a3be8c;">nvim_lsp</span><span>&quot; },
+</span><span>    },
+</span><span>    </span><span style="color:#a3be8c;">mapping </span><span>= </span><span style="color:#bf616a;">cmp</span><span>.mapping.preset.</span><span style="color:#bf616a;">insert</span><span>({
+</span><span>        [&quot;</span><span style="color:#a3be8c;">&lt;C-p&gt;</span><span>&quot;] = </span><span style="color:#bf616a;">cmp</span><span>.mapping.</span><span style="color:#bf616a;">select_prev_item</span><span>(),
+</span><span>        [&quot;</span><span style="color:#a3be8c;">&lt;C-n&gt;</span><span>&quot;] = </span><span style="color:#bf616a;">cmp</span><span>.mapping.</span><span style="color:#bf616a;">select_next_item</span><span>(),
+</span><span>        [&#39;</span><span style="color:#a3be8c;">&lt;C-l&gt;</span><span>&#39;] = </span><span style="color:#bf616a;">cmp</span><span>.mapping.</span><span style="color:#bf616a;">complete</span><span>(),
+</span><span>        [&#39;</span><span style="color:#a3be8c;">&lt;C-e&gt;</span><span>&#39;] = </span><span style="color:#bf616a;">cmp</span><span>.mapping.</span><span style="color:#bf616a;">abort</span><span>(),
+</span><span>        [&quot;</span><span style="color:#a3be8c;">&lt;CR&gt;</span><span>&quot;] = </span><span style="color:#bf616a;">cmp</span><span>.mapping.</span><span style="color:#bf616a;">confirm </span><span>{ </span><span style="color:#a3be8c;">select </span><span>= </span><span style="color:#d08770;">true </span><span>},
+</span><span>    }),
+</span><span>    </span><span style="color:#a3be8c;">experimental </span><span>= {
+</span><span>        </span><span style="color:#a3be8c;">ghost_text </span><span>= </span><span style="color:#d08770;">true</span><span>,
+</span><span>    },
+</span><span>})
+</span></code></pre>
+</li>
+</ul>
+<p>Language Serverのインストールは</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>:Mason
+</span></code></pre>
+<p>から行う.</p>
+<h2 id="settings">Settings</h2>
+<h3 id="xing-fan-hao-biao-shi">行番号表示</h3>
+<pre data-lang="lua" style="background-color:#2b303b;color:#c0c5ce;" class="language-lua "><code class="language-lua" data-lang="lua"><span style="color:#bf616a;">vim</span><span>.wo.number = </span><span style="color:#d08770;">true
+</span></code></pre>
+<h3 id="karasukimubian-geng">カラースキーム変更</h3>
+<p>VSCodeライクにする.</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>mkdir ~/AppData/Local/nvim/colors
+</span><span>git clone https://github.com/tomasiser/vim-code-dark.git ~/.vim/bundle/vim-code-dark.git
+</span><span>cp ~/.vim/bundle/vim-code-dark.git/colors/codedark.vim ~/AppData/Local/nvim/colors
+</span></code></pre>
+<pre data-lang="lua" style="background-color:#2b303b;color:#c0c5ce;" class="language-lua "><code class="language-lua" data-lang="lua"><span style="color:#bf616a;">vim</span><span>.</span><span style="color:#bf616a;">cmd </span><span>&#39;</span><span style="color:#a3be8c;">colorscheme codedark</span><span>&#39;
+</span></code></pre>
+<h3 id="jjdeinsatomodowoba-keru">jjでインサートモードを抜ける</h3>
+<pre data-lang="lua" style="background-color:#2b303b;color:#c0c5ce;" class="language-lua "><code class="language-lua" data-lang="lua"><span style="color:#bf616a;">vim</span><span>.api.</span><span style="color:#bf616a;">nvim_set_keymap</span><span>(&#39;</span><span style="color:#a3be8c;">i</span><span>&#39;, &#39;</span><span style="color:#a3be8c;">jj</span><span>&#39;, &#39;</span><span style="color:#a3be8c;">&lt;ESC&gt;</span><span>&#39;, { </span><span style="color:#a3be8c;">noremap </span><span>= </span><span style="color:#d08770;">true</span><span>, </span><span style="color:#a3be8c;">silent </span><span>= </span><span style="color:#d08770;">true </span><span>})
+</span></code></pre>
+<h3 id="xing-tou-dezuo-niyi-dong-surutoqian-xing-mo-wei-ni-xing-mo-deyou-niyi-dong-surutoci-xing-xian-tou-niyi-dong-suru">行頭で左に移動すると前行末尾に, 行末で右に移動すると次行先頭に移動する</h3>
+<pre data-lang="lua" style="background-color:#2b303b;color:#c0c5ce;" class="language-lua "><code class="language-lua" data-lang="lua"><span style="color:#bf616a;">vim</span><span>.opt.whichwrap = &quot;</span><span style="color:#a3be8c;">b,s,h,l,&lt;,&gt;,[,],~</span><span>&quot;
+</span></code></pre>
+<h3 id="mausucao-zuo-woyou-xiao-nisuru">マウス操作を有効にする</h3>
+<pre data-lang="lua" style="background-color:#2b303b;color:#c0c5ce;" class="language-lua "><code class="language-lua" data-lang="lua"><span style="color:#bf616a;">vim</span><span>.opt.mouse = &#39;</span><span style="color:#a3be8c;">a</span><span>&#39;
+</span></code></pre>
+<h1 id="can-kao-saito">参考サイト</h1>
+<ul>
+<li><a href="https://blog.inkdrop.app/how-to-set-up-neovim-0-5-modern-plugins-lsp-treesitter-etc-542c3d9c9887">How to set up Neovim 0.5 + Modern plugins (LSP, Treesitter, Fuzzy finder, etc)</a></li>
+<li><a href="https://qiita.com/youichiro/items/b4748b3e96106d25c5bc">VimをVSCodeライクにする</a></li>
+<li><a href="https://www.mitomex.blog/vim-esc-jj/">Vim で ESC キーの代わりに jj でインサートモードから抜けるには</a></li>
+<li><a href="https://zenn.dev/botamotch/articles/21073d78bc68bf#.config%2Fnvim%2Finit.lua">Neovim+LSPをなるべく簡単な設定で構築する</a></li>
+<li><a href="https://ruicc.hatenablog.jp/entry/20090615/1245086039">vimrcのwhichwrapオプションについて</a></li>
+<li><a href="https://kaworu.jpn.org/vim/vim%E3%81%A7%E3%83%9E%E3%82%A6%E3%82%B9%E3%82%92%E6%9C%89%E5%8A%B9%E3%81%AB%E3%81%99%E3%82%8B%E6%96%B9%E6%B3%95">vimでマウスを有効にする方法</a></li>
+<li><a href="https://homaju.hatenablog.com/entry/2022/06/12/092136">Neovimのステータスラインをlualine.nvimにする</a></li>
+<li><a href="https://anadigilogic.sub.jp/2021/01/23/windows-%E3%81%AE-neovim-%E3%81%AB-colorscheme-%E3%82%92%E9%81%A9%E7%94%A8%E3%81%99%E3%82%8B/">WINDOWS の NEOVIM に COLORSCHEME を適用する</a></li>
+</ul>
+
+    </div>
+
+
+
+  </div>
+
+
+    <!-- Table of content -->
+    
+    <div class="hidden sm:block sm:w-1/4 sm:flex sm:items-center sm:flex-col sm:mt-10 sm:w-1/5">
+      <div class="border border-2 border-gray-200 dark:border-black rounded-xl p-5 shadow-2xl bg-gray-200 dark:bg-gray-800 sticky top-12">
+        <p class="text-bold text-xl">Table of contents</p>
+        <ul id="toc">
+          
+          <li class="pl-2 my-2">
+            <a id="link-wezterm" class="text-md block rounded-lg p-2" href="https://s5suzuki.github.io/posts/neovim-memo/#wezterm">
+              WezTerm
+            </a>
+            
+              
+                <li class="pl-4 my-2">
+                  <a id="link-install" class="text-sm block rounded-lg p-2" href="https://s5suzuki.github.io/posts/neovim-memo/#install">
+                    Install
+                  </a>
+                </li>
+              
+                <li class="pl-4 my-2">
+                  <a id="link-setting" class="text-sm block rounded-lg p-2" href="https://s5suzuki.github.io/posts/neovim-memo/#setting">
+                    Setting
+                  </a>
+                </li>
+              
+                <li class="pl-4 my-2">
+                  <a id="link-usage" class="text-sm block rounded-lg p-2" href="https://s5suzuki.github.io/posts/neovim-memo/#usage">
+                    Usage
+                  </a>
+                </li>
+              
+            
+          </li>
+          
+          <li class="pl-2 my-2">
+            <a id="link-neovim" class="text-md block rounded-lg p-2" href="https://s5suzuki.github.io/posts/neovim-memo/#neovim">
+              Neovim
+            </a>
+            
+              
+                <li class="pl-4 my-2">
+                  <a id="link-install-1" class="text-sm block rounded-lg p-2" href="https://s5suzuki.github.io/posts/neovim-memo/#install-1">
+                    Install
+                  </a>
+                </li>
+              
+                <li class="pl-4 my-2">
+                  <a id="link-plugins" class="text-sm block rounded-lg p-2" href="https://s5suzuki.github.io/posts/neovim-memo/#plugins">
+                    Plugins
+                  </a>
+                </li>
+              
+                <li class="pl-4 my-2">
+                  <a id="link-settings" class="text-sm block rounded-lg p-2" href="https://s5suzuki.github.io/posts/neovim-memo/#settings">
+                    Settings
+                  </a>
+                </li>
+              
+            
+          </li>
+          
+          <li class="pl-2 my-2">
+            <a id="link-can-kao-saito" class="text-md block rounded-lg p-2" href="https://s5suzuki.github.io/posts/neovim-memo/#can-kao-saito">
+              参考サイト
+            </a>
+            
+          </li>
+          
+        </ul>
+      </div>
+    </div>
+    
+
+
+</div>
+
+  </main>
+
+  <!----------------------------------------------------------->
+  <!------------------------- PAGINATION ---------------------->
+  <!----------------------------------------------------------->
+  
+
+
+
+  <!---------------------------------------------------------->
+  <!------------------------- FOOTER ------------------------->
+  <!---------------------------------------------------------->
+  <footer class="max-w-7xl mx-auto relative pt-1 px-2 border-b-2 border-gray-300 dark:border-gray-200 w-full">
+    <!-- <div class="container mx-auto px-6">
+      <div class="sm:flex sm:mt-8">
+        <div class="mt-8 sm:mt-0 sm:w-full sm:px-8 flex flex-col md:flex-row justify-between">
+          <div class="flex flex-col">
+            <span class="font-bold text-gray-700 uppercase mb-2">Footer header 1</span>
+            <span class="my-2"><a href="#" class="text-blue-700  text-md hover:text-blue-500">link 1</a></span>
+            <span class="my-2"><a href="#" class="text-blue-700  text-md hover:text-blue-500">link 1</a></span>
+            <span class="my-2"><a href="#" class="text-blue-700  text-md hover:text-blue-500">link 1</a></span>
+          </div>
+          <div class="flex flex-col">
+            <span class="font-bold text-gray-700 uppercase mt-4 md:mt-0 mb-2">Footer header 2</span>
+            <span class="my-2"><a href="#" class="text-blue-700 text-md hover:text-blue-500">link 1</a></span>
+            <span class="my-2"><a href="#" class="text-blue-700  text-md hover:text-blue-500">link 1</a></span>
+            <span class="my-2"><a href="#" class="text-blue-700 text-md hover:text-blue-500">link 1</a></span>
+          </div>
+          <div class="flex flex-col">
+            <span class="font-bold text-gray-700 uppercase mt-4 md:mt-0 mb-2">Footer header 3</span>
+            <span class="my-2"><a href="#" class="text-blue-700  text-md hover:text-blue-500">link 1</a></span>
+            <span class="my-2"><a href="#" class="text-blue-700  text-md hover:text-blue-500">link 1</a></span>
+            <span class="my-2"><a href="#" class="text-blue-700  text-md hover:text-blue-500">link 1</a></span>
+          </div>
+        </div>
+      </div>
+    </div> -->
+    <div class="mt-16 border-t-2 border-gray-300 flex flex-col items-center">
+      <div class="sm:w-2/3 text-center py-6">
+        <p class="text-sm text-black dark:text-white font-bold mb-2">
+          © 2022 blow theme made with <a href="https://tailwindcss.com/" target="_blank">tailwindcss</a> for <a
+            href="https://www.getzola.org/" target="_blank">Zola</a>
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <!------------------------- SCRIPTS ------------------------->
+  <script defer src="/js/main.js"></script>
+  
+  
+  
+  
+  <script defer src="/js/page.js"></script>
+
+</body>
+
+</html>

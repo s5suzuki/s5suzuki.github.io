@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ja">
+    <title>Suzuki Shun&#x27;s homepage - PowerToys</title>
+    <link rel="self" type="application/atom+xml" href="https://s5suzuki.github.io/tags/powertoys/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://s5suzuki.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2022-08-29T00:00:00+00:00</updated>
+    <id>https://s5suzuki.github.io/tags/powertoys/atom.xml</id>
+    <entry xml:lang="ja">
+        <title>USキーボード使用時のATOKの日本語入力ON&#x2F;OFFをCtrl+`に割り当てる</title>
+        <published>2022-08-29T00:00:00+00:00</published>
+        <updated>2022-08-29T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://s5suzuki.github.io/posts/atok/"/>
+        <id>https://s5suzuki.github.io/posts/atok/</id>
+        
+        <content type="html" xml:base="https://s5suzuki.github.io/posts/atok/">&lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;s5suzuki.github.io&#x2F;posts&#x2F;winterm-build&#x2F;&quot;&gt;以前&lt;&#x2F;a&gt;, Google日本語入力を使用している際にWindows Terminalの入力モードが半角英数になってしまう問題について述べた.&lt;&#x2F;p&gt;
+&lt;p&gt;これを回避するためにWindows Terminalを修正して自分でビルドしたが, アップデートがあるたびにビルドし直すのも正直面倒くさく, どうしたものかと思っていたところ, ATOKならこの問題が発生しないことに気がついた.&lt;&#x2F;p&gt;
+&lt;p&gt;そこで, ATOKを使用することにしたのだが, USキーボードを使用している場合 (私はHHKB Professional HYBRID Type-Sを使用している), Google日本語入力で日本語入力をON&#x2F;OFFするには&lt;code&gt;Ctrl+`&lt;&#x2F;code&gt;を使用していた.
+一方, ATOKはデフォルトだと&lt;code&gt;Alt+`&lt;&#x2F;code&gt;で日本語入力のON&#x2F;OFFを行う.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;code&gt;Ctrl+Space&lt;&#x2F;code&gt;を割り当てる人も多いらしいが, 慣れている&lt;code&gt;Ctrl+`&lt;&#x2F;code&gt;を使いたいので設定しようとしたところ, なぜか動かない.
+ATOKプロパティ上では, &lt;code&gt;Ctrl+`&lt;&#x2F;code&gt;は「半角&#x2F;全角」キーとして扱われるらしいが, これを設定しても動かない.&lt;&#x2F;p&gt;
+&lt;p&gt;そこで&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;microsoft&#x2F;PowerToys&quot;&gt;PowerToys&lt;&#x2F;a&gt;に付属している, &quot;Keyboard Manager&quot;を使用して, &lt;code&gt;Ctrl+`&lt;&#x2F;code&gt;を&lt;code&gt;Alt+`&lt;&#x2F;code&gt;にマッピングすることにした.&lt;&#x2F;p&gt;
+&lt;p&gt;具体的にはKeyboard Managerにて&lt;code&gt;VK 244&lt;&#x2F;code&gt;と&lt;code&gt;VK 243&lt;&#x2F;code&gt;を&lt;code&gt;IME Kanji&lt;&#x2F;code&gt;に割り当てた.
+そして, ATOKにて, 日本語入力ON&#x2F;OFFに&lt;code&gt;Ctrl+変換&lt;&#x2F;code&gt;を割り当てた.
+これで, &lt;code&gt;Ctrl+`&lt;&#x2F;code&gt;で日本語入力のON&#x2F;OFFを切り替えられるようになった.&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+</feed>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ja">
+    <title>Suzuki Shun&#x27;s homepage - Python</title>
+    <link rel="self" type="application/atom+xml" href="https://s5suzuki.github.io/tags/python/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://s5suzuki.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2023-06-22T00:00:00+00:00</updated>
+    <id>https://s5suzuki.github.io/tags/python/atom.xml</id>
+    <entry xml:lang="ja">
+        <title>[Python] CとのFFI用の構造体の配列</title>
+        <published>2023-06-22T00:00:00+00:00</published>
+        <updated>2023-06-22T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://s5suzuki.github.io/posts/python-struct-ffi/"/>
+        <id>https://s5suzuki.github.io/posts/python-struct-ffi/</id>
+        
+        <content type="html" xml:base="https://s5suzuki.github.io/posts/python-struct-ffi/">&lt;p&gt;PythonからCの関数を呼び出すとき, Cの関数の引数に構造体の配列を渡すことがある.
+構造体は&lt;code&gt;ctypes.Structure&lt;&#x2F;code&gt;を継承したクラスを作ればいいというのはよく知られているが, その配列をどうやって作るかがあんまり調べても出てこなかったのでメモ.&lt;&#x2F;p&gt;
+&lt;p&gt;結論から言うと, 普通に&lt;code&gt;numpy&lt;&#x2F;code&gt;の配列を使えば良い.
+ただし, フィールドへのアクセスを文字列で行う必要がある.&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;python&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-python &quot;&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;import &lt;&#x2F;span&gt;&lt;span&gt;ctypes
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;import &lt;&#x2F;span&gt;&lt;span&gt;numpy &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;as &lt;&#x2F;span&gt;&lt;span&gt;np
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;class &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;Point&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;ctypes.Structure&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;):
+&lt;&#x2F;span&gt;&lt;span&gt;    _fields_ = [(&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;x&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;, ctypes.c_double), (&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;y&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;, ctypes.c_double)]
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;size = &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;2
+&lt;&#x2F;span&gt;&lt;span&gt;points = np.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;zeros&lt;&#x2F;span&gt;&lt;span&gt;(size, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;dtype&lt;&#x2F;span&gt;&lt;span&gt;=Point)
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;for &lt;&#x2F;span&gt;&lt;span&gt;i &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;in &lt;&#x2F;span&gt;&lt;span style=&quot;color:#96b5b4;&quot;&gt;range&lt;&#x2F;span&gt;&lt;span&gt;(size):
+&lt;&#x2F;span&gt;&lt;span&gt;    points[i][&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;x&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;] = &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;2 &lt;&#x2F;span&gt;&lt;span&gt;* i
+&lt;&#x2F;span&gt;&lt;span&gt;    points[i][&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;y&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;] = &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;2 &lt;&#x2F;span&gt;&lt;span&gt;* i + &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;1
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#96b5b4;&quot;&gt;print&lt;&#x2F;span&gt;&lt;span&gt;(points)
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#65737e;&quot;&gt;# [(0., 1.) (2., 3.)]
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;これで作った配列は以下のようにポインタに変換できる.
+これは, Cで言うところの&lt;code&gt;Point* ptr&lt;&#x2F;code&gt;に相当する.&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;python&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-python &quot;&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span&gt;ptr = points.ctypes.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;data_as&lt;&#x2F;span&gt;&lt;span&gt;(ctypes.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;POINTER&lt;&#x2F;span&gt;&lt;span&gt;(Point))
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h2 id=&quot;bu-zu&quot;&gt;補足&lt;&#x2F;h2&gt;
+&lt;p&gt;上記の&lt;code&gt;points&lt;&#x2F;code&gt;の各要素の型は&lt;code&gt;numpy.void&lt;&#x2F;code&gt;となっている.
+そのため, &lt;code&gt;Point&lt;&#x2F;code&gt;の要素から直接は構成できない.&lt;&#x2F;p&gt;
+&lt;p&gt;例えば, 以下のコードは&lt;code&gt;ValueError: could not convert string to float&lt;&#x2F;code&gt;というエラーを吐く.
+(このエラーだいぶ分かりづらいな...)&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;python&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-python &quot;&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span&gt;points = np.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;fromiter&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#96b5b4;&quot;&gt;map&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;lambda &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;i&lt;&#x2F;span&gt;&lt;span&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;Point&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;2 &lt;&#x2F;span&gt;&lt;span&gt;* i, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;2 &lt;&#x2F;span&gt;&lt;span&gt;* i + &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span&gt;), &lt;&#x2F;span&gt;&lt;span style=&quot;color:#96b5b4;&quot;&gt;range&lt;&#x2F;span&gt;&lt;span&gt;(size)), &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;dtype&lt;&#x2F;span&gt;&lt;span&gt;=Point)
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;こういう場合は, &lt;code&gt;numpy.void&lt;&#x2F;code&gt;に明示的に変換する必要がある.&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;python&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-python &quot;&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span&gt;points = np.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;fromiter&lt;&#x2F;span&gt;&lt;span&gt;(
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#96b5b4;&quot;&gt;map&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;lambda &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;i&lt;&#x2F;span&gt;&lt;span&gt;: np.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;void&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;Point&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;2 &lt;&#x2F;span&gt;&lt;span&gt;* i, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;2 &lt;&#x2F;span&gt;&lt;span&gt;* i + &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span&gt;)), &lt;&#x2F;span&gt;&lt;span style=&quot;color:#96b5b4;&quot;&gt;range&lt;&#x2F;span&gt;&lt;span&gt;(size)), &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;dtype&lt;&#x2F;span&gt;&lt;span&gt;=Point
+&lt;&#x2F;span&gt;&lt;span&gt;)
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+</content>
+        
+    </entry>
+</feed>

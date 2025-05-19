@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ja">
+    <title>Suzuki Shun&#x27;s homepage - ContentDialog</title>
+    <link rel="self" type="application/atom+xml" href="https://s5suzuki.github.io/tags/contentdialog/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://s5suzuki.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2022-08-21T00:00:00+00:00</updated>
+    <id>https://s5suzuki.github.io/tags/contentdialog/atom.xml</id>
+    <entry xml:lang="ja">
+        <title>WinUIでContentDialogを出す</title>
+        <published>2022-08-21T00:00:00+00:00</published>
+        <updated>2022-08-21T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://s5suzuki.github.io/posts/winui-content-dialog/"/>
+        <id>https://s5suzuki.github.io/posts/winui-content-dialog/</id>
+        
+        <content type="html" xml:base="https://s5suzuki.github.io/posts/winui-content-dialog/">&lt;p&gt;WinUIで&lt;code&gt;ContentDialog&lt;&#x2F;code&gt;を出そうとしたらハマったのでメモを残しておく.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;docs.microsoft.com&#x2F;en-US&#x2F;windows&#x2F;apps&#x2F;design&#x2F;controls&#x2F;dialogs-and-flyouts&#x2F;dialogs&quot;&gt;ドキュメント&lt;&#x2F;a&gt;をよく読むと分かるのだが, &lt;code&gt;XamlRoot&lt;&#x2F;code&gt;を設定しないとだめらしい.
+Viewのコードに書く場合は&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;C#&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-C# &quot;&gt;&lt;code class=&quot;language-C#&quot; data-lang=&quot;C#&quot;&gt;&lt;span&gt;   &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;var &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;dialog &lt;&#x2F;span&gt;&lt;span&gt;= new ContentDialog
+&lt;&#x2F;span&gt;&lt;span&gt;            {
+&lt;&#x2F;span&gt;&lt;span&gt;                ...
+&lt;&#x2F;span&gt;&lt;span&gt;                &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;XamlRoot &lt;&#x2F;span&gt;&lt;span&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;Content&lt;&#x2F;span&gt;&lt;span&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;XamlRoot&lt;&#x2F;span&gt;&lt;span&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;            };
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;のように, &lt;code&gt;Content.XamlRoot&lt;&#x2F;code&gt;で取得できるらしいが, ViewModelに書きたい.
+そこで, 最初はView側のコンストラクタで&lt;code&gt;Content.XamlRoot&lt;&#x2F;code&gt;を取得しViewModelに設定しようとしたが, この場合は&lt;code&gt;Content.XamlRoot&lt;&#x2F;code&gt;が&lt;code&gt;null&lt;&#x2F;code&gt;になってしまいだめだった.&lt;&#x2F;p&gt;
+&lt;p&gt;調べると, &lt;a href=&quot;https:&#x2F;&#x2F;stackoverflow.com&#x2F;questions&#x2F;68007005&#x2F;uwp-how-to-pass-in-a-non-null-xamlroot-of-a-page-to-a-navigationservice-called&quot;&gt;&lt;code&gt;Loaded&lt;&#x2F;code&gt;イベントでやればいいという情報&lt;&#x2F;a&gt;を見つけたので以下のようにしたところ正しく動いた.&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;MyPage.xaml&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;xml&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-xml &quot;&gt;&lt;code class=&quot;language-xml&quot; data-lang=&quot;xml&quot;&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;Page
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;background-color:#bf616a;color:#2b303b;&quot;&gt;...&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;Loaded&lt;&#x2F;span&gt;&lt;span&gt;=&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;MyPage_OnLoaded&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;background-color:#bf616a;color:#2b303b;&quot;&gt;...&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;    &amp;gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;MyPage.xaml.cs&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;c#&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-c# &quot;&gt;&lt;code class=&quot;language-c#&quot; data-lang=&quot;c#&quot;&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;public sealed partial class &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;MyPage &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;Page
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;{
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;public &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;MyViewModel &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;ViewModel
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    {
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;get&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    }
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;public &lt;&#x2F;span&gt;&lt;span style=&quot;color:#8fa1b3;&quot;&gt;MyPage&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;()
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    {
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;ViewModel &lt;&#x2F;span&gt;&lt;span&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;App&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;GetService&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;&amp;lt;MyViewModel&amp;gt;();
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;InitializeComponent&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;();
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    }
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;private void &lt;&#x2F;span&gt;&lt;span style=&quot;color:#8fa1b3;&quot;&gt;MyPage_OnLoaded&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;object &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;sender&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;, RoutedEventArgs &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;e&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;)
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    {
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;ViewModel&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;XamlRoot &lt;&#x2F;span&gt;&lt;span&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;Content&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;XamlRoot&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    }
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;MyViewModel.cs&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;c#&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-c# &quot;&gt;&lt;code class=&quot;language-c#&quot; data-lang=&quot;c#&quot;&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;public class &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ebcb8b;&quot;&gt;MyViewModel &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;ObservableRecipient
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;{
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;public &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;XamlRoot&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;? &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;XamlRoot
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    {
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;get&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;set&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    }
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;public &lt;&#x2F;span&gt;&lt;span style=&quot;color:#8fa1b3;&quot;&gt;MyViewModel&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;()
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    {
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;XamlRoot &lt;&#x2F;span&gt;&lt;span&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;null&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;        
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;        ...
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    }
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;public void &lt;&#x2F;span&gt;&lt;span style=&quot;color:#8fa1b3;&quot;&gt;ShowDialog&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;() {
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;var &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;dialog &lt;&#x2F;span&gt;&lt;span&gt;= new &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;ContentDialog
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;            {
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;                ...
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;                &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;XamlRoot &lt;&#x2F;span&gt;&lt;span&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;XamlRoot&lt;&#x2F;span&gt;&lt;span&gt;!&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;,
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;            };
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;        ...
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eff1f5;&quot;&gt;    }
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+</content>
+        
+    </entry>
+</feed>

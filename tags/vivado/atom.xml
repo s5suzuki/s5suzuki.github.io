@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ja">
+    <title>Suzuki Shun&#x27;s homepage - Vivado</title>
+    <link rel="self" type="application/atom+xml" href="https://s5suzuki.github.io/tags/vivado/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://s5suzuki.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2022-09-15T00:00:00+00:00</updated>
+    <id>https://s5suzuki.github.io/tags/vivado/atom.xml</id>
+    <entry xml:lang="ja">
+        <title>Vivado simulationでランダムな値を発生させる</title>
+        <published>2022-09-15T00:00:00+00:00</published>
+        <updated>2022-09-15T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://s5suzuki.github.io/posts/vivado-random/"/>
+        <id>https://s5suzuki.github.io/posts/vivado-random/</id>
+        
+        <content type="html" xml:base="https://s5suzuki.github.io/posts/vivado-random/">&lt;p&gt;VivadoのSimulationでランダムな値を生成するには&lt;code&gt;$rand&lt;&#x2F;code&gt;を使えばいい.
+ただし, シードが固定または未指定だと, 毎回同じ値になる.&lt;&#x2F;p&gt;
+&lt;p&gt;これを回避するために, Cのように現在時刻をシードにしようとしたが, Verilogの&lt;code&gt;$time&lt;&#x2F;code&gt;はシミュレーション時間であり, C言語のような現在時刻ではない.&lt;&#x2F;p&gt;
+&lt;p&gt;そのため, tclで適当な乱数を作って, それをVivadoのSimulation時に読み込み, シードにすることにした.&lt;&#x2F;p&gt;
+&lt;p&gt;まず, 以下のようなtclスクリプトを作っておく.&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;tcl&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-tcl &quot;&gt;&lt;code class=&quot;language-tcl&quot; data-lang=&quot;tcl&quot;&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;set&lt;&#x2F;span&gt;&lt;span&gt; max &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;0x7FFFFFFF
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;set&lt;&#x2F;span&gt;&lt;span&gt; r [&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;expr&lt;&#x2F;span&gt;&lt;span&gt; ($&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;max&lt;&#x2F;span&gt;&lt;span&gt;*rand() + 1)]
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;set&lt;&#x2F;span&gt;&lt;span&gt; f [&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;open&lt;&#x2F;span&gt;&lt;span&gt; rand.txt w]
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;puts &lt;&#x2F;span&gt;&lt;span&gt;$&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;f &lt;&#x2F;span&gt;&lt;span&gt;[&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;format &lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;%s&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot; [&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;expr&lt;&#x2F;span&gt;&lt;span&gt; int($&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;r&lt;&#x2F;span&gt;&lt;span&gt;)] ]
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;close &lt;&#x2F;span&gt;&lt;span&gt;$&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;f
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;そして, &quot;Tools&quot;→&quot;Settings&quot;→&quot;Project Settings&#x2F;Simulation&quot;の&quot;Compilation&quot;タブで&lt;code&gt;xsim.compile.tcl.pre&lt;&#x2F;code&gt;の項目に上記のtclファイルを指定する.
+あるいは, 以下のようにTcl Console設定することもできる (ここでは, &lt;code&gt;.&#x2F;src&#x2F;sim_1&#x2F;new&#x2F;rand.tcl&lt;&#x2F;code&gt;が上記のtclスクリプトである前提.)&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;tcl&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-tcl &quot;&gt;&lt;code class=&quot;language-tcl&quot; data-lang=&quot;tcl&quot;&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;set_property &lt;&#x2F;span&gt;&lt;span&gt;-name {&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;xsim.compile.tcl.pre&lt;&#x2F;span&gt;&lt;span&gt;} -value &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;.&#x2F;src&#x2F;sim_1&#x2F;new&#x2F;rand.tcl&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot; -objects [&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;get_filesets&lt;&#x2F;span&gt;&lt;span&gt; sim_1]
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;これでシミュレーションの前に上記のスクリプトが実行され, 乱数が書かれた&lt;code&gt;rand.txt&lt;&#x2F;code&gt;が生成される.&lt;&#x2F;p&gt;
+&lt;p&gt;あとは, これを読み込んで, シードにすればいい.&lt;&#x2F;p&gt;
+&lt;p&gt;私は以下のようなヘルパーモジュールを作って利用することにしている.&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;systemverilog&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-systemverilog &quot;&gt;&lt;code class=&quot;language-systemverilog&quot; data-lang=&quot;systemverilog&quot;&gt;&lt;span&gt;`timescale 1ns &#x2F; 1ps
+&lt;&#x2F;span&gt;&lt;span&gt;module random_helper;
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;  int seed = 0;
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;  task init();
+&lt;&#x2F;span&gt;&lt;span&gt;    int p_file;
+&lt;&#x2F;span&gt;&lt;span&gt;    int result;
+&lt;&#x2F;span&gt;&lt;span&gt;    int r;
+&lt;&#x2F;span&gt;&lt;span&gt;    p_file = $fopen(&amp;quot;rand.txt&amp;quot;, &amp;quot;r&amp;quot;);
+&lt;&#x2F;span&gt;&lt;span&gt;    result = $fscanf(p_file, &amp;quot;%d&amp;quot;, seed);
+&lt;&#x2F;span&gt;&lt;span&gt;    $fclose(p_file);
+&lt;&#x2F;span&gt;&lt;span&gt;    r = $random(seed);
+&lt;&#x2F;span&gt;&lt;span&gt;  endtask
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;  function automatic longint range(longint max, longint min);
+&lt;&#x2F;span&gt;&lt;span&gt;    automatic longint r = $random();
+&lt;&#x2F;span&gt;&lt;span&gt;    range = ($unsigned(r) % (max - min + 1)) + min;
+&lt;&#x2F;span&gt;&lt;span&gt;  endfunction
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;endmodule
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;他に何かいい方法があれば教えてほしい.&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="ja">
+        <title>Vitis 2022.1で自作IPを使うとビルド時にエラーが出る</title>
+        <published>2022-07-14T00:00:00+00:00</published>
+        <updated>2022-07-14T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://s5suzuki.github.io/posts/vitis-ip-error/"/>
+        <id>https://s5suzuki.github.io/posts/vitis-ip-error/</id>
+        
+        <content type="html" xml:base="https://s5suzuki.github.io/posts/vitis-ip-error/">&lt;p&gt;Arty Z7で開発時に, 自作IPを含んだPlatform Projectのビルド時にエラーが発生する現象に遭遇した.&lt;&#x2F;p&gt;
+&lt;p&gt;いまいち原因は分からないが, とりあえず対処療法的に治ったのでメモとして残しておく.&lt;&#x2F;p&gt;
+&lt;p&gt;エラーを見るに
+&lt;code&gt;\&amp;lt;platform project\&amp;gt;&#x2F;ps7_cortexa9_0&#x2F;bsp&#x2F;ps7_cortexa9_0&#x2F;libsrc&#x2F;\&amp;lt;IP name\&amp;gt;&#x2F;src&lt;&#x2F;code&gt;
+及び,
+&lt;code&gt;\&amp;lt;platform project\&amp;gt;&#x2F;zynq_fsbl&#x2F;zynq_fsbl_bsp&#x2F;ps7_cortexa9_0&#x2F;libsrc&#x2F;\&amp;lt;IP name\&amp;gt;&#x2F;src&lt;&#x2F;code&gt;
+の&lt;code&gt;Makefile&lt;&#x2F;code&gt;が間違っているっぽい.&lt;&#x2F;p&gt;
+&lt;p&gt;デフォルトで用意されているIP (例えば, AXI_GPIOとか) はビルドに成功するので, その&lt;code&gt;Makefile&lt;&#x2F;code&gt;で上記の自作IPの&lt;code&gt;Makefile&lt;&#x2F;code&gt;を上書きすればエラーは出なくなった.&lt;&#x2F;p&gt;
+&lt;p&gt;ただし, ハードウェアやBSP settingsを更新するたびに同じ作業が必要になる.
+どうにかならないものか.&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="ja">
+        <title>WindowsのVivadoのテキストエディタとしてNeovimを使用する方法</title>
+        <published>2022-07-13T00:00:00+00:00</published>
+        <updated>2022-07-13T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://s5suzuki.github.io/posts/vivado-neovim/"/>
+        <id>https://s5suzuki.github.io/posts/vivado-neovim/</id>
+        
+        <content type="html" xml:base="https://s5suzuki.github.io/posts/vivado-neovim/">&lt;p&gt;Linux用の設定例は書かれているが, Windows用がなかったのでメモとして残しておく.&lt;&#x2F;p&gt;
+&lt;p&gt;Windowsの場合は, Windows Teminalを使用する.&lt;&#x2F;p&gt;
+&lt;p&gt;「Tools→Settings→Text Editor」にてCustom Editorを選択し, 右側の…をクリックし, 以下のように入力すれば良い.&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;wt nvim [file name] +[line number]
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;上記はnvimへのPATHが通っている前提.&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+</feed>

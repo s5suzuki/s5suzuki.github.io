@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ja">
+    <title>Suzuki Shun&#x27;s homepage - CPU</title>
+    <link rel="self" type="application/atom+xml" href="https://s5suzuki.github.io/tags/cpu/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://s5suzuki.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2023-04-23T00:00:00+00:00</updated>
+    <id>https://s5suzuki.github.io/tags/cpu/atom.xml</id>
+    <entry xml:lang="ja">
+        <title>「CPUの創りかた」のCPUを作ってみた</title>
+        <published>2023-04-23T00:00:00+00:00</published>
+        <updated>2023-04-23T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://s5suzuki.github.io/posts/td4/"/>
+        <id>https://s5suzuki.github.io/posts/td4/</id>
+        
+        <content type="html" xml:base="https://s5suzuki.github.io/posts/td4/">&lt;figure&gt;
+    &lt;img src=&quot;https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;s5suzuki&#x2F;s5suzuki.github.io&#x2F;main&#x2F;content&#x2F;fig&#x2F;posts&#x2F;td4-blink.gif&quot;
+         alt=&quot;td4-blink&quot;&gt;
+    &lt;figcaption&gt;TD4によるLチカ. ROM部分はRaspberry Pi Picoにより代用. (プログラムカウンタ用の74HC161の配線をミスったので無理やり修正している.)&lt;&#x2F;figcaption&gt;
+&lt;&#x2F;figure&gt;
+&lt;p&gt;「CPUの創りかた」はだいぶ前に読んだが, 実際には作っていなかった.
+この度, 重い腰を上げて実際に作ってみることにした.
+ついでに, 気になっていた中国の基板メーカーを試しに使ってみた.
+これはその備忘録である.&lt;&#x2F;p&gt;
+&lt;p&gt;なお, 基板データとLチカプログラム&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;s5suzuki&#x2F;TD4&quot;&gt;GitHub&lt;&#x2F;a&gt;においてある.&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;配線ミスは修正済み&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h1 id=&quot;bu-pin-nogou-ru&quot;&gt;部品の購入&lt;&#x2F;h1&gt;
+&lt;p&gt;部品は「秋月電子通商」と「樫木総業株式会社」で購入. すべて, オンラインストアから購入できる.&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;秋月電子通商&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;【P-04624】　オーディオ用無極性電解コンデンサー１０μＦ２５Ｖ８５℃　ニチコンＭＵＳＥ・ＥＳ&lt;&#x2F;li&gt;
+&lt;li&gt;【P-04065】　絶縁ラジアルリード型積層セラミックコンデンサー　０．１μＦ５０Ｖ２．５４ｍｍ&lt;&#x2F;li&gt;
+&lt;li&gt;【P-02724】　電源用電解コンデンサー１００μＦ３５Ｖ１０５℃　ルビコンＺＬＨ&lt;&#x2F;li&gt;
+&lt;li&gt;【P-03116】　電解コンデンサー１０μＦ５０Ｖ８５℃　ルビコンＰＫ&lt;&#x2F;li&gt;
+&lt;li&gt;【R-07803】　カーボン抵抗（炭素皮膜抵抗）　１／２Ｗ１００Ω　（１００本入）&lt;&#x2F;li&gt;
+&lt;li&gt;【R-07820】　カーボン抵抗（炭素皮膜抵抗）　１／２Ｗ１ｋΩ　（１００本入）&lt;&#x2F;li&gt;
+&lt;li&gt;【R-07829】　カーボン抵抗（炭素皮膜抵抗）　１／２Ｗ３．３ｋΩ　（１００本入）&lt;&#x2F;li&gt;
+&lt;li&gt;【R-07838】　カーボン抵抗（炭素皮膜抵抗）　１／２Ｗ１０ｋΩ　（１００本入）&lt;&#x2F;li&gt;
+&lt;li&gt;【R-07847】　カーボン抵抗（炭素皮膜抵抗）　１／２Ｗ３３ｋΩ　（１００本入）&lt;&#x2F;li&gt;
+&lt;li&gt;【R-07853】　カーボン抵抗（炭素皮膜抵抗）　１／２Ｗ１００ｋΩ　（１００本入）&lt;&#x2F;li&gt;
+&lt;li&gt;【I-11333】　３ｍｍ赤色ＬＥＤ　６２５ｎｍ　７０度　ＯＳＲ５ＪＡ３Ｚ７４Ａ　（１００個入）&lt;&#x2F;li&gt;
+&lt;li&gt;【P-03647】　タクトスイッチ（黒色）&lt;&#x2F;li&gt;
+&lt;li&gt;【P-03646】　タクトスイッチ（赤色）&lt;&#x2F;li&gt;
+&lt;li&gt;【P-00300】　基板用小型３Ｐトグルスイッチ　１回路２接点&lt;&#x2F;li&gt;
+&lt;li&gt;【K-16149】　Ｒａｓｐｂｅｒｒｙ　Ｐｉ　Ｐｉｃｏ　ベーシックセット&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;樫木総業株式会社&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;74HC10(DIP品)&lt;&#x2F;li&gt;
+&lt;li&gt;74HC14(DIP品)&lt;&#x2F;li&gt;
+&lt;li&gt;74HC32(DIP品)&lt;&#x2F;li&gt;
+&lt;li&gt;74HC74(DIP品)&lt;&#x2F;li&gt;
+&lt;li&gt;74HC153(DIP品)&lt;&#x2F;li&gt;
+&lt;li&gt;74HC161(DIP品)&lt;&#x2F;li&gt;
+&lt;li&gt;74HC283(DIP品)&lt;&#x2F;li&gt;
+&lt;li&gt;金メッキディップスイッチ　DC04&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h1 id=&quot;ji-ban-deta&quot;&gt;基板データ&lt;&#x2F;h1&gt;
+&lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;www.zep.co.jp&#x2F;nbeppu&#x2F;article&#x2F;z-kicad-da1&#x2F;&quot;&gt;KiCadではじめる プリント基板設計入門&lt;&#x2F;a&gt;を参考に回路図の作成&#x2F;配線を行う.
+ROMは流石に面倒なのでRaspberry Pi Picoで代用した. 電源もここから取ることにした. 74HCシリーズを使用するので3.3Vでも問題ない.&lt;&#x2F;p&gt;
+&lt;p&gt;基板の作成は&lt;a href=&quot;https:&#x2F;&#x2F;www.pcbgogo.jp&#x2F;&quot;&gt;PCBGOGO&lt;&#x2F;a&gt;にお願いした.
+パラメータとかはすべてデフォルトのまま.&lt;&#x2F;p&gt;
+&lt;p&gt;基板データは&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;s5suzuki&#x2F;TD4&quot;&gt;GitHub&lt;&#x2F;a&gt;においてある.&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;配線はかなり適当. クロックが十分に遅いので適当でも動く.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h1 id=&quot;ltikapuroguramu&quot;&gt;Lチカプログラム&lt;&#x2F;h1&gt;
+&lt;p&gt;プログラムは&lt;a href=&quot;https:&#x2F;&#x2F;qiita.com&#x2F;ochaochaocha3&#x2F;items&#x2F;1969d76debd6d3b42269&quot;&gt;Raspberry Pi Picoで組込みRust開発（開発環境構築編）&lt;&#x2F;a&gt;を参考にRustで作ってみた. アドレスの読み込みとデータの出力が同期してないので, 誤作動の危険性はある. が, ラズパイのほうが圧倒的に動作が速いので基本的に問題ないと思われる. まあ, お遊びなので誤動作しても問題ない.&lt;&#x2F;p&gt;
+&lt;p&gt;プログラムも&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;s5suzuki&#x2F;TD4&quot;&gt;GitHub&lt;&#x2F;a&gt;においてある.&lt;&#x2F;p&gt;
+&lt;h1 id=&quot;can-kao-wen-xian&quot;&gt;参考文献&lt;&#x2F;h1&gt;
+&lt;ul&gt;
+&lt;li&gt;渡波 郁,「CPUの創りかた」, 毎日コミュニケーションズ, 2003&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;www.zep.co.jp&#x2F;nbeppu&#x2F;article&#x2F;z-kicad-da1&#x2F;&quot;&gt;KiCadではじめる プリント基板設計入門&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;qiita.com&#x2F;ochaochaocha3&#x2F;items&#x2F;1969d76debd6d3b42269&quot;&gt;Raspberry Pi Picoで組込みRust開発（開発環境構築編）&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+</content>
+        
+    </entry>
+</feed>

@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ja">
+    <title>Suzuki Shun&#x27;s homepage - Zig</title>
+    <link rel="self" type="application/atom+xml" href="https://s5suzuki.github.io/tags/zig/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://s5suzuki.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2025-05-18T00:00:00+00:00</updated>
+    <id>https://s5suzuki.github.io/tags/zig/atom.xml</id>
+    <entry xml:lang="ja">
+        <title>C++のプロジェクトをZigでビルドする</title>
+        <published>2025-05-18T00:00:00+00:00</published>
+        <updated>2025-05-18T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://s5suzuki.github.io/posts/cpp-build-by-zig/"/>
+        <id>https://s5suzuki.github.io/posts/cpp-build-by-zig/</id>
+        
+        <content type="html" xml:base="https://s5suzuki.github.io/posts/cpp-build-by-zig/">&lt;p&gt;C++のプロジェクトをZigでビルドする備忘録.&lt;&#x2F;p&gt;
+&lt;p&gt;Googletestを使ったテストや, Eigen 3のようなサードパーティライブラリを使う場合の方法も記載する.&lt;&#x2F;p&gt;
+&lt;p&gt;Zigのバージョンは0.14.0を使用する.&lt;&#x2F;p&gt;
+&lt;h1 id=&quot;puroziekutonozuo-cheng&quot;&gt;プロジェクトの作成&lt;&#x2F;h1&gt;
+&lt;p&gt;サンプルとして, 以下のようなC++プロジェクトを用意する.&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;mkdir&lt;&#x2F;span&gt;&lt;span&gt; cpp-build-by-zig
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#96b5b4;&quot;&gt;cd&lt;&#x2F;span&gt;&lt;span&gt; cpp-build-by-zig
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;mkdir&lt;&#x2F;span&gt;&lt;span&gt; include
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;mkdir&lt;&#x2F;span&gt;&lt;span&gt; lib
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;mkdir&lt;&#x2F;span&gt;&lt;span&gt; example
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;touch&lt;&#x2F;span&gt;&lt;span&gt; include&#x2F;lib.hpp
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;touch&lt;&#x2F;span&gt;&lt;span&gt; lib&#x2F;lib.cpp
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;touch&lt;&#x2F;span&gt;&lt;span&gt; example&#x2F;main.cpp
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;ul&gt;
+&lt;li&gt;include&#x2F;lib.hpp&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;pre data-lang=&quot;cpp&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-cpp &quot;&gt;&lt;code class=&quot;language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;#include &lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;cstdint&lt;&#x2F;span&gt;&lt;span&gt;&amp;gt;
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;int32_t &lt;&#x2F;span&gt;&lt;span style=&quot;color:#8fa1b3;&quot;&gt;add&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;int32_t&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;int32_t&lt;&#x2F;span&gt;&lt;span&gt;);
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;ul&gt;
+&lt;li&gt;lib&#x2F;lib.cpp&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;pre data-lang=&quot;cpp&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-cpp &quot;&gt;&lt;code class=&quot;language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;#include &lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;lib.hpp&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;int32_t &lt;&#x2F;span&gt;&lt;span style=&quot;color:#8fa1b3;&quot;&gt;add&lt;&#x2F;span&gt;&lt;span&gt;(int32_t &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;a&lt;&#x2F;span&gt;&lt;span&gt;, int32_t &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;b&lt;&#x2F;span&gt;&lt;span&gt;) { &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;return&lt;&#x2F;span&gt;&lt;span&gt; a + b; }
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;ul&gt;
+&lt;li&gt;example&#x2F;main.cpp&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;pre data-lang=&quot;cpp&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-cpp &quot;&gt;&lt;code class=&quot;language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;#include &lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;iostream&lt;&#x2F;span&gt;&lt;span&gt;&amp;gt;
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;#include &lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;lib.hpp&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;int &lt;&#x2F;span&gt;&lt;span style=&quot;color:#8fa1b3;&quot;&gt;main&lt;&#x2F;span&gt;&lt;span&gt;() {
+&lt;&#x2F;span&gt;&lt;span&gt;  int32_t a = &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;5&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;  int32_t b = &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;10&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;  int32_t result = &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;add&lt;&#x2F;span&gt;&lt;span&gt;(a, b);
+&lt;&#x2F;span&gt;&lt;span&gt;  std::cout &amp;lt;&amp;lt; a &amp;lt;&amp;lt; &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt; + &lt;&#x2F;span&gt;&lt;span&gt;&amp;quot; &amp;lt;&amp;lt; b &amp;lt;&amp;lt; &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt; = &lt;&#x2F;span&gt;&lt;span&gt;&amp;quot; &amp;lt;&amp;lt; result &amp;lt;&amp;lt; std::endl;
+&lt;&#x2F;span&gt;&lt;span&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;return &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Zigでビルドするために&lt;code&gt;build.zig&lt;&#x2F;code&gt;を作成する.&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;touch&lt;&#x2F;span&gt;&lt;span&gt; build.zig
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;ul&gt;
+&lt;li&gt;build.zig&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;pre data-lang=&quot;zig&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-zig &quot;&gt;&lt;code class=&quot;language-zig&quot; data-lang=&quot;zig&quot;&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;const&lt;&#x2F;span&gt;&lt;span&gt; std = &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;@import&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;&amp;quot;std&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;);
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;pub fn &lt;&#x2F;span&gt;&lt;span style=&quot;color:#8fa1b3;&quot;&gt;build&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;b&lt;&#x2F;span&gt;&lt;span&gt;: *&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;std.Build&lt;&#x2F;span&gt;&lt;span&gt;) &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;void &lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;const&lt;&#x2F;span&gt;&lt;span&gt; target = b.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;standardTargetOptions&lt;&#x2F;span&gt;&lt;span&gt;(.{});
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;const&lt;&#x2F;span&gt;&lt;span&gt; optimize = b.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;standardOptimizeOption&lt;&#x2F;span&gt;&lt;span&gt;(.{});
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;const&lt;&#x2F;span&gt;&lt;span&gt; lib = b.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;addLibrary&lt;&#x2F;span&gt;&lt;span&gt;(.{ .linkage = std.builtin.LinkMode.static, .name = &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;&amp;quot;lib&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;, .root_module = b.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;createModule&lt;&#x2F;span&gt;&lt;span&gt;(.{
+&lt;&#x2F;span&gt;&lt;span&gt;        .target = target,
+&lt;&#x2F;span&gt;&lt;span&gt;        .optimize = optimize,
+&lt;&#x2F;span&gt;&lt;span&gt;    }) });
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;    lib.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;addCSourceFiles&lt;&#x2F;span&gt;&lt;span&gt;(.{ .files = &amp;amp;.{&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;&amp;quot;lib&#x2F;lib.cpp&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;} });
+&lt;&#x2F;span&gt;&lt;span&gt;    lib.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;addIncludePath&lt;&#x2F;span&gt;&lt;span&gt;(b.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;path&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;&amp;quot;include&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;));
+&lt;&#x2F;span&gt;&lt;span&gt;    lib.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;linkLibC&lt;&#x2F;span&gt;&lt;span&gt;();
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;if &lt;&#x2F;span&gt;&lt;span&gt;(target.query.abi != std.Target.Abi.msvc) {
+&lt;&#x2F;span&gt;&lt;span&gt;        lib.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;linkLibCpp&lt;&#x2F;span&gt;&lt;span&gt;();
+&lt;&#x2F;span&gt;&lt;span&gt;    }
+&lt;&#x2F;span&gt;&lt;span&gt;    lib.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;installHeadersDirectory&lt;&#x2F;span&gt;&lt;span&gt;(b.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;path&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;&amp;quot;include&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;), &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;&amp;quot;.&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;, .{
+&lt;&#x2F;span&gt;&lt;span&gt;        .include_extensions = &amp;amp;.{ &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;&amp;quot;h&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;&amp;quot;hpp&amp;quot; &lt;&#x2F;span&gt;&lt;span&gt;},
+&lt;&#x2F;span&gt;&lt;span&gt;    });
+&lt;&#x2F;span&gt;&lt;span&gt;    b.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;installArtifact&lt;&#x2F;span&gt;&lt;span&gt;(lib);
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;const&lt;&#x2F;span&gt;&lt;span&gt; exe = b.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;addExecutable&lt;&#x2F;span&gt;&lt;span&gt;(.{
+&lt;&#x2F;span&gt;&lt;span&gt;        .name = &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;&amp;quot;main&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;        .target = target,
+&lt;&#x2F;span&gt;&lt;span&gt;        .optimize = optimize,
+&lt;&#x2F;span&gt;&lt;span&gt;    });
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;    exe.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;addCSourceFiles&lt;&#x2F;span&gt;&lt;span&gt;(.{ .files = &amp;amp;.{&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;&amp;quot;example&#x2F;main.cpp&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;} });
+&lt;&#x2F;span&gt;&lt;span&gt;    exe.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;linkLibrary&lt;&#x2F;span&gt;&lt;span&gt;(lib);
+&lt;&#x2F;span&gt;&lt;span&gt;    b.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;installArtifact&lt;&#x2F;span&gt;&lt;span&gt;(exe);
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;基本的には, 書かれている意味の通りである.&lt;&#x2F;p&gt;
+&lt;p&gt;これであとは,&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;zig&lt;&#x2F;span&gt;&lt;span&gt; build
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;とすると, &lt;code&gt;zig-out&lt;&#x2F;code&gt;以下にビルドされたライブラリと実行ファイルができる.
+なお, WindowsでMinGWではなくmsvcでビルドする場合は&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;zig&lt;&#x2F;span&gt;&lt;span&gt; build&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt; -Dtarget&lt;&#x2F;span&gt;&lt;span&gt;=native-native-msvc
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;のようにすれば良い.&lt;&#x2F;p&gt;
+&lt;p&gt;なお,&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;zig&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-zig &quot;&gt;&lt;code class=&quot;language-zig&quot; data-lang=&quot;zig&quot;&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;if &lt;&#x2F;span&gt;&lt;span&gt;(target.query.abi != std.Target.Abi.msvc) {
+&lt;&#x2F;span&gt;&lt;span&gt;        lib.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;linkLibCpp&lt;&#x2F;span&gt;&lt;span&gt;();
+&lt;&#x2F;span&gt;&lt;span&gt;    }
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;の部分は, Windowsでmsvcを使う場合の処理である.
+&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;ziglang&#x2F;zig&#x2F;issues&#x2F;18685&quot;&gt;Zig 0.14.0ではmsvcで&lt;code&gt;libcxx&lt;&#x2F;code&gt;をビルドできないらしい.&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;また,&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;zig&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-zig &quot;&gt;&lt;code class=&quot;language-zig&quot; data-lang=&quot;zig&quot;&gt;&lt;span&gt;    lib.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;installHeadersDirectory&lt;&#x2F;span&gt;&lt;span&gt;(b.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;path&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;&amp;quot;include&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;), &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;&amp;quot;.&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;, .{
+&lt;&#x2F;span&gt;&lt;span&gt;        .include_extensions = &amp;amp;.{ &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;&amp;quot;h&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;&amp;quot;hpp&amp;quot; &lt;&#x2F;span&gt;&lt;span&gt;},
+&lt;&#x2F;span&gt;&lt;span&gt;    });
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;の部分は, &lt;code&gt;CMake&lt;&#x2F;code&gt;でいうところの&lt;code&gt;PUBLIC|INTERFACE&lt;&#x2F;code&gt;指定みたいなもので, これをやっておくと, &lt;code&gt;exe.linkLibrary(lib)&lt;&#x2F;code&gt;で&lt;code&gt;exe&lt;&#x2F;code&gt;ターゲットに自動的に&lt;code&gt;include&lt;&#x2F;code&gt;がインクルードパスとして追加される.
+また, &lt;code&gt;zig-out&lt;&#x2F;code&gt;以下に&lt;code&gt;include&lt;&#x2F;code&gt;ディレクトリが作成され, そこにヘッダファイルがコピーされるようになる.
+なお, デフォルトだと, &lt;code&gt;.include_extensions&lt;&#x2F;code&gt;は&lt;code&gt;h&lt;&#x2F;code&gt;のみになっているので注意.&lt;&#x2F;p&gt;
+&lt;h1 id=&quot;sanpuruwoshi-xing-surukomandowozhui-jia-suru&quot;&gt;サンプルを実行するコマンドを追加する&lt;&#x2F;h1&gt;
+&lt;p&gt;&lt;code&gt;build.zig::build&lt;&#x2F;code&gt;の末尾に以下を追加すると, &lt;code&gt;zig build run&lt;&#x2F;code&gt;で&lt;code&gt;exe&lt;&#x2F;code&gt;ターゲットを実行できるようになる.&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;zig&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-zig &quot;&gt;&lt;code class=&quot;language-zig&quot; data-lang=&quot;zig&quot;&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;const&lt;&#x2F;span&gt;&lt;span&gt; run_cmd = b.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;addRunArtifact&lt;&#x2F;span&gt;&lt;span&gt;(exe);
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;const&lt;&#x2F;span&gt;&lt;span&gt; run_step = b.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;step&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;&amp;quot;run&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;&amp;quot;Run example&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;);
+&lt;&#x2F;span&gt;&lt;span&gt;    run_step.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;dependOn&lt;&#x2F;span&gt;&lt;span&gt;(&amp;amp;run_cmd.step);
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h1 id=&quot;eigen-3woshi-u&quot;&gt;Eigen 3を使う&lt;&#x2F;h1&gt;
+&lt;p&gt;Eigen 3などのライブラリは以下のコマンドで依存関係として追加できる.&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;zig&lt;&#x2F;span&gt;&lt;span&gt; fetch&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt; --save&lt;&#x2F;span&gt;&lt;span&gt;=eigen git+https:&#x2F;&#x2F;gitlab.com&#x2F;libeigen&#x2F;eigen.git#3.4.0
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Eigen 3はヘッダーオンリーのライブラリなので, 以下のようにするだけで良い.&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;zig&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-zig &quot;&gt;&lt;code class=&quot;language-zig&quot; data-lang=&quot;zig&quot;&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;const&lt;&#x2F;span&gt;&lt;span&gt; eigen3_dep = b.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;dependency&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;&amp;quot;eigen&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;, .{});
+&lt;&#x2F;span&gt;&lt;span&gt;    lib.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;addIncludePath&lt;&#x2F;span&gt;&lt;span&gt;(eigen3_dep.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;path&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;&amp;quot;.&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;));
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;    ...
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;    exe.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;addIncludePath&lt;&#x2F;span&gt;&lt;span&gt;(eigen3_dep.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;path&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;&amp;quot;.&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;));
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;なお, &lt;code&gt;installHeadersDirectory&lt;&#x2F;code&gt;を使うと, &lt;code&gt;zig-out&lt;&#x2F;code&gt;以下に&lt;code&gt;Eigen 3&lt;&#x2F;code&gt;のファイルがコピーされてしまうので, ここでは&lt;code&gt;exe&lt;&#x2F;code&gt;ターゲットにも&lt;code&gt;addIncludePath&lt;&#x2F;code&gt;で明示的にインクルードパスを追加している.&lt;&#x2F;p&gt;
+&lt;p&gt;これで, 以下のように&lt;code&gt;Eigen 3&lt;&#x2F;code&gt;が使えるようになる.&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;include&#x2F;lib.hpp&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;pre data-lang=&quot;cpp&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-cpp &quot;&gt;&lt;code class=&quot;language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;#include &lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;cstdint&lt;&#x2F;span&gt;&lt;span&gt;&amp;gt;
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;#include &lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;Eigen&#x2F;Dense&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;int32_t &lt;&#x2F;span&gt;&lt;span style=&quot;color:#8fa1b3;&quot;&gt;add&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;int32_t&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;int32_t&lt;&#x2F;span&gt;&lt;span&gt;);
+&lt;&#x2F;span&gt;&lt;span&gt;Eigen::Vector3d &lt;&#x2F;span&gt;&lt;span style=&quot;color:#8fa1b3;&quot;&gt;add&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;const&lt;&#x2F;span&gt;&lt;span&gt; Eigen::Vector3d&amp;amp;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;const&lt;&#x2F;span&gt;&lt;span&gt; Eigen::Vector3d&amp;amp;);
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;ul&gt;
+&lt;li&gt;lib&#x2F;lib.cpp&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;pre data-lang=&quot;cpp&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-cpp &quot;&gt;&lt;code class=&quot;language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;#include &lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;lib.hpp&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;int32_t &lt;&#x2F;span&gt;&lt;span style=&quot;color:#8fa1b3;&quot;&gt;add&lt;&#x2F;span&gt;&lt;span&gt;(int32_t &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;a&lt;&#x2F;span&gt;&lt;span&gt;, int32_t &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;b&lt;&#x2F;span&gt;&lt;span&gt;) { &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;return&lt;&#x2F;span&gt;&lt;span&gt; a + b; }
+&lt;&#x2F;span&gt;&lt;span&gt;Eigen::Vector3d &lt;&#x2F;span&gt;&lt;span style=&quot;color:#8fa1b3;&quot;&gt;add&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;const&lt;&#x2F;span&gt;&lt;span&gt; Eigen::Vector3d&amp;amp; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;a&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;const&lt;&#x2F;span&gt;&lt;span&gt; Eigen::Vector3d&amp;amp; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;b&lt;&#x2F;span&gt;&lt;span&gt;) { &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;return&lt;&#x2F;span&gt;&lt;span&gt; a + b; }
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h1 id=&quot;googletestwoshi-u&quot;&gt;Googletestを使う&lt;&#x2F;h1&gt;
+&lt;p&gt;まずは, テスト用のコードを用意する.&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;mkdir&lt;&#x2F;span&gt;&lt;span&gt; tests
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;touch&lt;&#x2F;span&gt;&lt;span&gt; tests&#x2F;main.cpp
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;touch&lt;&#x2F;span&gt;&lt;span&gt; tests&#x2F;test.cpp
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;ul&gt;
+&lt;li&gt;tests&#x2F;main.cpp&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;pre data-lang=&quot;cpp&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-cpp &quot;&gt;&lt;code class=&quot;language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;#include &lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;gtest&#x2F;gtest.h&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;int &lt;&#x2F;span&gt;&lt;span style=&quot;color:#8fa1b3;&quot;&gt;main&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;int &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;argc&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;char&lt;&#x2F;span&gt;&lt;span&gt;** &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;argv&lt;&#x2F;span&gt;&lt;span&gt;) {
+&lt;&#x2F;span&gt;&lt;span&gt;  testing::&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;InitGoogleTest&lt;&#x2F;span&gt;&lt;span&gt;(&amp;amp;argc, argv);
+&lt;&#x2F;span&gt;&lt;span&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;return &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;RUN_ALL_TESTS&lt;&#x2F;span&gt;&lt;span&gt;();
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;ul&gt;
+&lt;li&gt;test&#x2F;test.cpp&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;pre data-lang=&quot;cpp&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-cpp &quot;&gt;&lt;code class=&quot;language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;#include &lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;gtest&#x2F;gtest.h&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;#include &lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;lib.hpp&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;TEST&lt;&#x2F;span&gt;&lt;span&gt;(Lib, AddInt32) { &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;EXPECT_EQ&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;add&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;2&lt;&#x2F;span&gt;&lt;span&gt;), &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;3&lt;&#x2F;span&gt;&lt;span&gt;); }
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;TEST&lt;&#x2F;span&gt;&lt;span&gt;(Lib, AddVector3d) { &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;EXPECT_EQ&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;add&lt;&#x2F;span&gt;&lt;span&gt;(Eigen::&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;Vector3d&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;2&lt;&#x2F;span&gt;&lt;span&gt;), Eigen::&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;Vector3d&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;3&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;4&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;5&lt;&#x2F;span&gt;&lt;span&gt;)), Eigen::&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;Vector3d&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;3&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;5&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;7&lt;&#x2F;span&gt;&lt;span&gt;)); }
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;次に, &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;google&#x2F;googletest&quot;&gt;googletest&lt;&#x2F;a&gt;を依存関係として追加する.
+なお, ここでは, gitリポジトリではなく, アーカイブファイルを指定してみる.&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;zig&lt;&#x2F;span&gt;&lt;span&gt; fetch&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt; --save&lt;&#x2F;span&gt;&lt;span&gt;=googletest https:&#x2F;&#x2F;github.com&#x2F;google&#x2F;googletest&#x2F;archive&#x2F;refs&#x2F;tags&#x2F;v1.17.0.tar.gz
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;&lt;code&gt;build.zig::build&lt;&#x2F;code&gt;の最後に以下を追加する.&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;zig&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-zig &quot;&gt;&lt;code class=&quot;language-zig&quot; data-lang=&quot;zig&quot;&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;const&lt;&#x2F;span&gt;&lt;span&gt; googletest_dep = b.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;dependency&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;&amp;quot;googletest&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;, .{});
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;const&lt;&#x2F;span&gt;&lt;span&gt; gtest = b.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;addLibrary&lt;&#x2F;span&gt;&lt;span&gt;(.{ .linkage = std.builtin.LinkMode.static, .name = &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;&amp;quot;gtest&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;, .root_module = b.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;createModule&lt;&#x2F;span&gt;&lt;span&gt;(.{
+&lt;&#x2F;span&gt;&lt;span&gt;        .target = target,
+&lt;&#x2F;span&gt;&lt;span&gt;        .optimize = optimize,
+&lt;&#x2F;span&gt;&lt;span&gt;    }) });
+&lt;&#x2F;span&gt;&lt;span&gt;    gtest.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;linkLibC&lt;&#x2F;span&gt;&lt;span&gt;();
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;if &lt;&#x2F;span&gt;&lt;span&gt;(target.query.abi != std.Target.Abi.msvc) {
+&lt;&#x2F;span&gt;&lt;span&gt;        gtest.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;linkLibCpp&lt;&#x2F;span&gt;&lt;span&gt;();
+&lt;&#x2F;span&gt;&lt;span&gt;    }
+&lt;&#x2F;span&gt;&lt;span&gt;    gtest.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;addCSourceFile&lt;&#x2F;span&gt;&lt;span&gt;(.{
+&lt;&#x2F;span&gt;&lt;span&gt;        .file = googletest_dep.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;path&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;&amp;quot;googletest&#x2F;src&#x2F;gtest-all.cc&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;),
+&lt;&#x2F;span&gt;&lt;span&gt;    });
+&lt;&#x2F;span&gt;&lt;span&gt;    gtest.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;addIncludePath&lt;&#x2F;span&gt;&lt;span&gt;(googletest_dep.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;path&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;&amp;quot;googletest&#x2F;include&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;));
+&lt;&#x2F;span&gt;&lt;span&gt;    gtest.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;addIncludePath&lt;&#x2F;span&gt;&lt;span&gt;(googletest_dep.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;path&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;&amp;quot;googletest&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;));
+&lt;&#x2F;span&gt;&lt;span&gt;    gtest.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;installHeadersDirectory&lt;&#x2F;span&gt;&lt;span&gt;(googletest_dep.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;path&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;&amp;quot;googletest&#x2F;include&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;), &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;&amp;quot;.&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;, .{});
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;const&lt;&#x2F;span&gt;&lt;span&gt; gtest_main = b.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;addLibrary&lt;&#x2F;span&gt;&lt;span&gt;(.{ .linkage = std.builtin.LinkMode.static, .name = &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;&amp;quot;gtest_main&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;, .root_module = b.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;createModule&lt;&#x2F;span&gt;&lt;span&gt;(.{
+&lt;&#x2F;span&gt;&lt;span&gt;        .target = target,
+&lt;&#x2F;span&gt;&lt;span&gt;        .optimize = optimize,
+&lt;&#x2F;span&gt;&lt;span&gt;    }) });
+&lt;&#x2F;span&gt;&lt;span&gt;    gtest_main.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;linkLibC&lt;&#x2F;span&gt;&lt;span&gt;();
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;if &lt;&#x2F;span&gt;&lt;span&gt;(target.query.abi != std.Target.Abi.msvc) {
+&lt;&#x2F;span&gt;&lt;span&gt;        gtest_main.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;linkLibCpp&lt;&#x2F;span&gt;&lt;span&gt;();
+&lt;&#x2F;span&gt;&lt;span&gt;    }
+&lt;&#x2F;span&gt;&lt;span&gt;    gtest_main.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;addCSourceFile&lt;&#x2F;span&gt;&lt;span&gt;(.{
+&lt;&#x2F;span&gt;&lt;span&gt;        .file = googletest_dep.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;path&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;&amp;quot;googletest&#x2F;src&#x2F;gtest_main.cc&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;),
+&lt;&#x2F;span&gt;&lt;span&gt;    });
+&lt;&#x2F;span&gt;&lt;span&gt;    gtest_main.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;addIncludePath&lt;&#x2F;span&gt;&lt;span&gt;(googletest_dep.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;path&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;&amp;quot;googletest&#x2F;include&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;));
+&lt;&#x2F;span&gt;&lt;span&gt;    gtest_main.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;addIncludePath&lt;&#x2F;span&gt;&lt;span&gt;(googletest_dep.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;path&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;&amp;quot;googletest&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;));
+&lt;&#x2F;span&gt;&lt;span&gt;    gtest_main.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;installHeadersDirectory&lt;&#x2F;span&gt;&lt;span&gt;(googletest_dep.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;path&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;&amp;quot;googletest&#x2F;include&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;), &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;&amp;quot;.&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;, .{});
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;const&lt;&#x2F;span&gt;&lt;span&gt; exe_tests = b.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;addExecutable&lt;&#x2F;span&gt;&lt;span&gt;(.{
+&lt;&#x2F;span&gt;&lt;span&gt;        .name = &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;&amp;quot;test&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;        .target = target,
+&lt;&#x2F;span&gt;&lt;span&gt;        .optimize = optimize,
+&lt;&#x2F;span&gt;&lt;span&gt;    });
+&lt;&#x2F;span&gt;&lt;span&gt;    exe_tests.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;addCSourceFiles&lt;&#x2F;span&gt;&lt;span&gt;(.{ .files = &amp;amp;.{ &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;&amp;quot;tests&#x2F;main.cpp&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;&amp;quot;tests&#x2F;test.cpp&amp;quot; &lt;&#x2F;span&gt;&lt;span&gt;} });
+&lt;&#x2F;span&gt;&lt;span&gt;    exe_tests.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;linkLibrary&lt;&#x2F;span&gt;&lt;span&gt;(lib);
+&lt;&#x2F;span&gt;&lt;span&gt;    exe_tests.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;linkLibrary&lt;&#x2F;span&gt;&lt;span&gt;(gtest);
+&lt;&#x2F;span&gt;&lt;span&gt;    exe_tests.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;linkLibrary&lt;&#x2F;span&gt;&lt;span&gt;(gtest_main);
+&lt;&#x2F;span&gt;&lt;span&gt;    exe_tests.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;addIncludePath&lt;&#x2F;span&gt;&lt;span&gt;(eigen3_dep.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;path&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;&amp;quot;.&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;));
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;const&lt;&#x2F;span&gt;&lt;span&gt; run_test_cmd = b.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;addRunArtifact&lt;&#x2F;span&gt;&lt;span&gt;(exe_tests);
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;const&lt;&#x2F;span&gt;&lt;span&gt; test_step = b.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;step&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;&amp;quot;test&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;&amp;quot;Run unit tests&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;);
+&lt;&#x2F;span&gt;&lt;span&gt;    test_step.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;dependOn&lt;&#x2F;span&gt;&lt;span&gt;(&amp;amp;run_test_cmd.step);
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Zig用のテストコードではないので, サンプルの実行と同様にカスタムコマンドを設定している.&lt;&#x2F;p&gt;
+&lt;p&gt;これで,&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;zig&lt;&#x2F;span&gt;&lt;span&gt; build test
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;でテストが実行できるようになる.&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+</feed>

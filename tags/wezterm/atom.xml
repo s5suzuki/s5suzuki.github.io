@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ja">
+    <title>Suzuki Shun&#x27;s homepage - WezTerm</title>
+    <link rel="self" type="application/atom+xml" href="https://s5suzuki.github.io/tags/wezterm/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://s5suzuki.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2022-09-04T00:00:00+00:00</updated>
+    <id>https://s5suzuki.github.io/tags/wezterm/atom.xml</id>
+    <entry xml:lang="ja">
+        <title>Windows開発環境設定メモ</title>
+        <published>2022-09-04T00:00:00+00:00</published>
+        <updated>2022-09-04T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://s5suzuki.github.io/posts/neovim-memo/"/>
+        <id>https://s5suzuki.github.io/posts/neovim-memo/</id>
+        
+        <content type="html" xml:base="https://s5suzuki.github.io/posts/neovim-memo/">&lt;p&gt;随時アップデート予定.&lt;&#x2F;p&gt;
+&lt;h1 id=&quot;wezterm&quot;&gt;WezTerm&lt;&#x2F;h1&gt;
+&lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;wezfurlong.org&#x2F;wezterm&#x2F;index.html&quot;&gt;ドキュメント&lt;&#x2F;a&gt;が充実しているので, これを読めば大丈夫.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;install&quot;&gt;Install&lt;&#x2F;h2&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;winget install wez.wezterm
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h2 id=&quot;setting&quot;&gt;Setting&lt;&#x2F;h2&gt;
+&lt;p&gt;設定ファイルは&lt;code&gt;~&#x2F;.config&#x2F;wezterm&#x2F;wezterm.lua&lt;&#x2F;code&gt;に書く.&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;lua&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-lua &quot;&gt;&lt;code class=&quot;language-lua&quot; data-lang=&quot;lua&quot;&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;local &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;wezterm &lt;&#x2F;span&gt;&lt;span&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#96b5b4;&quot;&gt;require &lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;wezterm&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;local &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;mux &lt;&#x2F;span&gt;&lt;span&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;wezterm&lt;&#x2F;span&gt;&lt;span&gt;.mux
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;wezterm&lt;&#x2F;span&gt;&lt;span&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;on&lt;&#x2F;span&gt;&lt;span&gt;(&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;gui-startup&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;function&lt;&#x2F;span&gt;&lt;span&gt;(cmd)
+&lt;&#x2F;span&gt;&lt;span&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;local &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;tab&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;pane&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;window &lt;&#x2F;span&gt;&lt;span&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;mux&lt;&#x2F;span&gt;&lt;span&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;spawn_window&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;cmd &lt;&#x2F;span&gt;&lt;span&gt;or {})
+&lt;&#x2F;span&gt;&lt;span&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;window&lt;&#x2F;span&gt;&lt;span&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;gui_window&lt;&#x2F;span&gt;&lt;span&gt;():&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;set_position&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;200&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;200&lt;&#x2F;span&gt;&lt;span&gt;)
+&lt;&#x2F;span&gt;&lt;span&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;window&lt;&#x2F;span&gt;&lt;span&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;gui_window&lt;&#x2F;span&gt;&lt;span&gt;():&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;set_inner_size&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;1280&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;640&lt;&#x2F;span&gt;&lt;span&gt;)
+&lt;&#x2F;span&gt;&lt;span&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;pane&lt;&#x2F;span&gt;&lt;span&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;split &lt;&#x2F;span&gt;&lt;span&gt;{ &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;size &lt;&#x2F;span&gt;&lt;span&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;0.7&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;direction &lt;&#x2F;span&gt;&lt;span&gt;= &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;Top&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;  }
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;end&lt;&#x2F;span&gt;&lt;span&gt;)
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;return &lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;font &lt;&#x2F;span&gt;&lt;span&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;wezterm&lt;&#x2F;span&gt;&lt;span&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;font&lt;&#x2F;span&gt;&lt;span&gt;(&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;HackGenNerd Console&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;),
+&lt;&#x2F;span&gt;&lt;span&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;use_ime &lt;&#x2F;span&gt;&lt;span&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;true&lt;&#x2F;span&gt;&lt;span&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;font_size &lt;&#x2F;span&gt;&lt;span&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;12.0&lt;&#x2F;span&gt;&lt;span&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;color_scheme &lt;&#x2F;span&gt;&lt;span&gt;= &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;VSCodeDark+ (Gogh)&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;,
+&lt;&#x2F;span&gt;&lt;span&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;hide_tab_bar_if_only_one_tab &lt;&#x2F;span&gt;&lt;span&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;true&lt;&#x2F;span&gt;&lt;span&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;adjust_window_size_when_changing_font_size &lt;&#x2F;span&gt;&lt;span&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;false&lt;&#x2F;span&gt;&lt;span&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;default_prog &lt;&#x2F;span&gt;&lt;span&gt;= { &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;nu&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39; },
+&lt;&#x2F;span&gt;&lt;span&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;window_close_confirmation &lt;&#x2F;span&gt;&lt;span&gt;= &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;NeverPrompt&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;,
+&lt;&#x2F;span&gt;&lt;span&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;skip_close_confirmation_for_processes_named &lt;&#x2F;span&gt;&lt;span&gt;= {
+&lt;&#x2F;span&gt;&lt;span&gt;    &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;nu.exe&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;,
+&lt;&#x2F;span&gt;&lt;span&gt;  },
+&lt;&#x2F;span&gt;&lt;span&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;keys &lt;&#x2F;span&gt;&lt;span&gt;= {
+&lt;&#x2F;span&gt;&lt;span&gt;    { &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;key &lt;&#x2F;span&gt;&lt;span&gt;= &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;;&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;mods &lt;&#x2F;span&gt;&lt;span&gt;= &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;CTRL&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;action &lt;&#x2F;span&gt;&lt;span&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;wezterm&lt;&#x2F;span&gt;&lt;span&gt;.action.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;ActivatePaneDirection &lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;Next&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39; },
+&lt;&#x2F;span&gt;&lt;span&gt;  },
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;WezTermを開いたときにPaneを上下に分割するようにしてある.&lt;&#x2F;p&gt;
+&lt;p&gt;また, Shellは&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;nushell&#x2F;nushell&quot;&gt;nu&lt;&#x2F;a&gt;を使っているので, それをデフォルトにしてある.
+設定しない場合, &lt;code&gt;cmd.exe&lt;&#x2F;code&gt;になる.&lt;&#x2F;p&gt;
+&lt;p&gt;フォントやカラースキームは適当に選ぶ.&lt;&#x2F;p&gt;
+&lt;p&gt;あと, 終了時に確認が求められるが, 面倒なのでスキップするようにした.&lt;&#x2F;p&gt;
+&lt;p&gt;さらに, &lt;code&gt;Ctrl+;&lt;&#x2F;code&gt;でPane間を遷移できるようにしてある.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;usage&quot;&gt;Usage&lt;&#x2F;h2&gt;
+&lt;p&gt;使い方は, ドキュメントを参照.&lt;&#x2F;p&gt;
+&lt;p&gt;よく使うコマンドをいかに抜粋する.&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Keybinding&lt;&#x2F;th&gt;&lt;th&gt;Command&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;Ctrl-Shift-Alt-%&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;Pane水平分割&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;Ctrl-Shift-Alt-&quot;&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;Pane垂直分割&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;Ctrl-Shift-ArrowKey&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;Pane間移動&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;Ctrl-Shift-t&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;新しいタブを開く&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;Ctrl-Shift-w&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;現在のタブを閉じる&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;Ctrl-Tab&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;次のタブに移動&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;Ctrl-Shift-Tab&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;前のタブに移動&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;h1 id=&quot;neovim&quot;&gt;Neovim&lt;&#x2F;h1&gt;
+&lt;p&gt;neovimの設定ファイルは&lt;code&gt;~&#x2F;AppData&#x2F;Local&#x2F;nvim&#x2F;init.lua&lt;&#x2F;code&gt;となる.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;install-1&quot;&gt;Install&lt;&#x2F;h2&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;winget install neovim
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h2 id=&quot;plugins&quot;&gt;Plugins&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;packer-nvim&quot;&gt;&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;wbthomason&#x2F;packer.nvim&quot;&gt;packer.nvim&lt;&#x2F;a&gt;&lt;&#x2F;h3&gt;
+&lt;p&gt;プラグインを管理するためのプラグイン.&lt;&#x2F;p&gt;
+&lt;p&gt;PowerShellで以下のコマンドを入力し, インストールする.&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;git clone https:&#x2F;&#x2F;github.com&#x2F;wbthomason&#x2F;packer.nvim &amp;quot;~\AppData\Local\nvim-data\site\pack\packer\start\packer.nvim&amp;quot;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;また, &lt;code&gt;init.lua&lt;&#x2F;code&gt;に以下を書く.&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;init.lua&lt;&#x2F;code&gt;&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;lua&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-lua &quot;&gt;&lt;code class=&quot;language-lua&quot; data-lang=&quot;lua&quot;&gt;&lt;span style=&quot;color:#96b5b4;&quot;&gt;require&lt;&#x2F;span&gt;&lt;span&gt;(&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;plugins&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;)
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;さらに, &lt;code&gt;~&#x2F;AppData&#x2F;Local&#x2F;nvim&#x2F;lua&#x2F;plugins.lua&lt;&#x2F;code&gt;ファイルを作り, ここにプラグインの設定を書いていく.&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;lua&#x2F;plugins.lua&lt;&#x2F;code&gt;&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;lua&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-lua &quot;&gt;&lt;code class=&quot;language-lua&quot; data-lang=&quot;lua&quot;&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;vim&lt;&#x2F;span&gt;&lt;span&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;cmd &lt;&#x2F;span&gt;&lt;span&gt;[[&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;packadd packer.nvim&lt;&#x2F;span&gt;&lt;span&gt;]]
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;return &lt;&#x2F;span&gt;&lt;span style=&quot;color:#96b5b4;&quot;&gt;require&lt;&#x2F;span&gt;&lt;span&gt;(&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;packer&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;).&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;startup&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;function&lt;&#x2F;span&gt;&lt;span&gt;()    
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;use&lt;&#x2F;span&gt;&lt;span&gt;(&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;wbthomason&#x2F;packer.nvim&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;)
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;end&lt;&#x2F;span&gt;&lt;span&gt;)
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;プラグインのインストールは, &lt;code&gt;plugins.lua&lt;&#x2F;code&gt;に追記した後, Neovimを開き,&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;:PackerInstall
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;で行う.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;fern-vim&quot;&gt;&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;lambdalisue&#x2F;fern.vim&quot;&gt;fern.vim&lt;&#x2F;a&gt;&lt;&#x2F;h3&gt;
+&lt;p&gt;ファイラープラグイン.&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;lua&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-lua &quot;&gt;&lt;code class=&quot;language-lua&quot; data-lang=&quot;lua&quot;&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;use&lt;&#x2F;span&gt;&lt;span&gt;(&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;lambdalisue&#x2F;fern.vim&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;)
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;use&lt;&#x2F;span&gt;&lt;span&gt;(&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;lambdalisue&#x2F;fern-git-status.vim&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;)
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;use&lt;&#x2F;span&gt;&lt;span&gt;(&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;lambdalisue&#x2F;nerdfont.vim&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;)
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;use&lt;&#x2F;span&gt;&lt;span&gt;(&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;lambdalisue&#x2F;fern-renderer-nerdfont.vim&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;)
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;use&lt;&#x2F;span&gt;&lt;span&gt;(&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;lambdalisue&#x2F;glyph-palette.vim&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;)
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;use&lt;&#x2F;span&gt;&lt;span&gt;(&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;antoinemadec&#x2F;FixCursorHold.nvim&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;)
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;2番目は, gitの情報を表示するためのもの.
+3-5番目のやつは, アイコンを表示するためのもの.&lt;&#x2F;p&gt;
+&lt;p&gt;最後のプラグインに関しては,&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Neovim users SHOULD add &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;antoinemadec&#x2F;FixCursorHold.nvim&quot;&gt;antoinemadec&#x2F;FixCursorHold.nvim&lt;&#x2F;a&gt; for now (See &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;lambdalisue&#x2F;fern.vim&#x2F;issues&#x2F;120&quot;&gt;#120&lt;&#x2F;a&gt;)
+となっていたので.&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;Ctrl+n&lt;&#x2F;code&gt;でファイラーの表示非表示の切り替るようにする. また, アイコン用の設定もする.&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;lua&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-lua &quot;&gt;&lt;code class=&quot;language-lua&quot; data-lang=&quot;lua&quot;&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;vim&lt;&#x2F;span&gt;&lt;span&gt;.keymap.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;set&lt;&#x2F;span&gt;&lt;span&gt;(&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;n&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;, &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;&amp;lt;C-n&amp;gt;&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;, &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;:Fern . -reveal=% -drawer -toggle -width=30&amp;lt;CR&amp;gt;&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;)
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;vim&lt;&#x2F;span&gt;&lt;span&gt;.g[&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;fern#renderer&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;] = &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;nerdfont&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;vim&lt;&#x2F;span&gt;&lt;span&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;cmd&lt;&#x2F;span&gt;&lt;span&gt;(&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;augroup my-glyph-palette&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;)
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;vim&lt;&#x2F;span&gt;&lt;span&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;cmd&lt;&#x2F;span&gt;&lt;span&gt;(&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;autocmd! *&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;)
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;vim&lt;&#x2F;span&gt;&lt;span&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;cmd&lt;&#x2F;span&gt;&lt;span&gt;(&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;autocmd FileType fern call glyph_palette#apply()&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;)
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;vim&lt;&#x2F;span&gt;&lt;span&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;cmd&lt;&#x2F;span&gt;&lt;span&gt;(&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;autocmd FileType nerdtree,startify call glyph_palette#apply()&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;)
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;vim&lt;&#x2F;span&gt;&lt;span&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;cmd&lt;&#x2F;span&gt;&lt;span&gt;(&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;augroup END&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;)
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Keybinding&lt;&#x2F;th&gt;&lt;th&gt;Command&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;l&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;フォルダを開く&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;h&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;フォルダを閉じる&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;e&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;ファイルを開く&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;Ctrl-m&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;フォルダへ移動&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;Ctrl-h&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;親フォルダへ移動&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;N&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;ファイル新規作成&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;K&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;フォルダ新規作成&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;D&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;ファイル削除&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;R&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;リネーム&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;m&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;移動&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;h3 id=&quot;lualine-nvim&quot;&gt;&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;nvim-lualine&#x2F;lualine.nvim&quot;&gt;lualine.nvim&lt;&#x2F;a&gt;&lt;&#x2F;h3&gt;
+&lt;p&gt;ステータスラインの見た目変更.&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;lua&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-lua &quot;&gt;&lt;code class=&quot;language-lua&quot; data-lang=&quot;lua&quot;&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;use &lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;        &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;nvim-lualine&#x2F;lualine.nvim&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;,
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;requires &lt;&#x2F;span&gt;&lt;span&gt;= { &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;kyazdani42&#x2F;nvim-web-devicons&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;opt &lt;&#x2F;span&gt;&lt;span&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;true &lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;span&gt;    }
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;見た目の設定は適当に選ぶ.&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;lua&#x2F;lualine_config.lua&lt;&#x2F;code&gt;&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;lua&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-lua &quot;&gt;&lt;code class=&quot;language-lua&quot; data-lang=&quot;lua&quot;&gt;&lt;span style=&quot;color:#96b5b4;&quot;&gt;require&lt;&#x2F;span&gt;&lt;span&gt;(&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;lualine&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;).&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;setup &lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;options &lt;&#x2F;span&gt;&lt;span&gt;= {
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;icons_enabled &lt;&#x2F;span&gt;&lt;span&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;true&lt;&#x2F;span&gt;&lt;span&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;theme &lt;&#x2F;span&gt;&lt;span&gt;= &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;nord&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;,
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;component_separators &lt;&#x2F;span&gt;&lt;span&gt;= { &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;left &lt;&#x2F;span&gt;&lt;span&gt;= &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;right &lt;&#x2F;span&gt;&lt;span&gt;= &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39; },
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;section_separators &lt;&#x2F;span&gt;&lt;span&gt;= { &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;left &lt;&#x2F;span&gt;&lt;span&gt;= &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;right &lt;&#x2F;span&gt;&lt;span&gt;= &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39; },
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;disabled_filetypes &lt;&#x2F;span&gt;&lt;span&gt;= {},
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;always_divide_middle &lt;&#x2F;span&gt;&lt;span&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;true&lt;&#x2F;span&gt;&lt;span&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;globalstatus &lt;&#x2F;span&gt;&lt;span&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;false&lt;&#x2F;span&gt;&lt;span&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;    },
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;sections &lt;&#x2F;span&gt;&lt;span&gt;= {
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;lualine_a &lt;&#x2F;span&gt;&lt;span&gt;= { &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;mode&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39; },
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;lualine_b &lt;&#x2F;span&gt;&lt;span&gt;= { &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;branch&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;, &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;diff&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;, &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;diagnostics&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39; },
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;lualine_c &lt;&#x2F;span&gt;&lt;span&gt;= { &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;filename&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39; },
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;lualine_x &lt;&#x2F;span&gt;&lt;span&gt;= { &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;encoding&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;, &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;fileformat&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;, &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;filetype&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39; },
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;lualine_y &lt;&#x2F;span&gt;&lt;span&gt;= { &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;progress&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39; },
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;lualine_z &lt;&#x2F;span&gt;&lt;span&gt;= { &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;location&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39; }
+&lt;&#x2F;span&gt;&lt;span&gt;    },
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;inactive_sections &lt;&#x2F;span&gt;&lt;span&gt;= {
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;lualine_a &lt;&#x2F;span&gt;&lt;span&gt;= {},
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;lualine_b &lt;&#x2F;span&gt;&lt;span&gt;= {},
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;lualine_c &lt;&#x2F;span&gt;&lt;span&gt;= { &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;filename&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39; },
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;lualine_x &lt;&#x2F;span&gt;&lt;span&gt;= { &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;location&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39; },
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;lualine_y &lt;&#x2F;span&gt;&lt;span&gt;= {},
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;lualine_z &lt;&#x2F;span&gt;&lt;span&gt;= {}
+&lt;&#x2F;span&gt;&lt;span&gt;    },
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;tabline &lt;&#x2F;span&gt;&lt;span&gt;= {},
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;extensions &lt;&#x2F;span&gt;&lt;span&gt;= {}
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;telescope-nvim&quot;&gt;&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;nvim-telescope&#x2F;telescope.nvim&quot;&gt;telescope.nvim&lt;&#x2F;a&gt;&lt;&#x2F;h3&gt;
+&lt;p&gt;ファジーファインダー.&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;lua&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-lua &quot;&gt;&lt;code class=&quot;language-lua&quot; data-lang=&quot;lua&quot;&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;use&lt;&#x2F;span&gt;&lt;span&gt;(&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;nvim-lua&#x2F;plenary.nvim&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;)
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;use&lt;&#x2F;span&gt;&lt;span&gt;(&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;nvim-telescope&#x2F;telescope.nvim&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;)
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;&lt;code&gt;Ctrl-p&lt;&#x2F;code&gt;で曖昧検索, &lt;code&gt;Ctrl-g&lt;&#x2F;code&gt;でgrep検索&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;lua&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-lua &quot;&gt;&lt;code class=&quot;language-lua&quot; data-lang=&quot;lua&quot;&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;vim&lt;&#x2F;span&gt;&lt;span&gt;.keymap.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;set&lt;&#x2F;span&gt;&lt;span&gt;(&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;n&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;, &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;&amp;lt;C-p&amp;gt;&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;, &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;:Telescope find_files&amp;lt;CR&amp;gt;&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;)
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;vim&lt;&#x2F;span&gt;&lt;span&gt;.keymap.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;set&lt;&#x2F;span&gt;&lt;span&gt;(&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;n&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;, &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;&amp;lt;C-g&amp;gt;&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;, &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;:Telescope live_grep&amp;lt;CR&amp;gt;&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;)
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h3 id=&quot;lsp&quot;&gt;LSP&lt;&#x2F;h3&gt;
+&lt;p&gt;Language Server Protocol系.&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;lua&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-lua &quot;&gt;&lt;code class=&quot;language-lua&quot; data-lang=&quot;lua&quot;&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;use&lt;&#x2F;span&gt;&lt;span&gt;(&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;neovim&#x2F;nvim-lspconfig&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;)
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;use&lt;&#x2F;span&gt;&lt;span&gt;(&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;williamboman&#x2F;mason.nvim&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;)
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;use&lt;&#x2F;span&gt;&lt;span&gt;(&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;williamboman&#x2F;mason-lspconfig.nvim&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;)
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;use&lt;&#x2F;span&gt;&lt;span&gt;(&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;hrsh7th&#x2F;nvim-cmp&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;)
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;use&lt;&#x2F;span&gt;&lt;span&gt;(&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;hrsh7th&#x2F;cmp-nvim-lsp&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;)
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;use&lt;&#x2F;span&gt;&lt;span&gt;(&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;hrsh7th&#x2F;vim-vsnip&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;)
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;lua&#x2F;lsp_config.lua&lt;&#x2F;code&gt;&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;lua&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-lua &quot;&gt;&lt;code class=&quot;language-lua&quot; data-lang=&quot;lua&quot;&gt;&lt;span style=&quot;color:#96b5b4;&quot;&gt;require&lt;&#x2F;span&gt;&lt;span&gt;(&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;mason&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;).&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;setup&lt;&#x2F;span&gt;&lt;span&gt;()
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#96b5b4;&quot;&gt;require&lt;&#x2F;span&gt;&lt;span&gt;(&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;mason-lspconfig&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;).&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;setup_handlers&lt;&#x2F;span&gt;&lt;span&gt;({ &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;function&lt;&#x2F;span&gt;&lt;span&gt;(server)
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;local &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;opt &lt;&#x2F;span&gt;&lt;span&gt;= {
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;capabilities &lt;&#x2F;span&gt;&lt;span&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#96b5b4;&quot;&gt;require&lt;&#x2F;span&gt;&lt;span&gt;(&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;cmp_nvim_lsp&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;).&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;update_capabilities&lt;&#x2F;span&gt;&lt;span&gt;(
+&lt;&#x2F;span&gt;&lt;span&gt;            &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;vim&lt;&#x2F;span&gt;&lt;span&gt;.lsp.protocol.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;make_client_capabilities&lt;&#x2F;span&gt;&lt;span&gt;()
+&lt;&#x2F;span&gt;&lt;span&gt;        )
+&lt;&#x2F;span&gt;&lt;span&gt;    }
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#96b5b4;&quot;&gt;require&lt;&#x2F;span&gt;&lt;span&gt;(&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;lspconfig&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;)[&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;server&lt;&#x2F;span&gt;&lt;span&gt;].&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;setup&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;opt&lt;&#x2F;span&gt;&lt;span&gt;)
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;end &lt;&#x2F;span&gt;&lt;span&gt;})
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;vim&lt;&#x2F;span&gt;&lt;span&gt;.keymap.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;set&lt;&#x2F;span&gt;&lt;span&gt;(&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;n&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;, &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;K&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;, &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;&amp;lt;cmd&amp;gt;lua vim.lsp.buf.hover()&amp;lt;CR&amp;gt;&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;)
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;vim&lt;&#x2F;span&gt;&lt;span&gt;.keymap.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;set&lt;&#x2F;span&gt;&lt;span&gt;(&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;n&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;, &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;gf&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;, &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;&amp;lt;cmd&amp;gt;lua vim.lsp.buf.formatting()&amp;lt;CR&amp;gt;&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;)
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;vim&lt;&#x2F;span&gt;&lt;span&gt;.keymap.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;set&lt;&#x2F;span&gt;&lt;span&gt;(&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;n&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;, &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;gr&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;, &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;&amp;lt;cmd&amp;gt;lua vim.lsp.buf.references()&amp;lt;CR&amp;gt;&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;)
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;vim&lt;&#x2F;span&gt;&lt;span&gt;.keymap.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;set&lt;&#x2F;span&gt;&lt;span&gt;(&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;n&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;, &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;gd&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;, &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;&amp;lt;cmd&amp;gt;lua vim.lsp.buf.definition()&amp;lt;CR&amp;gt;&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;)
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;vim&lt;&#x2F;span&gt;&lt;span&gt;.keymap.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;set&lt;&#x2F;span&gt;&lt;span&gt;(&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;n&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;, &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;gD&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;, &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;&amp;lt;cmd&amp;gt;lua vim.lsp.buf.declaration()&amp;lt;CR&amp;gt;&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;)
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;vim&lt;&#x2F;span&gt;&lt;span&gt;.keymap.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;set&lt;&#x2F;span&gt;&lt;span&gt;(&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;n&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;, &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;gi&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;, &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;&amp;lt;cmd&amp;gt;lua vim.lsp.buf.implementation()&amp;lt;CR&amp;gt;&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;)
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;vim&lt;&#x2F;span&gt;&lt;span&gt;.keymap.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;set&lt;&#x2F;span&gt;&lt;span&gt;(&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;n&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;, &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;gt&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;, &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;&amp;lt;cmd&amp;gt;lua vim.lsp.buf.type_definition()&amp;lt;CR&amp;gt;&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;)
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;vim&lt;&#x2F;span&gt;&lt;span&gt;.keymap.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;set&lt;&#x2F;span&gt;&lt;span&gt;(&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;n&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;, &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;gn&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;, &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;&amp;lt;cmd&amp;gt;lua vim.lsp.buf.rename()&amp;lt;CR&amp;gt;&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;)
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;vim&lt;&#x2F;span&gt;&lt;span&gt;.keymap.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;set&lt;&#x2F;span&gt;&lt;span&gt;(&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;n&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;, &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;ga&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;, &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;&amp;lt;cmd&amp;gt;lua vim.lsp.buf.code_action()&amp;lt;CR&amp;gt;&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;)
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;vim&lt;&#x2F;span&gt;&lt;span&gt;.keymap.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;set&lt;&#x2F;span&gt;&lt;span&gt;(&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;n&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;, &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;ge&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;, &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;&amp;lt;cmd&amp;gt;lua vim.diagnostic.open_float()&amp;lt;CR&amp;gt;&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;)
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;vim&lt;&#x2F;span&gt;&lt;span&gt;.keymap.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;set&lt;&#x2F;span&gt;&lt;span&gt;(&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;n&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;, &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;g]&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;, &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;&amp;lt;cmd&amp;gt;lua vim.diagnostic.goto_next()&amp;lt;CR&amp;gt;&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;)
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;vim&lt;&#x2F;span&gt;&lt;span&gt;.keymap.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;set&lt;&#x2F;span&gt;&lt;span&gt;(&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;n&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;, &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;g[&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;, &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;&amp;lt;cmd&amp;gt;lua vim.diagnostic.goto_prev()&amp;lt;CR&amp;gt;&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;)
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;vim&lt;&#x2F;span&gt;&lt;span&gt;.lsp.handlers[&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;textDocument&#x2F;publishDiagnostics&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;] = &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;vim&lt;&#x2F;span&gt;&lt;span&gt;.lsp.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;with&lt;&#x2F;span&gt;&lt;span&gt;(
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;vim&lt;&#x2F;span&gt;&lt;span&gt;.lsp.diagnostic.on_publish_diagnostics, { &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;virtual_text &lt;&#x2F;span&gt;&lt;span&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;false &lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;span&gt;)
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;vim&lt;&#x2F;span&gt;&lt;span&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;cmd &lt;&#x2F;span&gt;&lt;span&gt;[[
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;set updatetime=500
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;highlight LspReferenceText  cterm=underline ctermfg=1 ctermbg=8 gui=underline guifg=#A00000 guibg=#104040
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;highlight LspReferenceRead  cterm=underline ctermfg=1 ctermbg=8 gui=underline guifg=#A00000 guibg=#104040
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;highlight LspReferenceWrite cterm=underline ctermfg=1 ctermbg=8 gui=underline guifg=#A00000 guibg=#104040
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;augroup lsp_document_highlight
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;  autocmd!
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;  autocmd CursorHold,CursorHoldI * lua vim.lsp.buf.document_highlight()
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;  autocmd CursorMoved,CursorMovedI * lua vim.lsp.buf.clear_references()
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;augroup END
+&lt;&#x2F;span&gt;&lt;span&gt;]]
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;local &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;cmp &lt;&#x2F;span&gt;&lt;span&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#96b5b4;&quot;&gt;require&lt;&#x2F;span&gt;&lt;span&gt;(&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;cmp&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;)
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;cmp&lt;&#x2F;span&gt;&lt;span&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;setup&lt;&#x2F;span&gt;&lt;span&gt;({
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;snippet &lt;&#x2F;span&gt;&lt;span&gt;= {
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#8fa1b3;&quot;&gt;expand &lt;&#x2F;span&gt;&lt;span&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;function&lt;&#x2F;span&gt;&lt;span&gt;(args)
+&lt;&#x2F;span&gt;&lt;span&gt;            &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;vim&lt;&#x2F;span&gt;&lt;span&gt;.fn[&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;vsnip#anonymous&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;](&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;args&lt;&#x2F;span&gt;&lt;span&gt;.body)
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;end&lt;&#x2F;span&gt;&lt;span&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;    },
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;sources &lt;&#x2F;span&gt;&lt;span&gt;= {
+&lt;&#x2F;span&gt;&lt;span&gt;        { &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;name &lt;&#x2F;span&gt;&lt;span&gt;= &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;nvim_lsp&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot; },
+&lt;&#x2F;span&gt;&lt;span&gt;    },
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;mapping &lt;&#x2F;span&gt;&lt;span&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;cmp&lt;&#x2F;span&gt;&lt;span&gt;.mapping.preset.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;insert&lt;&#x2F;span&gt;&lt;span&gt;({
+&lt;&#x2F;span&gt;&lt;span&gt;        [&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;&amp;lt;C-p&amp;gt;&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;] = &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;cmp&lt;&#x2F;span&gt;&lt;span&gt;.mapping.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;select_prev_item&lt;&#x2F;span&gt;&lt;span&gt;(),
+&lt;&#x2F;span&gt;&lt;span&gt;        [&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;&amp;lt;C-n&amp;gt;&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;] = &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;cmp&lt;&#x2F;span&gt;&lt;span&gt;.mapping.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;select_next_item&lt;&#x2F;span&gt;&lt;span&gt;(),
+&lt;&#x2F;span&gt;&lt;span&gt;        [&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;&amp;lt;C-l&amp;gt;&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;] = &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;cmp&lt;&#x2F;span&gt;&lt;span&gt;.mapping.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;complete&lt;&#x2F;span&gt;&lt;span&gt;(),
+&lt;&#x2F;span&gt;&lt;span&gt;        [&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;&amp;lt;C-e&amp;gt;&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;] = &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;cmp&lt;&#x2F;span&gt;&lt;span&gt;.mapping.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;abort&lt;&#x2F;span&gt;&lt;span&gt;(),
+&lt;&#x2F;span&gt;&lt;span&gt;        [&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;&amp;lt;CR&amp;gt;&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;] = &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;cmp&lt;&#x2F;span&gt;&lt;span&gt;.mapping.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;confirm &lt;&#x2F;span&gt;&lt;span&gt;{ &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;select &lt;&#x2F;span&gt;&lt;span&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;true &lt;&#x2F;span&gt;&lt;span&gt;},
+&lt;&#x2F;span&gt;&lt;span&gt;    }),
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;experimental &lt;&#x2F;span&gt;&lt;span&gt;= {
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;ghost_text &lt;&#x2F;span&gt;&lt;span&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;true&lt;&#x2F;span&gt;&lt;span&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;    },
+&lt;&#x2F;span&gt;&lt;span&gt;})
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;Language Serverのインストールは&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;:Mason
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;から行う.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;settings&quot;&gt;Settings&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;xing-fan-hao-biao-shi&quot;&gt;行番号表示&lt;&#x2F;h3&gt;
+&lt;pre data-lang=&quot;lua&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-lua &quot;&gt;&lt;code class=&quot;language-lua&quot; data-lang=&quot;lua&quot;&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;vim&lt;&#x2F;span&gt;&lt;span&gt;.wo.number = &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;true
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h3 id=&quot;karasukimubian-geng&quot;&gt;カラースキーム変更&lt;&#x2F;h3&gt;
+&lt;p&gt;VSCodeライクにする.&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;mkdir ~&#x2F;AppData&#x2F;Local&#x2F;nvim&#x2F;colors
+&lt;&#x2F;span&gt;&lt;span&gt;git clone https:&#x2F;&#x2F;github.com&#x2F;tomasiser&#x2F;vim-code-dark.git ~&#x2F;.vim&#x2F;bundle&#x2F;vim-code-dark.git
+&lt;&#x2F;span&gt;&lt;span&gt;cp ~&#x2F;.vim&#x2F;bundle&#x2F;vim-code-dark.git&#x2F;colors&#x2F;codedark.vim ~&#x2F;AppData&#x2F;Local&#x2F;nvim&#x2F;colors
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;pre data-lang=&quot;lua&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-lua &quot;&gt;&lt;code class=&quot;language-lua&quot; data-lang=&quot;lua&quot;&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;vim&lt;&#x2F;span&gt;&lt;span&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;cmd &lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;colorscheme codedark&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h3 id=&quot;jjdeinsatomodowoba-keru&quot;&gt;jjでインサートモードを抜ける&lt;&#x2F;h3&gt;
+&lt;pre data-lang=&quot;lua&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-lua &quot;&gt;&lt;code class=&quot;language-lua&quot; data-lang=&quot;lua&quot;&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;vim&lt;&#x2F;span&gt;&lt;span&gt;.api.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;nvim_set_keymap&lt;&#x2F;span&gt;&lt;span&gt;(&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;i&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;, &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;jj&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;, &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;&amp;lt;ESC&amp;gt;&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;, { &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;noremap &lt;&#x2F;span&gt;&lt;span&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;true&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;silent &lt;&#x2F;span&gt;&lt;span&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;true &lt;&#x2F;span&gt;&lt;span&gt;})
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h3 id=&quot;xing-tou-dezuo-niyi-dong-surutoqian-xing-mo-wei-ni-xing-mo-deyou-niyi-dong-surutoci-xing-xian-tou-niyi-dong-suru&quot;&gt;行頭で左に移動すると前行末尾に, 行末で右に移動すると次行先頭に移動する&lt;&#x2F;h3&gt;
+&lt;pre data-lang=&quot;lua&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-lua &quot;&gt;&lt;code class=&quot;language-lua&quot; data-lang=&quot;lua&quot;&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;vim&lt;&#x2F;span&gt;&lt;span&gt;.opt.whichwrap = &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;b,s,h,l,&amp;lt;,&amp;gt;,[,],~&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h3 id=&quot;mausucao-zuo-woyou-xiao-nisuru&quot;&gt;マウス操作を有効にする&lt;&#x2F;h3&gt;
+&lt;pre data-lang=&quot;lua&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-lua &quot;&gt;&lt;code class=&quot;language-lua&quot; data-lang=&quot;lua&quot;&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;vim&lt;&#x2F;span&gt;&lt;span&gt;.opt.mouse = &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;a&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h1 id=&quot;can-kao-saito&quot;&gt;参考サイト&lt;&#x2F;h1&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;blog.inkdrop.app&#x2F;how-to-set-up-neovim-0-5-modern-plugins-lsp-treesitter-etc-542c3d9c9887&quot;&gt;How to set up Neovim 0.5 + Modern plugins (LSP, Treesitter, Fuzzy finder, etc)&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;qiita.com&#x2F;youichiro&#x2F;items&#x2F;b4748b3e96106d25c5bc&quot;&gt;VimをVSCodeライクにする&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;www.mitomex.blog&#x2F;vim-esc-jj&#x2F;&quot;&gt;Vim で ESC キーの代わりに jj でインサートモードから抜けるには&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;zenn.dev&#x2F;botamotch&#x2F;articles&#x2F;21073d78bc68bf#.config%2Fnvim%2Finit.lua&quot;&gt;Neovim+LSPをなるべく簡単な設定で構築する&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;ruicc.hatenablog.jp&#x2F;entry&#x2F;20090615&#x2F;1245086039&quot;&gt;vimrcのwhichwrapオプションについて&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;kaworu.jpn.org&#x2F;vim&#x2F;vim%E3%81%A7%E3%83%9E%E3%82%A6%E3%82%B9%E3%82%92%E6%9C%89%E5%8A%B9%E3%81%AB%E3%81%99%E3%82%8B%E6%96%B9%E6%B3%95&quot;&gt;vimでマウスを有効にする方法&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;homaju.hatenablog.com&#x2F;entry&#x2F;2022&#x2F;06&#x2F;12&#x2F;092136&quot;&gt;Neovimのステータスラインをlualine.nvimにする&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;anadigilogic.sub.jp&#x2F;2021&#x2F;01&#x2F;23&#x2F;windows-%E3%81%AE-neovim-%E3%81%AB-colorscheme-%E3%82%92%E9%81%A9%E7%94%A8%E3%81%99%E3%82%8B&#x2F;&quot;&gt;WINDOWS の NEOVIM に COLORSCHEME を適用する&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+</content>
+        
+    </entry>
+</feed>

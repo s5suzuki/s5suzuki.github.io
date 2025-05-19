@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ja">
+    <title>Suzuki Shun&#x27;s homepage - Anaconda</title>
+    <link rel="self" type="application/atom+xml" href="https://s5suzuki.github.io/tags/anaconda/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://s5suzuki.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2023-02-20T00:00:00+00:00</updated>
+    <id>https://s5suzuki.github.io/tags/anaconda/atom.xml</id>
+    <entry xml:lang="ja">
+        <title>Anaconda (Miniconda) をアンインストールしたらUnityが死んだ話</title>
+        <published>2023-02-20T00:00:00+00:00</published>
+        <updated>2023-02-20T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://s5suzuki.github.io/posts/anaconda-unity/"/>
+        <id>https://s5suzuki.github.io/posts/anaconda-unity/</id>
+        
+        <content type="html" xml:base="https://s5suzuki.github.io/posts/anaconda-unity/">&lt;h1 id=&quot;tl-dr&quot;&gt;TL;DR&lt;&#x2F;h1&gt;
+&lt;ul&gt;
+&lt;li&gt;PowerShellを管理者権限で実行し, 以下のコマンドを実行すると治った.&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;C:\Windows\System32\reg.exe DELETE &amp;quot;HKCU\Software\Microsoft\Command Processor&amp;quot; &#x2F;v AutoRun &#x2F;f
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h1 id=&quot;xian-xiang&quot;&gt;現象&lt;&#x2F;h1&gt;
+&lt;p&gt;突如, Unityでプログラムの実行ができなくなった.
+Editor上のログでは何も表示されない.
+空のプロジェクトもだめで, Unityを再インストールしてもだめだった.&lt;&#x2F;p&gt;
+&lt;h1 id=&quot;dui-ce&quot;&gt;対策&lt;&#x2F;h1&gt;
+&lt;p&gt;そこで, &lt;a href=&quot;https:&#x2F;&#x2F;docs.unity3d.com&#x2F;ja&#x2F;2018.4&#x2F;Manual&#x2F;LogFiles.html&quot;&gt;Unity Editorのログファイル&lt;&#x2F;a&gt;を確認してみると, 以下のような大量のエラーが表示されている.&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;## Script Compilation Error for: MovedFromExtractor Library&#x2F;Bee&#x2F;artifacts&#x2F;mvdfrm&#x2F;UnityEditor.GraphViewModule.dll_2847F2B0A8088E25.mvfrm
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;この下の行を見ると, なんらかのプログラムの実行がコマンドプロンプトから失敗しているようだ.
+そこで, エラーの詳細を調べるために, コマンドプロンプトを起動し, 件のプログラムを実行しようとしたらコマンドプロンプトがそもそも起動しないことに気づいた.
+例えば, PowerShellから&lt;code&gt;cmd&lt;&#x2F;code&gt;を実行すると, 終了コード1で終了する.&lt;&#x2F;p&gt;
+&lt;p&gt;で, 色々調べてみると, StackOverflowで&lt;a href=&quot;https:&#x2F;&#x2F;stackoverflow.com&#x2F;questions&#x2F;66335300&#x2F;cmd-crashes-with-exit-code-1-after-uninstalling-anaconda&quot;&gt;Cmd crashes with exit code 1 after uninstalling anaconda&lt;&#x2F;a&gt;という記事を見つけた.
+そういえば, Anaconda (Miniconda) を諸事情でアンインストールしていた.&lt;&#x2F;p&gt;
+&lt;p&gt;これによると, &quot;Computer\HKEY_CURRENT_USER\Software\Microsoft\Command Processor&quot;というレジストリキーを削除すればいいらしい.&lt;&#x2F;p&gt;
+&lt;p&gt;どうやら, Anacondaをインストールすると, AutoKeyというレジストリが設定され, コマンドプロンプト実行時に&lt;code&gt;conda_hook.bat&lt;&#x2F;code&gt;というバッチが実行されるようになるらしいが, これが存在しないので, エラーとなっていたようだ.
+Anaconda (Miniconda) をアンインストールしても, このレジストリは消えないようだ.
+そのため, このレジストリを手動で削除する必要があるらしい.&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+</feed>
