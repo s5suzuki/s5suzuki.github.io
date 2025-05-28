@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ja">
+    <title>Suzuki Shun&#x27;s homepage - GDB</title>
+    <link rel="self" type="application/atom+xml" href="https://s5suzuki.github.io/tags/gdb/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://s5suzuki.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2022-08-09T00:00:00+00:00</updated>
+    <id>https://s5suzuki.github.io/tags/gdb/atom.xml</id>
+    <entry xml:lang="ja">
+        <title>RustでRaspberry Pi Picoの開発 (Windows + VSCode + OpenOCD + GDB)</title>
+        <published>2022-08-09T00:00:00+00:00</published>
+        <updated>2022-08-09T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://s5suzuki.github.io/posts/rust-raspi-pico/"/>
+        <id>https://s5suzuki.github.io/posts/rust-raspi-pico/</id>
+        
+        <content type="html" xml:base="https://s5suzuki.github.io/posts/rust-raspi-pico/">&lt;p&gt;以下は, &lt;a href=&quot;https:&#x2F;&#x2F;s5suzuki.github.io&#x2F;posts&#x2F;picoprobe-openocd-win&#x2F;&quot;&gt;この記事&lt;&#x2F;a&gt;に従ってOpenOCDがインストールされていることが前提である.&lt;&#x2F;p&gt;
+&lt;h1 id=&quot;shi-qian-zhun-bei&quot;&gt;事前準備&lt;&#x2F;h1&gt;
+&lt;h2 id=&quot;raspberry-pi-piconoyong-yi&quot;&gt;Raspberry Pi Picoの用意&lt;&#x2F;h2&gt;
+&lt;p&gt;ここでは, Raspberry Pi Picoを二台用意し, 片方に&lt;code&gt;Picoprobe&lt;&#x2F;code&gt;を書き込み, これを使用してもう一台の開発を行うことにする.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;www.raspberrypi.com&#x2F;documentation&#x2F;microcontrollers&#x2F;raspberry-pi-pico.html#software-utilities&quot;&gt;Picoprobeは公式にuf2ファイルが用意されている&lt;&#x2F;a&gt;ので, これを使用すれば良い.&lt;&#x2F;p&gt;
+&lt;p&gt;あとは, &lt;a href=&quot;https:&#x2F;&#x2F;datasheets.raspberrypi.com&#x2F;pico&#x2F;getting-started-with-pico.pdf&quot;&gt;ドキュメント&lt;&#x2F;a&gt;のAppendix Aに従って, 二台のRasberry Pi Picoを接続しておく.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;bi-yao-naturunoinsutoru&quot;&gt;必要なツールのインストール&lt;&#x2F;h2&gt;
+&lt;p&gt;次に, コンパイルに必要なRustのツールチェインとツールをインストールする.&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;rustup target install thumbv6m-none-eabi
+&lt;&#x2F;span&gt;&lt;span&gt;cargo install flip-link
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;あと, templateを使用するために, &lt;code&gt;cargo-generate&lt;&#x2F;code&gt;もインストールする.&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;cargo install cargo-generate
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;また, デバッグ用に&lt;code&gt;gdb&lt;&#x2F;code&gt;もインストールしておく, これはMSYSで行う.&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;pacman -S mingw-w64-x86_64-gdb-multiarch
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h1 id=&quot;tenpuretonobirudo&quot;&gt;テンプレートのビルド&lt;&#x2F;h1&gt;
+&lt;p&gt;Raspberry Pi Pico用のテンプレートが存在するので, これを利用する.&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;cargo generate --git https:&#x2F;&#x2F;github.com&#x2F;rp-rs&#x2F;rp2040-project-template --name pico-blink
+&lt;&#x2F;span&gt;&lt;span&gt;cd pico-blink
+&lt;&#x2F;span&gt;&lt;span&gt;cargo build
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;すると, &lt;code&gt;target&#x2F;thumbv6m-none-eabi&#x2F;debug&#x2F;rp2040-project-template&lt;&#x2F;code&gt; (ELF形式) が生成される.&lt;&#x2F;p&gt;
+&lt;h1 id=&quot;vscode-gdbwoshi-yong-sitedebatugu&quot;&gt;VSCode + GDBを使用してデバッグ&lt;&#x2F;h1&gt;
+&lt;p&gt;VSCodeとgdbを使用してデバッグするには, まず, 以下の拡張機能をインストールする必要がある.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;marketplace.visualstudio.com&#x2F;items?itemName=webfreak.debug&quot;&gt;Native Debug&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;次に, &lt;code&gt;.vscode&#x2F;launch.json&lt;&#x2F;code&gt;を書き換える. デフォルトのままだと動かないので適当に書き換えた.&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;json&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-json &quot;&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;    &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;version&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;: &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;0.2.0&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;,
+&lt;&#x2F;span&gt;&lt;span&gt;    &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;configurations&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;: [
+&lt;&#x2F;span&gt;&lt;span&gt;        {
+&lt;&#x2F;span&gt;&lt;span&gt;            &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;name&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;: &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;rp2040-project&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;,
+&lt;&#x2F;span&gt;&lt;span&gt;            &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;preLaunchTask&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;: &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;rust: cargo build&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;,
+&lt;&#x2F;span&gt;&lt;span&gt;            &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;type&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;: &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;gdb&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;,
+&lt;&#x2F;span&gt;&lt;span&gt;            &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;request&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;: &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;attach&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;,
+&lt;&#x2F;span&gt;&lt;span&gt;            &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;executable&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;: &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;target&#x2F;thumbv6m-none-eabi&#x2F;debug&#x2F;rp2040-project-template&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;,
+&lt;&#x2F;span&gt;&lt;span&gt;            &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;cwd&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;: &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;${workspaceFolder}&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;,
+&lt;&#x2F;span&gt;&lt;span&gt;            &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;target&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;: &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;:3333&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;,
+&lt;&#x2F;span&gt;&lt;span&gt;            &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;remote&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;true&lt;&#x2F;span&gt;&lt;span&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;            &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;gdbpath&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;: &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;gdb-multiarch&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;,
+&lt;&#x2F;span&gt;&lt;span&gt;            &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;autorun&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;: [
+&lt;&#x2F;span&gt;&lt;span&gt;                &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;target remote :3333&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;,
+&lt;&#x2F;span&gt;&lt;span&gt;                &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;mon reset init&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;,
+&lt;&#x2F;span&gt;&lt;span&gt;                &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;load&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;,
+&lt;&#x2F;span&gt;&lt;span&gt;            ],
+&lt;&#x2F;span&gt;&lt;span&gt;        }
+&lt;&#x2F;span&gt;&lt;span&gt;    ]
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;次に, terminalでOpenOCDを起動する.&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;openocd -f interface&#x2F;picoprobe.cfg -f target&#x2F;rp2040.cfg -s C:&#x2F;openocd&#x2F;tcl
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;あとは, &lt;code&gt;main.rs&lt;&#x2F;code&gt;を開き, 適当なところにブレークポイントを貼り, &lt;code&gt;F5&lt;&#x2F;code&gt;を押せばデバッグが始まる.&lt;&#x2F;p&gt;
+&lt;h1 id=&quot;openocddeshu-kiip-mi&quot;&gt;OpenOCDで書き込み&lt;&#x2F;h1&gt;
+&lt;p&gt;上記のELFファイルをOpenOCDで書き込むには以下のようにすれば良い.&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;openocd -f interface&#x2F;picoprobe.cfg -f target&#x2F;rp2040.cfg -s C:&#x2F;openocd&#x2F;tcl -c &amp;quot;program target&#x2F;thumbv6m-none-eabi&#x2F;debug&#x2F;rp2040-project-template verify reset exit&amp;quot;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h1 id=&quot;uf2deshu-kiip-mi&quot;&gt;UF2で書き込み&lt;&#x2F;h1&gt;
+&lt;p&gt;或いは, UF2で書き込む場合は&lt;code&gt;elf2uf2-rs&lt;&#x2F;code&gt;を使用する.
+まず, &lt;code&gt;elf2uf2-rs&lt;&#x2F;code&gt;をインストールする.&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;cargo install elf2uf2-rs
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;次に, BOOTSELボタンを押した状態でRaspberry Pi Picoを接続しておく.&lt;&#x2F;p&gt;
+&lt;p&gt;また, &lt;code&gt;.cargo&#x2F;config.toml&lt;&#x2F;code&gt;を書き換え, &lt;code&gt;runner = &quot;probe-run --chip RP2040&quot;&lt;&#x2F;code&gt;をコメントアウトし, &lt;code&gt;runner = &quot;elf2uf2-rs -d&quot;&lt;&#x2F;code&gt;のコメントを外す.&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;# runner = &amp;quot;probe-run --chip RP2040&amp;quot;
+&lt;&#x2F;span&gt;&lt;span&gt;# runner = &amp;quot;cargo embed&amp;quot;
+&lt;&#x2F;span&gt;&lt;span&gt;runner = &amp;quot;elf2uf2-rs -d&amp;quot;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;この状態で, &lt;code&gt;cargo run&lt;&#x2F;code&gt;するとuf2が自動的に書き込まれる.&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+</feed>

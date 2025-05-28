@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ja">
+    <title>Suzuki Shun&#x27;s homepage - Windows</title>
+    <link rel="self" type="application/atom+xml" href="https://s5suzuki.github.io/tags/windows/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://s5suzuki.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2023-04-06T00:00:00+00:00</updated>
+    <id>https://s5suzuki.github.io/tags/windows/atom.xml</id>
+    <entry xml:lang="ja">
+        <title>Windows WSL2でpico-dirtyJtagとUrJtagをインストールする</title>
+        <published>2023-04-06T00:00:00+00:00</published>
+        <updated>2023-04-06T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://s5suzuki.github.io/posts/urjtag-dirtyjtag-wsl/"/>
+        <id>https://s5suzuki.github.io/posts/urjtag-dirtyjtag-wsl/</id>
+        
+        <content type="html" xml:base="https://s5suzuki.github.io/posts/urjtag-dirtyjtag-wsl/">&lt;h1 id=&quot;huan-jing&quot;&gt;環境&lt;&#x2F;h1&gt;
+&lt;ul&gt;
+&lt;li&gt;Windows 11&lt;&#x2F;li&gt;
+&lt;li&gt;Ubuntu 22.04.2 on WSL2&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h1 id=&quot;urjtag&quot;&gt;UrJtag&lt;&#x2F;h1&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;依存ツールのダウンロード&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;sudo apt install build-essential autoconf autopoint libtool pkg-config python3-dev libusb-1.0-0-dev
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;UrJtagのビルド&amp;amp;インストール&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;cd &#x2F;tmp
+&lt;&#x2F;span&gt;&lt;span&gt;git clone https:&#x2F;&#x2F;git.code.sf.net&#x2F;p&#x2F;urjtag&#x2F;git urjtag-git
+&lt;&#x2F;span&gt;&lt;span&gt;cd urjtag-git&#x2F;urjtag
+&lt;&#x2F;span&gt;&lt;span&gt;.&#x2F;autogen.sh
+&lt;&#x2F;span&gt;&lt;span&gt;make
+&lt;&#x2F;span&gt;&lt;span&gt;sudo make install
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;jtag&lt;&#x2F;code&gt;コマンドが使えるかチェック&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;jtag
+&lt;&#x2F;span&gt;&lt;span&gt;jtag&amp;gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;ol&gt;
+&lt;li&gt;私の環境だと, &lt;code&gt;libjtag.so.0&lt;&#x2F;code&gt;が見つからないというエラーが出たので, 以下のコマンドを実行した&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;sudo ldconfig
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;h1 id=&quot;pico-dirtyjtag&quot;&gt;pico-dirtyJtag&lt;&#x2F;h1&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;依存ツールのインストール&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;sudo apt install cmake gcc-arm-none-eabi
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;pico-dirtyJtagのビルド&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;git clone https:&#x2F;&#x2F;github.com&#x2F;phdussud&#x2F;pico-dirtyJtag.git
+&lt;&#x2F;span&gt;&lt;span&gt;cd pico-dirtyJtag
+&lt;&#x2F;span&gt;&lt;span&gt;mkdir build
+&lt;&#x2F;span&gt;&lt;span&gt;cd build
+&lt;&#x2F;span&gt;&lt;span&gt;cmake .. -DPICO_SDK_FETCH_FROM_GIT=ON
+&lt;&#x2F;span&gt;&lt;span&gt;cmake --build . --parallel 8
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;以上で, &lt;code&gt;pico-dirtyJtag&#x2F;build&lt;&#x2F;code&gt;以下に&lt;code&gt;dirtyJtag.uf2&lt;&#x2F;code&gt;が生成されるのでこれをRaspberry Pi Picoに書き込む.&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;h1 id=&quot;usbdoraibanoinsutoru&quot;&gt;USBドライバのインストール&lt;&#x2F;h1&gt;
+&lt;ol&gt;
+&lt;li&gt;pico-dirtyJtagを書き込んだRaspberry Pi Picoを接続する&lt;&#x2F;li&gt;
+&lt;li&gt;Windows側で&lt;a href=&quot;https:&#x2F;&#x2F;zadig.akeo.ie&#x2F;&quot;&gt;zadig&lt;&#x2F;a&gt;を使用し, 「dirtyJtag」のドライバとして, 「libusb-win32」をインストールする&lt;&#x2F;li&gt;
+&lt;li&gt;これだけだと, WSL側で認識できないので, 追加で作業する. 詳しくは&lt;a href=&quot;https:&#x2F;&#x2F;learn.microsoft.com&#x2F;en-us&#x2F;windows&#x2F;wsl&#x2F;connect-usb&quot;&gt;Connect USB devices&lt;&#x2F;a&gt;を参照.
+&lt;ol&gt;
+&lt;li&gt;Windows側でUSBIPDをインストールする&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;winget install --interactive --exact dorssel.usbipd-win
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;WSL側でUSBIPツールをインストールする&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;sudo apt install linux-tools-generic hwdata
+&lt;&#x2F;span&gt;&lt;span&gt;sudo update-alternatives --install &#x2F;usr&#x2F;local&#x2F;bin&#x2F;usbip usbip &#x2F;usr&#x2F;lib&#x2F;linux-tools&#x2F;*-generic&#x2F;usbip 20
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;Windows側でWSLにUSBデバイス一覧を確認. DirtyJtagの「busid」を確認しておく&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;usbipd wsl list
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;Windows側でUSBデバイスをWSLにアタッチする&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;usbipd wsl attach --busid &amp;lt;busid&amp;gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;以上で, WSL2からDirtyJtagが見えるようになる&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;sudo jtag
+&lt;&#x2F;span&gt;&lt;span&gt;jtag&amp;gt; cable dirtyjtag
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;ul&gt;
+&lt;li&gt;管理者権限なしだと, &lt;code&gt;cable dirtyjtag&lt;&#x2F;code&gt;でコケる&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="ja">
+        <title>Anaconda (Miniconda) をアンインストールしたらUnityが死んだ話</title>
+        <published>2023-02-20T00:00:00+00:00</published>
+        <updated>2023-02-20T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://s5suzuki.github.io/posts/anaconda-unity/"/>
+        <id>https://s5suzuki.github.io/posts/anaconda-unity/</id>
+        
+        <content type="html" xml:base="https://s5suzuki.github.io/posts/anaconda-unity/">&lt;h1 id=&quot;tl-dr&quot;&gt;TL;DR&lt;&#x2F;h1&gt;
+&lt;ul&gt;
+&lt;li&gt;PowerShellを管理者権限で実行し, 以下のコマンドを実行すると治った.&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;C:\Windows\System32\reg.exe DELETE &amp;quot;HKCU\Software\Microsoft\Command Processor&amp;quot; &#x2F;v AutoRun &#x2F;f
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h1 id=&quot;xian-xiang&quot;&gt;現象&lt;&#x2F;h1&gt;
+&lt;p&gt;突如, Unityでプログラムの実行ができなくなった.
+Editor上のログでは何も表示されない.
+空のプロジェクトもだめで, Unityを再インストールしてもだめだった.&lt;&#x2F;p&gt;
+&lt;h1 id=&quot;dui-ce&quot;&gt;対策&lt;&#x2F;h1&gt;
+&lt;p&gt;そこで, &lt;a href=&quot;https:&#x2F;&#x2F;docs.unity3d.com&#x2F;ja&#x2F;2018.4&#x2F;Manual&#x2F;LogFiles.html&quot;&gt;Unity Editorのログファイル&lt;&#x2F;a&gt;を確認してみると, 以下のような大量のエラーが表示されている.&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;## Script Compilation Error for: MovedFromExtractor Library&#x2F;Bee&#x2F;artifacts&#x2F;mvdfrm&#x2F;UnityEditor.GraphViewModule.dll_2847F2B0A8088E25.mvfrm
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;この下の行を見ると, なんらかのプログラムの実行がコマンドプロンプトから失敗しているようだ.
+そこで, エラーの詳細を調べるために, コマンドプロンプトを起動し, 件のプログラムを実行しようとしたらコマンドプロンプトがそもそも起動しないことに気づいた.
+例えば, PowerShellから&lt;code&gt;cmd&lt;&#x2F;code&gt;を実行すると, 終了コード1で終了する.&lt;&#x2F;p&gt;
+&lt;p&gt;で, 色々調べてみると, StackOverflowで&lt;a href=&quot;https:&#x2F;&#x2F;stackoverflow.com&#x2F;questions&#x2F;66335300&#x2F;cmd-crashes-with-exit-code-1-after-uninstalling-anaconda&quot;&gt;Cmd crashes with exit code 1 after uninstalling anaconda&lt;&#x2F;a&gt;という記事を見つけた.
+そういえば, Anaconda (Miniconda) を諸事情でアンインストールしていた.&lt;&#x2F;p&gt;
+&lt;p&gt;これによると, &quot;Computer\HKEY_CURRENT_USER\Software\Microsoft\Command Processor&quot;というレジストリキーを削除すればいいらしい.&lt;&#x2F;p&gt;
+&lt;p&gt;どうやら, Anacondaをインストールすると, AutoKeyというレジストリが設定され, コマンドプロンプト実行時に&lt;code&gt;conda_hook.bat&lt;&#x2F;code&gt;というバッチが実行されるようになるらしいが, これが存在しないので, エラーとなっていたようだ.
+Anaconda (Miniconda) をアンインストールしても, このレジストリは消えないようだ.
+そのため, このレジストリを手動で削除する必要があるらしい.&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="ja">
+        <title>GitHub actionで作ったunitypackageが&quot;Failed to copy package&quot;と出て読み込めなかった</title>
+        <published>2022-10-26T00:00:00+00:00</published>
+        <updated>2022-10-26T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://s5suzuki.github.io/posts/create-unitypackage-action/"/>
+        <id>https://s5suzuki.github.io/posts/create-unitypackage-action/</id>
+        
+        <content type="html" xml:base="https://s5suzuki.github.io/posts/create-unitypackage-action/">&lt;ul&gt;
+&lt;li&gt;TL;DR: パスの区切りがバックスラッシュになっているのが問題だった.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;GitHub actionでunitypackageを作成し, それをReleasesページで配布していた.&lt;&#x2F;p&gt;
+&lt;p&gt;このために, &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;pCYSl5EDgo&#x2F;create-unitypackage&quot;&gt;pCYSl5EDgo&#x2F;create-unitypackage&lt;&#x2F;a&gt;を使用させていただいていた.
+このサンプルでは&lt;code&gt;ubuntu-latest&lt;&#x2F;code&gt;が使用されており, その場合は全く問題なく動いていた.
+しかし, 諸事情により&lt;code&gt;windows-latest&lt;&#x2F;code&gt;を使用する必要が出てきたため, &lt;code&gt;windows-latest&lt;&#x2F;code&gt;で動かしたところ, 作成したパッケージをUnityでimportしようとすると, &quot;Failed to copy package&quot;というエラーによりimportできなかった.&lt;&#x2F;p&gt;
+&lt;p&gt;unitypackageをunzipして中身を確認してみても, 特に間違っているようには見えない.
+そこで, 適当にミニマルなパッケージを作成し, &lt;code&gt;ubuntu-latest&lt;&#x2F;code&gt;と&lt;code&gt;windows-latest&lt;&#x2F;code&gt;で作成したunitypackageを比較してみると, pathnameの記述で, ubuntuがスラッシュ (&#x2F;) を使用しているのに対して, Windowsの方はバックスラッシュ (\) になっていた.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;code&gt;*.meta&lt;&#x2F;code&gt;ファイルを列挙する部分を, Windowsに合わせて以下のようにしていたが, これだとバックスラッシュが使われてしまうようだ.&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;Get-ChildItem -Recurse -Filter &amp;#39;*.meta&amp;#39; -Name &amp;gt;&amp;gt; metaList
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;そこで, 以下のように\を&#x2F;に置換するようにしたところ, 無事importできるようになった.&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;Get-ChildItem -Recurse -Filter &amp;#39;*.meta&amp;#39; -Name | ForEach-Object {$_ -replace &amp;#39;[\\]&amp;#39;, &amp;#39;&#x2F;&amp;#39;} &amp;gt;&amp;gt; metaList
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="ja">
+        <title>PowerShellでプログラムのインストールフォルダを見つける</title>
+        <published>2022-09-08T00:00:00+00:00</published>
+        <updated>2022-09-08T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://s5suzuki.github.io/posts/pwsh-installed-location/"/>
+        <id>https://s5suzuki.github.io/posts/pwsh-installed-location/</id>
+        
+        <content type="html" xml:base="https://s5suzuki.github.io/posts/pwsh-installed-location/">&lt;p&gt;&lt;code&gt;7-zip&lt;&#x2F;code&gt;をシェルから使いたかったが, PATHに入ってなかった.
+わざわざ, PATHに追加するのも面倒なので, PowerShellで&lt;code&gt;7-zip&lt;&#x2F;code&gt;の実行ファイルの場所を検索して, 一時的にPATHに追加することにした.&lt;&#x2F;p&gt;
+&lt;p&gt;インストール先を探すには, レジストリを見て, 正規表現でマッチする要素を取り出せば良さそう.&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;powershell&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-powershell &quot;&gt;&lt;code class=&quot;language-powershell&quot; data-lang=&quot;powershell&quot;&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;function &lt;&#x2F;span&gt;&lt;span style=&quot;color:#8fa1b3;&quot;&gt;FindInstallPath&lt;&#x2F;span&gt;&lt;span&gt;($&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;name&lt;&#x2F;span&gt;&lt;span&gt;) {
+&lt;&#x2F;span&gt;&lt;span&gt;    $&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;reg &lt;&#x2F;span&gt;&lt;span&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#96b5b4;&quot;&gt;Get-ChildItem&lt;&#x2F;span&gt;&lt;span&gt; HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall | &lt;&#x2F;span&gt;&lt;span style=&quot;color:#96b5b4;&quot;&gt;ForEach-Object &lt;&#x2F;span&gt;&lt;span&gt;{ &lt;&#x2F;span&gt;&lt;span style=&quot;color:#96b5b4;&quot;&gt;Get-ItemProperty &lt;&#x2F;span&gt;&lt;span&gt;$_&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;.PsPath &lt;&#x2F;span&gt;&lt;span&gt;} | &lt;&#x2F;span&gt;&lt;span style=&quot;color:#96b5b4;&quot;&gt;Where-Object&lt;&#x2F;span&gt;&lt;span&gt; DisplayName -match $&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;name &lt;&#x2F;span&gt;&lt;span&gt;| &lt;&#x2F;span&gt;&lt;span style=&quot;color:#96b5b4;&quot;&gt;Select-Object &lt;&#x2F;span&gt;&lt;span&gt;-first &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;1
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;if &lt;&#x2F;span&gt;&lt;span&gt;($&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;reg&lt;&#x2F;span&gt;&lt;span&gt;) {
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;return &lt;&#x2F;span&gt;&lt;span&gt;$&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;reg.InstallLocation
+&lt;&#x2F;span&gt;&lt;span&gt;    }
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;else &lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;return &lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;NULL&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;
+&lt;&#x2F;span&gt;&lt;span&gt;    }
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;例えば, 以下のように使える.&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;powershell&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-powershell &quot;&gt;&lt;code class=&quot;language-powershell&quot; data-lang=&quot;powershell&quot;&gt;&lt;span&gt;$&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;7zip_path &lt;&#x2F;span&gt;&lt;span&gt;= FindInstallPath &amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;7-Zip&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;
+&lt;&#x2F;span&gt;&lt;span&gt;$&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;env:Path &lt;&#x2F;span&gt;&lt;span&gt;= &amp;quot;$&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;env:Path&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;;&lt;&#x2F;span&gt;&lt;span&gt;$&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;7zip_path&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="ja">
+        <title>wingetでインストールされてないプログラムのみインストールする (PowerShell)</title>
+        <published>2022-09-07T00:00:00+00:00</published>
+        <updated>2022-09-07T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://s5suzuki.github.io/posts/pwsh-winget-install/"/>
+        <id>https://s5suzuki.github.io/posts/pwsh-winget-install/</id>
+        
+        <content type="html" xml:base="https://s5suzuki.github.io/posts/pwsh-winget-install/">&lt;p&gt;&lt;code&gt;winget list&lt;&#x2F;code&gt;でインストールされているパッケージを表示できる.
+インストールされていない場合, エラーを返すので, 以下のようにすれば, インストールされてない場合だけインストールできる.&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;powershell&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-powershell &quot;&gt;&lt;code class=&quot;language-powershell&quot; data-lang=&quot;powershell&quot;&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;function &lt;&#x2F;span&gt;&lt;span style=&quot;color:#8fa1b3;&quot;&gt;install_if_not_installed&lt;&#x2F;span&gt;&lt;span&gt;($&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;name&lt;&#x2F;span&gt;&lt;span&gt;) {
+&lt;&#x2F;span&gt;&lt;span&gt;    winget list -q $&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;name &lt;&#x2F;span&gt;&lt;span&gt;| &lt;&#x2F;span&gt;&lt;span style=&quot;color:#96b5b4;&quot;&gt;Out-Null
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;if &lt;&#x2F;span&gt;&lt;span&gt;($?) {
+&lt;&#x2F;span&gt;&lt;span&gt;        echo &amp;quot;$&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;name&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt; is already installed&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;
+&lt;&#x2F;span&gt;&lt;span&gt;    } &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;else &lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;        winget install $&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;name
+&lt;&#x2F;span&gt;&lt;span&gt;    }
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="ja">
+        <title>WindowsでPicoprobe用のOpenOCDをビルドする</title>
+        <published>2022-08-09T00:00:00+00:00</published>
+        <updated>2022-08-09T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://s5suzuki.github.io/posts/picoprobe-openocd-win/"/>
+        <id>https://s5suzuki.github.io/posts/picoprobe-openocd-win/</id>
+        
+        <content type="html" xml:base="https://s5suzuki.github.io/posts/picoprobe-openocd-win/">&lt;p&gt;基本的に&lt;a href=&quot;https:&#x2F;&#x2F;datasheets.raspberrypi.com&#x2F;pico&#x2F;getting-started-with-pico.pdf&quot;&gt;公式のドキュメント&lt;&#x2F;a&gt;に従えば良いはずなのだが, ちょこちょこ環境依存なのかエラーが出たので備忘録として残しておく.&lt;&#x2F;p&gt;
+&lt;h1 id=&quot;msys2noinsutoru&quot;&gt;MSYS2のインストール&lt;&#x2F;h1&gt;
+&lt;p&gt;まず, &lt;a href=&quot;https:&#x2F;&#x2F;www.msys2.org&#x2F;&quot;&gt;MSYS2&lt;&#x2F;a&gt;をダウンロードして, インストールする.&lt;&#x2F;p&gt;
+&lt;p&gt;次に, MSYS2を起動し, パッケージやコアをアップデートする.&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;pacman -Syu
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;(ちなみに, ペーストはShift+Insなので注意)&lt;&#x2F;p&gt;
+&lt;p&gt;アップデート中にMSYS2が終了した場合は, 再び起動して, 上記コマンドをもう一度実行する.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;yi-cun-raiburarinoinsutoru&quot;&gt;依存ライブラリのインストール&lt;&#x2F;h2&gt;
+&lt;p&gt;OpenOCDをビルドするのに必要なライブラリをインストールする.&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;pacman -S mingw-w64-x86_64-toolchain git make libtool pkg-config autoconf automake texinfo mingw-w64-x86_64-libusb
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Toolchainはとりあえず全部インストールする.&lt;&#x2F;p&gt;
+&lt;p&gt;一旦, MSYS2を終了し, MSYS2 MinGW x64を起動する.&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;NOTE:
+MSYS2 MSYSではなく, MSYS2 MinGW x64を起動することに注意.
+前者だと必要なPATHが通っていない. (自分でPATHを通しても良いが)&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;h1 id=&quot;openocdwobirudo&quot;&gt;OpenOCDをビルド&lt;&#x2F;h1&gt;
+&lt;p&gt;Raspberry PiのリポジトリからOpenOCDをクローンし, ビルドする.&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;git clone https:&#x2F;&#x2F;github.com&#x2F;raspberrypi&#x2F;openocd.git --branch rp2040 --depth=1
+&lt;&#x2F;span&gt;&lt;span&gt;cd openocd
+&lt;&#x2F;span&gt;&lt;span&gt;.&#x2F;bootstrap
+&lt;&#x2F;span&gt;&lt;span&gt;.&#x2F;configure --enable-picoprobe --disable-werror
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;details&gt;
+&lt;summary&gt;configureのエラー対処&lt;&#x2F;summary&gt;
+&lt;p&gt;以下のエラーが出た場合は&lt;code&gt;MSYS2 MinGW x64&lt;&#x2F;code&gt;を使っているかを確認すること.&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;configure: error: libusb-1.x is required for the Raspberry Pi Pico Probe
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;或いは, &lt;code&gt;PKG_CONFIG_PATH&lt;&#x2F;code&gt;を設定しても良い.&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;export PKG_CONFIG_PATH=&#x2F;mingw64&#x2F;lib&#x2F;pkgconfig:&#x2F;mingw64&#x2F;share&#x2F;pkgconfig
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;&#x2F;details&gt;
+&lt;p&gt;以上が終われば, あとはビルドするだけである.&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;make -j8
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;すると, &lt;code&gt;src&#x2F;openocd.exe&lt;&#x2F;code&gt;が生成される.&lt;&#x2F;p&gt;
+&lt;h1 id=&quot;install&quot;&gt;Install&lt;&#x2F;h1&gt;
+&lt;p&gt;これは趣味だが, Windowsから使いやすいように, &lt;code&gt;openocd.exe&lt;&#x2F;code&gt;を適当なところにコピーしておく.&lt;&#x2F;p&gt;
+&lt;p&gt;ついでに, cfgファイル等が含まれる&lt;code&gt;tcl&lt;&#x2F;code&gt;フォルダと&lt;code&gt;libusb&lt;&#x2F;code&gt;のdllもコピーしておく.&lt;&#x2F;p&gt;
+&lt;p&gt;ここでは, &lt;code&gt;C&lt;&#x2F;code&gt;直下に&lt;code&gt;openocd&lt;&#x2F;code&gt;というフォルダを作って, そこに置くことにする.&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;mkdir &#x2F;c&#x2F;openocd
+&lt;&#x2F;span&gt;&lt;span&gt;cp src&#x2F;openocd.exe &#x2F;c&#x2F;openocd
+&lt;&#x2F;span&gt;&lt;span&gt;cp -r tcl&#x2F; &#x2F;c&#x2F;openocd&#x2F;
+&lt;&#x2F;span&gt;&lt;span&gt;cp &#x2F;mingw64&#x2F;bin&#x2F;libusb-1.0.dll &#x2F;c&#x2F;openocd&#x2F;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;最後に, &lt;code&gt;C:\openocd&lt;&#x2F;code&gt;へWindowsのPATHを通しておく.&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="ja">
+        <title>RustでRaspberry Pi Picoの開発 (Windows + VSCode + OpenOCD + GDB)</title>
+        <published>2022-08-09T00:00:00+00:00</published>
+        <updated>2022-08-09T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://s5suzuki.github.io/posts/rust-raspi-pico/"/>
+        <id>https://s5suzuki.github.io/posts/rust-raspi-pico/</id>
+        
+        <content type="html" xml:base="https://s5suzuki.github.io/posts/rust-raspi-pico/">&lt;p&gt;以下は, &lt;a href=&quot;https:&#x2F;&#x2F;s5suzuki.github.io&#x2F;posts&#x2F;picoprobe-openocd-win&#x2F;&quot;&gt;この記事&lt;&#x2F;a&gt;に従ってOpenOCDがインストールされていることが前提である.&lt;&#x2F;p&gt;
+&lt;h1 id=&quot;shi-qian-zhun-bei&quot;&gt;事前準備&lt;&#x2F;h1&gt;
+&lt;h2 id=&quot;raspberry-pi-piconoyong-yi&quot;&gt;Raspberry Pi Picoの用意&lt;&#x2F;h2&gt;
+&lt;p&gt;ここでは, Raspberry Pi Picoを二台用意し, 片方に&lt;code&gt;Picoprobe&lt;&#x2F;code&gt;を書き込み, これを使用してもう一台の開発を行うことにする.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;www.raspberrypi.com&#x2F;documentation&#x2F;microcontrollers&#x2F;raspberry-pi-pico.html#software-utilities&quot;&gt;Picoprobeは公式にuf2ファイルが用意されている&lt;&#x2F;a&gt;ので, これを使用すれば良い.&lt;&#x2F;p&gt;
+&lt;p&gt;あとは, &lt;a href=&quot;https:&#x2F;&#x2F;datasheets.raspberrypi.com&#x2F;pico&#x2F;getting-started-with-pico.pdf&quot;&gt;ドキュメント&lt;&#x2F;a&gt;のAppendix Aに従って, 二台のRasberry Pi Picoを接続しておく.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;bi-yao-naturunoinsutoru&quot;&gt;必要なツールのインストール&lt;&#x2F;h2&gt;
+&lt;p&gt;次に, コンパイルに必要なRustのツールチェインとツールをインストールする.&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;rustup target install thumbv6m-none-eabi
+&lt;&#x2F;span&gt;&lt;span&gt;cargo install flip-link
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;あと, templateを使用するために, &lt;code&gt;cargo-generate&lt;&#x2F;code&gt;もインストールする.&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;cargo install cargo-generate
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;また, デバッグ用に&lt;code&gt;gdb&lt;&#x2F;code&gt;もインストールしておく, これはMSYSで行う.&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;pacman -S mingw-w64-x86_64-gdb-multiarch
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h1 id=&quot;tenpuretonobirudo&quot;&gt;テンプレートのビルド&lt;&#x2F;h1&gt;
+&lt;p&gt;Raspberry Pi Pico用のテンプレートが存在するので, これを利用する.&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;cargo generate --git https:&#x2F;&#x2F;github.com&#x2F;rp-rs&#x2F;rp2040-project-template --name pico-blink
+&lt;&#x2F;span&gt;&lt;span&gt;cd pico-blink
+&lt;&#x2F;span&gt;&lt;span&gt;cargo build
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;すると, &lt;code&gt;target&#x2F;thumbv6m-none-eabi&#x2F;debug&#x2F;rp2040-project-template&lt;&#x2F;code&gt; (ELF形式) が生成される.&lt;&#x2F;p&gt;
+&lt;h1 id=&quot;vscode-gdbwoshi-yong-sitedebatugu&quot;&gt;VSCode + GDBを使用してデバッグ&lt;&#x2F;h1&gt;
+&lt;p&gt;VSCodeとgdbを使用してデバッグするには, まず, 以下の拡張機能をインストールする必要がある.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;marketplace.visualstudio.com&#x2F;items?itemName=webfreak.debug&quot;&gt;Native Debug&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;次に, &lt;code&gt;.vscode&#x2F;launch.json&lt;&#x2F;code&gt;を書き換える. デフォルトのままだと動かないので適当に書き換えた.&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;json&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-json &quot;&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;    &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;version&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;: &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;0.2.0&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;,
+&lt;&#x2F;span&gt;&lt;span&gt;    &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;configurations&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;: [
+&lt;&#x2F;span&gt;&lt;span&gt;        {
+&lt;&#x2F;span&gt;&lt;span&gt;            &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;name&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;: &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;rp2040-project&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;,
+&lt;&#x2F;span&gt;&lt;span&gt;            &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;preLaunchTask&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;: &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;rust: cargo build&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;,
+&lt;&#x2F;span&gt;&lt;span&gt;            &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;type&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;: &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;gdb&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;,
+&lt;&#x2F;span&gt;&lt;span&gt;            &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;request&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;: &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;attach&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;,
+&lt;&#x2F;span&gt;&lt;span&gt;            &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;executable&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;: &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;target&#x2F;thumbv6m-none-eabi&#x2F;debug&#x2F;rp2040-project-template&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;,
+&lt;&#x2F;span&gt;&lt;span&gt;            &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;cwd&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;: &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;${workspaceFolder}&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;,
+&lt;&#x2F;span&gt;&lt;span&gt;            &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;target&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;: &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;:3333&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;,
+&lt;&#x2F;span&gt;&lt;span&gt;            &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;remote&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;true&lt;&#x2F;span&gt;&lt;span&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;            &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;gdbpath&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;: &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;gdb-multiarch&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;,
+&lt;&#x2F;span&gt;&lt;span&gt;            &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;autorun&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;: [
+&lt;&#x2F;span&gt;&lt;span&gt;                &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;target remote :3333&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;,
+&lt;&#x2F;span&gt;&lt;span&gt;                &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;mon reset init&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;,
+&lt;&#x2F;span&gt;&lt;span&gt;                &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;load&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;,
+&lt;&#x2F;span&gt;&lt;span&gt;            ],
+&lt;&#x2F;span&gt;&lt;span&gt;        }
+&lt;&#x2F;span&gt;&lt;span&gt;    ]
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;次に, terminalでOpenOCDを起動する.&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;openocd -f interface&#x2F;picoprobe.cfg -f target&#x2F;rp2040.cfg -s C:&#x2F;openocd&#x2F;tcl
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;あとは, &lt;code&gt;main.rs&lt;&#x2F;code&gt;を開き, 適当なところにブレークポイントを貼り, &lt;code&gt;F5&lt;&#x2F;code&gt;を押せばデバッグが始まる.&lt;&#x2F;p&gt;
+&lt;h1 id=&quot;openocddeshu-kiip-mi&quot;&gt;OpenOCDで書き込み&lt;&#x2F;h1&gt;
+&lt;p&gt;上記のELFファイルをOpenOCDで書き込むには以下のようにすれば良い.&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;openocd -f interface&#x2F;picoprobe.cfg -f target&#x2F;rp2040.cfg -s C:&#x2F;openocd&#x2F;tcl -c &amp;quot;program target&#x2F;thumbv6m-none-eabi&#x2F;debug&#x2F;rp2040-project-template verify reset exit&amp;quot;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h1 id=&quot;uf2deshu-kiip-mi&quot;&gt;UF2で書き込み&lt;&#x2F;h1&gt;
+&lt;p&gt;或いは, UF2で書き込む場合は&lt;code&gt;elf2uf2-rs&lt;&#x2F;code&gt;を使用する.
+まず, &lt;code&gt;elf2uf2-rs&lt;&#x2F;code&gt;をインストールする.&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;cargo install elf2uf2-rs
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;次に, BOOTSELボタンを押した状態でRaspberry Pi Picoを接続しておく.&lt;&#x2F;p&gt;
+&lt;p&gt;また, &lt;code&gt;.cargo&#x2F;config.toml&lt;&#x2F;code&gt;を書き換え, &lt;code&gt;runner = &quot;probe-run --chip RP2040&quot;&lt;&#x2F;code&gt;をコメントアウトし, &lt;code&gt;runner = &quot;elf2uf2-rs -d&quot;&lt;&#x2F;code&gt;のコメントを外す.&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;# runner = &amp;quot;probe-run --chip RP2040&amp;quot;
+&lt;&#x2F;span&gt;&lt;span&gt;# runner = &amp;quot;cargo embed&amp;quot;
+&lt;&#x2F;span&gt;&lt;span&gt;runner = &amp;quot;elf2uf2-rs -d&amp;quot;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;この状態で, &lt;code&gt;cargo run&lt;&#x2F;code&gt;するとuf2が自動的に書き込まれる.&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+</feed>

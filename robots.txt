@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://s5suzuki.github.io/sitemap.xml

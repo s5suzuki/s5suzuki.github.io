@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ja">
+    <title>Suzuki Shun&#x27;s homepage - pico-dirtyJtag</title>
+    <link rel="self" type="application/atom+xml" href="https://s5suzuki.github.io/tags/pico-dirtyjtag/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://s5suzuki.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2023-04-06T00:00:00+00:00</updated>
+    <id>https://s5suzuki.github.io/tags/pico-dirtyjtag/atom.xml</id>
+    <entry xml:lang="ja">
+        <title>Windows WSL2でpico-dirtyJtagとUrJtagをインストールする</title>
+        <published>2023-04-06T00:00:00+00:00</published>
+        <updated>2023-04-06T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://s5suzuki.github.io/posts/urjtag-dirtyjtag-wsl/"/>
+        <id>https://s5suzuki.github.io/posts/urjtag-dirtyjtag-wsl/</id>
+        
+        <content type="html" xml:base="https://s5suzuki.github.io/posts/urjtag-dirtyjtag-wsl/">&lt;h1 id=&quot;huan-jing&quot;&gt;環境&lt;&#x2F;h1&gt;
+&lt;ul&gt;
+&lt;li&gt;Windows 11&lt;&#x2F;li&gt;
+&lt;li&gt;Ubuntu 22.04.2 on WSL2&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h1 id=&quot;urjtag&quot;&gt;UrJtag&lt;&#x2F;h1&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;依存ツールのダウンロード&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;sudo apt install build-essential autoconf autopoint libtool pkg-config python3-dev libusb-1.0-0-dev
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;UrJtagのビルド&amp;amp;インストール&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;cd &#x2F;tmp
+&lt;&#x2F;span&gt;&lt;span&gt;git clone https:&#x2F;&#x2F;git.code.sf.net&#x2F;p&#x2F;urjtag&#x2F;git urjtag-git
+&lt;&#x2F;span&gt;&lt;span&gt;cd urjtag-git&#x2F;urjtag
+&lt;&#x2F;span&gt;&lt;span&gt;.&#x2F;autogen.sh
+&lt;&#x2F;span&gt;&lt;span&gt;make
+&lt;&#x2F;span&gt;&lt;span&gt;sudo make install
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;jtag&lt;&#x2F;code&gt;コマンドが使えるかチェック&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;jtag
+&lt;&#x2F;span&gt;&lt;span&gt;jtag&amp;gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;ol&gt;
+&lt;li&gt;私の環境だと, &lt;code&gt;libjtag.so.0&lt;&#x2F;code&gt;が見つからないというエラーが出たので, 以下のコマンドを実行した&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;sudo ldconfig
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;h1 id=&quot;pico-dirtyjtag&quot;&gt;pico-dirtyJtag&lt;&#x2F;h1&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;依存ツールのインストール&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;sudo apt install cmake gcc-arm-none-eabi
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;pico-dirtyJtagのビルド&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;git clone https:&#x2F;&#x2F;github.com&#x2F;phdussud&#x2F;pico-dirtyJtag.git
+&lt;&#x2F;span&gt;&lt;span&gt;cd pico-dirtyJtag
+&lt;&#x2F;span&gt;&lt;span&gt;mkdir build
+&lt;&#x2F;span&gt;&lt;span&gt;cd build
+&lt;&#x2F;span&gt;&lt;span&gt;cmake .. -DPICO_SDK_FETCH_FROM_GIT=ON
+&lt;&#x2F;span&gt;&lt;span&gt;cmake --build . --parallel 8
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;以上で, &lt;code&gt;pico-dirtyJtag&#x2F;build&lt;&#x2F;code&gt;以下に&lt;code&gt;dirtyJtag.uf2&lt;&#x2F;code&gt;が生成されるのでこれをRaspberry Pi Picoに書き込む.&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;h1 id=&quot;usbdoraibanoinsutoru&quot;&gt;USBドライバのインストール&lt;&#x2F;h1&gt;
+&lt;ol&gt;
+&lt;li&gt;pico-dirtyJtagを書き込んだRaspberry Pi Picoを接続する&lt;&#x2F;li&gt;
+&lt;li&gt;Windows側で&lt;a href=&quot;https:&#x2F;&#x2F;zadig.akeo.ie&#x2F;&quot;&gt;zadig&lt;&#x2F;a&gt;を使用し, 「dirtyJtag」のドライバとして, 「libusb-win32」をインストールする&lt;&#x2F;li&gt;
+&lt;li&gt;これだけだと, WSL側で認識できないので, 追加で作業する. 詳しくは&lt;a href=&quot;https:&#x2F;&#x2F;learn.microsoft.com&#x2F;en-us&#x2F;windows&#x2F;wsl&#x2F;connect-usb&quot;&gt;Connect USB devices&lt;&#x2F;a&gt;を参照.
+&lt;ol&gt;
+&lt;li&gt;Windows側でUSBIPDをインストールする&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;winget install --interactive --exact dorssel.usbipd-win
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;WSL側でUSBIPツールをインストールする&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;sudo apt install linux-tools-generic hwdata
+&lt;&#x2F;span&gt;&lt;span&gt;sudo update-alternatives --install &#x2F;usr&#x2F;local&#x2F;bin&#x2F;usbip usbip &#x2F;usr&#x2F;lib&#x2F;linux-tools&#x2F;*-generic&#x2F;usbip 20
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;Windows側でWSLにUSBデバイス一覧を確認. DirtyJtagの「busid」を確認しておく&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;usbipd wsl list
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;Windows側でUSBデバイスをWSLにアタッチする&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;usbipd wsl attach --busid &amp;lt;busid&amp;gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;以上で, WSL2からDirtyJtagが見えるようになる&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;sudo jtag
+&lt;&#x2F;span&gt;&lt;span&gt;jtag&amp;gt; cable dirtyjtag
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;ul&gt;
+&lt;li&gt;管理者権限なしだと, &lt;code&gt;cable dirtyjtag&lt;&#x2F;code&gt;でコケる&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+</content>
+        
+    </entry>
+</feed>

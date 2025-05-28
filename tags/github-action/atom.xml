@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ja">
+    <title>Suzuki Shun&#x27;s homepage - GitHub action</title>
+    <link rel="self" type="application/atom+xml" href="https://s5suzuki.github.io/tags/github-action/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://s5suzuki.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2022-10-26T00:00:00+00:00</updated>
+    <id>https://s5suzuki.github.io/tags/github-action/atom.xml</id>
+    <entry xml:lang="ja">
+        <title>GitHub actionで作ったunitypackageが&quot;Failed to copy package&quot;と出て読み込めなかった</title>
+        <published>2022-10-26T00:00:00+00:00</published>
+        <updated>2022-10-26T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://s5suzuki.github.io/posts/create-unitypackage-action/"/>
+        <id>https://s5suzuki.github.io/posts/create-unitypackage-action/</id>
+        
+        <content type="html" xml:base="https://s5suzuki.github.io/posts/create-unitypackage-action/">&lt;ul&gt;
+&lt;li&gt;TL;DR: パスの区切りがバックスラッシュになっているのが問題だった.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;GitHub actionでunitypackageを作成し, それをReleasesページで配布していた.&lt;&#x2F;p&gt;
+&lt;p&gt;このために, &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;pCYSl5EDgo&#x2F;create-unitypackage&quot;&gt;pCYSl5EDgo&#x2F;create-unitypackage&lt;&#x2F;a&gt;を使用させていただいていた.
+このサンプルでは&lt;code&gt;ubuntu-latest&lt;&#x2F;code&gt;が使用されており, その場合は全く問題なく動いていた.
+しかし, 諸事情により&lt;code&gt;windows-latest&lt;&#x2F;code&gt;を使用する必要が出てきたため, &lt;code&gt;windows-latest&lt;&#x2F;code&gt;で動かしたところ, 作成したパッケージをUnityでimportしようとすると, &quot;Failed to copy package&quot;というエラーによりimportできなかった.&lt;&#x2F;p&gt;
+&lt;p&gt;unitypackageをunzipして中身を確認してみても, 特に間違っているようには見えない.
+そこで, 適当にミニマルなパッケージを作成し, &lt;code&gt;ubuntu-latest&lt;&#x2F;code&gt;と&lt;code&gt;windows-latest&lt;&#x2F;code&gt;で作成したunitypackageを比較してみると, pathnameの記述で, ubuntuがスラッシュ (&#x2F;) を使用しているのに対して, Windowsの方はバックスラッシュ (\) になっていた.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;code&gt;*.meta&lt;&#x2F;code&gt;ファイルを列挙する部分を, Windowsに合わせて以下のようにしていたが, これだとバックスラッシュが使われてしまうようだ.&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;Get-ChildItem -Recurse -Filter &amp;#39;*.meta&amp;#39; -Name &amp;gt;&amp;gt; metaList
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;そこで, 以下のように\を&#x2F;に置換するようにしたところ, 無事importできるようになった.&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;Get-ChildItem -Recurse -Filter &amp;#39;*.meta&amp;#39; -Name | ForEach-Object {$_ -replace &amp;#39;[\\]&amp;#39;, &amp;#39;&#x2F;&amp;#39;} &amp;gt;&amp;gt; metaList
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+</content>
+        
+    </entry>
+</feed>

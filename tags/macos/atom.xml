@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ja">
+    <title>Suzuki Shun&#x27;s homepage - macOS</title>
+    <link rel="self" type="application/atom+xml" href="https://s5suzuki.github.io/tags/macos/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://s5suzuki.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2022-10-22T00:00:00+00:00</updated>
+    <id>https://s5suzuki.github.io/tags/macos/atom.xml</id>
+    <entry xml:lang="ja">
+        <title>macOSのVulkanで&quot;vk::createInstanceUnique: ErrorIncompatibleDriver&quot;というエラーが出る (Vulkan SDK 1.3.216.0以降)</title>
+        <published>2022-10-22T00:00:00+00:00</published>
+        <updated>2022-10-22T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://s5suzuki.github.io/posts/mac-vulkan/"/>
+        <id>https://s5suzuki.github.io/posts/mac-vulkan/</id>
+        
+        <content type="html" xml:base="https://s5suzuki.github.io/posts/mac-vulkan/">&lt;p&gt;macのVulkan (というかMoltenVK) で&lt;code&gt;vk::createInstanceUnique&lt;&#x2F;code&gt;を実行時に&lt;code&gt;ErrorIncompatibleDriver&lt;&#x2F;code&gt;というエラーが出るようになった. (&lt;code&gt;vulkan.hpp&lt;&#x2F;code&gt;を使用)&lt;&#x2F;p&gt;
+&lt;p&gt;そういえば, 古いバージョンのSDKでは普通に動いていたはずなので&lt;a href=&quot;https:&#x2F;&#x2F;vulkan.lunarg.com&#x2F;doc&#x2F;sdk&#x2F;1.3.216.0&#x2F;mac&#x2F;release_notes.html&quot;&gt;リリースノート&lt;&#x2F;a&gt;をあさると, それらしきことが書いてあった.&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;This release of the Vulkan Loader for macOS will require the addition of the VK_KHR_portability_enumaration extension. This is easily added, and without it, you will not see a valid driver when using MoltenVK. Details and example code can be found in the macOS Getting Started Guide.&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;というわけで, &lt;a href=&quot;https:&#x2F;&#x2F;vulkan.lunarg.com&#x2F;doc&#x2F;sdk&#x2F;1.3.224.1&#x2F;mac&#x2F;getting_started.html&quot;&gt;macOS Getting Started Guide&lt;&#x2F;a&gt;に従って,&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;vk::DeviceCreateInfo&lt;&#x2F;code&gt;で指定するDevice extensionsに&lt;code&gt;VK_KHR_portability_subset&lt;&#x2F;code&gt;を追加&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;vk::InstanceCreateInfo&lt;&#x2F;code&gt;で指定するInstance extensionsに&lt;code&gt;VK_KHR_portability_enumeration&lt;&#x2F;code&gt;を追加&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;vk::InstanceCreateInfo&lt;&#x2F;code&gt;で指定するInstance flagに&lt;code&gt;vk::InstanceCreateFlagBits::eEnumeratePortabilityKHR&lt;&#x2F;code&gt;を追加&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;以上三点で治った.&lt;&#x2F;p&gt;
+&lt;p&gt;ちなみに, Validation layersを有効にすると, 一番上エラーに関しては警告を出してくれたが, 下二つに関してはとくに何も表示されなかった.&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+</feed>
