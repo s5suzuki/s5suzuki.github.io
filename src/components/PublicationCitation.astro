@@ -47,7 +47,7 @@ const englishVenueParts = (
 <CitationTag
 	href={publication.href || undefined}
 	target={publication.href ? "_blank" : undefined}
-	rel={publication.href ? "_blank" : undefined}
+	rel={publication.href ? "noopener noreferrer" : undefined}
 	class:list={[
 		"publication-citation",
 		className,
@@ -59,16 +59,12 @@ const englishVenueParts = (
 			<span class="citation-authors" set:html={citation.authorsText} />
 		)
 	}
-	<span class="citation-title">{citation.titleText}</span>
+	<span class="citation-title"> {citation.titleText}</span>
 	<span class="citation-venue">
 		{
 			citation.japaneseStyle ? (
 				<>
-					{citation.venueName && (
-						<span class="venue-name--plain">
-							{citation.venueName}
-						</span>
-					)}
+					{citation.venueName && <span>{citation.venueName}</span>}
 					{japaneseVenueParts.length > 0 &&
 						`${citation.venueName ? ". " : ""}${japaneseVenueParts.join(". ")}`}
 				</>
@@ -86,7 +82,7 @@ const englishVenueParts = (
 					{citation.doiText && ` (${citation.doiText})`}
 				</>
 			)
-		}
+		}.
 		{
 			publication.note && (
 				<span class="citation-note"> [{publication.note}]</span>
@@ -99,6 +95,7 @@ const englishVenueParts = (
 		}
 	</span>
 </CitationTag>
+
 <style>
 	.publication-citation {
 		display: block;

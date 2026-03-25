@@ -19,12 +19,12 @@ export const formatPublicationAuthors = (
 	japaneseStyle: boolean,
 ) => {
 	if (authors.length === 0) return '';
-    const formattedAuthors = authors.map(author => {
-        if (author.includes("鈴木 颯") || author.includes("Shun Suzuki")) {
-            return `<u>${author}</u>`;
-        }
-        return author;
-    });
+	const formattedAuthors = authors.map(author => {
+		if (author.includes("鈴木 颯") || author.includes("Shun Suzuki")) {
+			return `<u>${author}</u>`;
+		}
+		return author;
+	});
 
 	if (authors.length === 1 || japaneseStyle) return formattedAuthors.join(', ');
 	return `${formattedAuthors.slice(0, -1).join(', ')} and ${formattedAuthors.at(-1)}`;
