@@ -79,7 +79,7 @@ const englishVenueParts = (
 					{englishVenueParts.length > 0 && (
 						<span>{`${citation.venueName ? ", " : ""}${englishVenueParts.join(", ")}`}</span>
 					)}
-					{citation.doiText && ` (${citation.doiText})`}
+					{citation.doiText && `, ${citation.doiText}`}
 				</>
 			)
 		}.

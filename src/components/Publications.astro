@@ -1,21 +1,26 @@
 ---
-import { publications } from '../lib/site-data';
-import PublicationCitation from './PublicationCitation.astro';
+import { publications } from "../lib/site-data";
+import PublicationCitation from "./PublicationCitation.astro";
 
 interface Props {
-    type: 'article' | 'inproceedings' | 'domestic' | 'demos';
+    type: "article" | "inproceedings" | "domestic" | "demos";
 }
 
 const { type } = Astro.props;
-const filtered = publications.filter(p => p.type === type);
+const filtered = publications.filter((p) => p.type === type);
 ---
 
-{filtered.length > 0 && (
-    <ol>
-        {filtered.map(pub => (
-            <li>
-                <PublicationCitation publication={pub} locale={pub.lang || 'en'} />
-            </li>
-        ))}
-    </ol>
-)}
+{
+    filtered.length > 0 && (
+        <ol>
+            {filtered.map((pub) => (
+                <li>
+                    <PublicationCitation
+                        publication={pub}
+                        locale={pub.lang || "en"}
+                    />
+                </li>
+            ))}
+        </ol>
+    )
+}
