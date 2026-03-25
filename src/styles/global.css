@@ -51,9 +51,9 @@
   line-height: 1.8;
 }
 
-.prose h1 { @apply text-3xl mb-8 mt-12 pb-4 border-b border-border-subtle; }
-.prose h2 { @apply text-2xl mb-6 mt-16 pb-2 border-b border-border-subtle/50; }
-.prose h3 { @apply text-xl mb-4 mt-10; }
+.prose h1 { @apply text-3xl mb-4 mt-12 pb-0 scroll-mt-20; }
+.prose h2 { @apply text-2xl mb-4 mt-10 pb-0 scroll-mt-20; }
+.prose h3 { @apply text-xl mb-3 mt-8 scroll-mt-20; }
 
 .prose p { @apply mb-8; }
 
@@ -133,11 +133,20 @@
 .table-wo-header thead {
   @apply hidden;
 }
-.table-wo-header table, .table-wo-header td {
-  @apply border-none; /* ヘッダーなしの場合は枠線を消してリスト風にするケースが多いため */
+.table-wo-header table {
+  @apply border-none;
+}
+.table-wo-header tr {
+  @apply border-b border-border-subtle/50;
+}
+.table-wo-header td {
+  @apply border-none p-4;
 }
 .table-wo-header td:first-child {
-  @apply font-semibold text-text-muted w-32 whitespace-nowrap; /* 1列目をラベル風に */
+  @apply font-semibold text-text-muted w-32 whitespace-nowrap pl-0; /* 1列目をラベル風に */
+}
+.table-wo-header td:last-child {
+  @apply pr-0;
 }
 
 .prose a {
