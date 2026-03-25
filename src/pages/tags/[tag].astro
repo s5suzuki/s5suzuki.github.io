@@ -1,0 +1,49 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+export async function getStaticPaths() {
+  const allPosts = await getCollection("blog");
+  const tags = [
+    ...new Set(allPosts.map((post) => post.data.tags).flat()),
+  ].filter(Boolean);
+
+  return tags.map((tag: string) => {
+    const filteredPosts = allPosts.filter((post) =>
+      post.data.tags.includes(tag),
+    );
+    return {
+      params: { tag },
+      props: { posts: filteredPosts },
+    };
+  });
+}
+
+const { tag } = Astro.params;
+const { posts } = Astro.props;
+---
+
+<BaseLayout title={`Tag: ${tag} - Shun Suzuki`}>
+  <h1 class="text-3xl font-bold mb-8 pb-2 border-b border-[#30363d]">
+    Tag: {tag}
+  </h1>
+
+  <ul class="space-y-6">
+    {
+      posts.map((post) => (
+        <li>
+          <a href={`/posts/${post.id}`} class="block group">
+            <h2 class="text-xl font-medium text-[#58a6ff] group-hover:text-[#79c0ff] mb-1 transition-colors">
+              {post.data.title}
+            </h2>
+            <div class="text-sm text-[#8b949e]">
+              <time datetime={post.data.date.toISOString()}>
+                {post.data.date.toLocaleDateString("ja-JP")}
+              </time>
+            </div>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</BaseLayout>

@@ -1,0 +1,43 @@
+---
+import { Image } from 'astro:assets';
+
+interface Props {
+  src: ImageMetadata;
+  alt: string;
+  caption?: string;
+  align?: 'left' | 'center' | 'right';
+  width?: number;
+  height?: number;
+}
+
+const { src, alt, caption, align = 'center', width, height } = Astro.props;
+
+const alignmentClasses = {
+  left: 'mr-auto ml-0 items-start',
+  center: 'mx-auto items-center',
+  right: 'ml-auto mr-0 items-end',
+};
+
+const captionClasses = {
+  left: 'text-left',
+  center: 'text-center',
+  right: 'text-right',
+};
+---
+
+<figure class={`my-8 flex flex-col ${alignmentClasses[align]} w-fit max-w-full`}>
+  <div class="overflow-hidden rounded-xl shadow-xl">
+    <Image 
+      src={src} 
+      alt={alt} 
+      width={width} 
+      height={height} 
+      class="h-auto max-w-full block m-0!"
+    />
+  </div>
+  {caption && (
+    <figcaption class={`mt-2 w-full text-sm text-[#8b949e] italic ${captionClasses[align]}`}>
+      {caption}
+    </figcaption>
+  )}
+</figure>

@@ -1,0 +1,68 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+const allPosts = await getCollection("blog");
+const posts = allPosts.sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
+
+// Extract unique tags
+const allTags = [
+  ...new Set(allPosts.map((post) => post.data.tags).flat()),
+].sort();
+---
+
+<BaseLayout title="All Posts - Shun Suzuki">
+  <h1 class="text-3xl font-bold mb-6 pb-2 border-b border-[#30363d]">
+    All Posts
+  </h1>
+
+  <section class="mb-12">
+    <h2
+      class="text-sm font-semibold text-[#8b949e] uppercase tracking-wider mb-4"
+    >
+      Tags
+    </h2>
+    <div class="flex flex-wrap gap-2">
+      {
+        allTags.map((tag) => (
+          <a
+            href={`/tags/${tag}`}
+            class="bg-[#21262d] px-3 py-1 rounded-full text-sm hover:bg-[#30363d] transition-colors text-[#c9d1d9] border border-[#30363d]"
+          >
+            {tag}
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  <ul class="space-y-10">
+    {
+      posts.map((post) => (
+        <li>
+          <a href={`/posts/${post.id}`} class="block group">
+            <h2 class="text-2xl font-medium text-[#58a6ff] group-hover:text-[#79c0ff] mb-2 transition-colors line-clamp-2">
+              {post.data.title}
+            </h2>
+            <div class="flex items-center gap-4 text-sm text-[#8b949e]">
+              <time datetime={post.data.date.toISOString()}>
+                {post.data.date.toLocaleDateString("ja-JP")}
+              </time>
+              {post.data.tags && post.data.tags.length > 0 && (
+                <div class="flex gap-2">
+                  {post.data.tags.slice(0, 3).map((tag: string) => (
+                    <span class="before:content-['#'] text-[#8b949e]">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</BaseLayout>

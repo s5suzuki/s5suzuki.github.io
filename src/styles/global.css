@@ -1,0 +1,149 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand: #58a6ff;
+  --color-brand-hover: #79c0ff;
+  --color-border-subtle: #30363d;
+  --color-bg-subtle: #161b22;
+  --color-text-main: #c9d1d9;
+  --color-text-muted: #8b949e;
+  --color-text-bright: #ffffff;
+}
+
+@layer base {
+  body {
+    @apply bg-[#0d1117] text-text-main leading-relaxed;
+    font-feature-settings: "palt";
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply text-text-bright font-bold tracking-tight;
+  }
+  
+  a {
+    @apply text-brand hover:underline hover:text-brand-hover transition-colors;
+  }
+
+  p {
+    @apply mb-6;
+  }
+}
+
+/* Typography Plugin (prose) の詳細カスタマイズ */
+.prose {
+  @apply max-w-none text-text-main;
+  --tw-prose-body: #c9d1d9;
+  --tw-prose-headings: #ffffff;
+  --tw-prose-links: #58a6ff;
+  --tw-prose-bold: #ffffff;
+  --tw-prose-counters: #8b949e;
+  --tw-prose-bullets: #8b949e;
+  --tw-prose-hr: #30363d;
+  --tw-prose-quotes: #8b949e;
+  --tw-prose-quote-borders: #30363d;
+  --tw-prose-captions: #8b949e;
+  --tw-prose-code: #f0f6fc;
+  --tw-prose-pre-code: #c9d1d9;
+  --tw-prose-pre-bg: #161b22;
+  --tw-prose-th-borders: #30363d;
+  --tw-prose-td-borders: #30363d;
+
+  line-height: 1.8;
+}
+
+.prose h1 { @apply text-3xl mb-8 mt-12 pb-4 border-b border-border-subtle; }
+.prose h2 { @apply text-2xl mb-6 mt-16 pb-2 border-b border-border-subtle/50; }
+.prose h3 { @apply text-xl mb-4 mt-10; }
+
+.prose p { @apply mb-8; }
+
+/* リストスタイルの調整 */
+.prose ul { @apply mb-8 mt-2 list-disc list-outside ml-6 space-y-0; }
+.prose ol { @apply mb-8 mt-2 list-decimal list-outside ml-6 space-y-0; }
+.prose li { @apply pl-1 py-0 my-0; }
+.prose li > p { @apply my-0; }
+.prose li > ul, .prose li > ol { @apply mt-0 mb-0 space-y-0; }
+
+/* 引用（blockquote）の余白調整 */
+.prose blockquote {
+  @apply italic border-l-4 border-border-subtle py-4 px-6 bg-bg-subtle/30 rounded-r-lg my-8;
+}
+.prose blockquote > :last-child {
+  @apply mb-0;
+}
+
+/* details / summary の調整 */
+.prose details {
+  @apply mb-8 border border-border-subtle/30 rounded-lg transition-all overflow-hidden bg-bg-subtle/5;
+}
+.prose details[open] {
+  @apply border-border-subtle/60;
+}
+.prose summary {
+  @apply cursor-pointer px-6 py-3 font-semibold list-none hover:text-brand transition-colors outline-none flex items-center bg-bg-subtle/20 border-b border-transparent;
+}
+.prose details[open] > summary {
+  @apply border-border-subtle/30 mb-4;
+}
+.prose summary::-webkit-details-marker {
+  display: none;
+}
+.prose summary::before {
+  content: "▶";
+  @apply mr-3 text-[10px] inline-block transition-transform duration-200 text-text-muted;
+}
+.prose details[open] > summary::before {
+  @apply rotate-90 text-brand;
+}
+.prose details > :not(summary) {
+  @apply mx-6; 
+}
+.prose details > :not(summary):first-of-type {
+  @apply mt-2;
+}
+.prose details > :last-child {
+  @apply mb-6;
+}
+
+/* コードブロック (pre) の調整 */
+.prose pre {
+  @apply border border-border-subtle rounded-lg p-4 shadow-inner mb-8 bg-[#0d1117]! text-[0.85em] leading-normal;
+}
+.prose details pre {
+  @apply my-4 border-border-subtle/50;
+}
+
+/* インラインコード */
+.prose code:not(pre code) {
+  @apply bg-[#6e7681]/20 text-[#ff7b72] px-1.5 py-0.5 rounded font-mono text-[0.825em] before:content-none after:content-none;
+}
+
+.prose img {
+  @apply rounded-xl shadow-2xl border border-border-subtle my-10 mx-auto;
+}
+
+/* テーブルの調整 */
+.prose table {
+  @apply w-full border-collapse mb-10 text-sm overflow-hidden;
+}
+.prose th { @apply bg-bg-subtle p-3 text-left border border-border-subtle font-semibold; }
+.prose td { @apply p-3 border border-border-subtle; }
+
+/* ヘッダーなしテーブル (table-wo-header) の対応 */
+.table-wo-header thead {
+  @apply hidden;
+}
+.table-wo-header table, .table-wo-header td {
+  @apply border-none; /* ヘッダーなしの場合は枠線を消してリスト風にするケースが多いため */
+}
+.table-wo-header td:first-child {
+  @apply font-semibold text-text-muted w-32 whitespace-nowrap; /* 1列目をラベル風に */
+}
+
+.prose a {
+  @apply no-underline border-b border-brand/30 hover:border-brand-hover pb-0.5 transition-all;
+}
+
+.katex-display {
+  @apply my-8 py-4 overflow-x-auto overflow-y-hidden;
+}

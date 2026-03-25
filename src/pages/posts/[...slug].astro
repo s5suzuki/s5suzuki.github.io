@@ -1,0 +1,88 @@
+---
+import { getCollection, render } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog");
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content, headings } = await render(post);
+
+// Filter headings: Include H1, H2, and H3 for this specific content structure
+const filteredHeadings = headings.filter((h) => h.depth >= 1 && h.depth <= 3);
+---
+
+<BaseLayout title={`${post.data.title} - Shun Suzuki`} katex={post.data.katex}>
+  <div class="lg:flex lg:gap-12 relative">
+    <!-- Main Content -->
+    <article class="max-w-none flex-grow min-w-0">
+      <header class="mb-10">
+        <h1 class="text-3xl sm:text-4xl font-bold mb-4">{post.data.title}</h1>
+        <div class="flex flex-wrap gap-4 text-sm text-[#8b949e] items-center">
+          <time
+            datetime={post.data.date.toISOString()}
+            class="border-r border-[#30363d] pr-4"
+          >
+            {post.data.date.toLocaleDateString("ja-JP")}
+          </time>
+          {
+            post.data.tags && post.data.tags.length > 0 && (
+              <div class="flex flex-wrap gap-2">
+                {post.data.tags.map((tag: string) => (
+                  <a
+                    href={`/tags/${tag}`}
+                    class="bg-[#21262d] px-2 py-0.5 rounded text-xs hover:bg-[#30363d] transition-colors text-[#c9d1d9] border border-[#30363d]"
+                  >
+                    #{tag}
+                  </a>
+                ))}
+              </div>
+            )
+          }
+        </div>
+      </header>
+
+      <div class="prose prose-invert prose-lg max-w-none">
+        <Content />
+      </div>
+    </article>
+
+    <!-- Sidebar TOC (Desktop only) -->
+    {
+      post.data.toc && filteredHeadings.length > 0 && (
+        <aside class="hidden lg:block w-64 flex-shrink-0">
+          <nav class="sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto pr-2">
+            <h2 class="text-[11px] font-bold text-white uppercase tracking-widest mb-3 px-3 opacity-60">
+              On this page
+            </h2>
+            <ul class="border-l border-border-subtle/30">
+              {filteredHeadings.map((heading) => (
+                <li>
+                  <a
+                    href={`#${heading.slug}`}
+                    class:list={[
+                      "block py-0.5 transition-colors border-l -ml-px text-sm",
+                      heading.depth === 1 &&
+                        "pl-4 text-text-bright font-medium border-transparent hover:border-brand hover:text-white",
+                      heading.depth === 2 &&
+                        "pl-8 text-text-main border-transparent hover:border-brand hover:text-white",
+                      heading.depth === 3 &&
+                        "pl-12 text-xs text-text-muted border-transparent hover:border-brand/50 hover:text-white",
+                    ]}
+                  >
+                    {heading.text}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </aside>
+      )
+    }
+  </div>
+</BaseLayout>
