@@ -64,7 +64,9 @@ const englishVenueParts = (
 		{
 			citation.japaneseStyle ? (
 				<>
-					{citation.venueName && <span>{citation.venueName}</span>}
+					{citation.venueName && (
+						<em class="venue-name">{citation.venueName}</em>
+					)}
 					{japaneseVenueParts.length > 0 &&
 						`${citation.venueName ? ". " : ""}${japaneseVenueParts.join(". ")}`}
 				</>
