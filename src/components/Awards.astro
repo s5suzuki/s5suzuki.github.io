@@ -1,0 +1,39 @@
+---
+import { awards } from '../lib/site-data';
+
+const formatRecipients = (recipients: string[]) => {
+    return recipients.map(r => {
+        if (r.includes('鈴木 颯') || r.includes('Shun Suzuki')) {
+            return `<u>${r}</u>`;
+        }
+        return r;
+    }).join(', ');
+};
+---
+
+<div class="table-wo-header not-prose">
+    <table style="width: 100%; text-align: left; border-collapse: collapse;">
+        <tbody>
+            {awards.map(award => (
+                <tr style="border-bottom: 1px solid var(--tw-prose-td-borders, #e5e7eb);">
+                    <td style="padding: 0.5rem 1rem 0.5rem 0; vertical-align: top; white-space: nowrap;">
+                        {award.year}{award.month ? `.${award.month}` : ''}
+                    </td>
+                    <td style="padding: 0.5rem 1rem; vertical-align: top;">
+                        {award.org ? `${award.org} ` : ''}{award.award}
+                    </td>
+                    <td style="padding: 0.5rem 0 0.5rem 1rem; vertical-align: top; text-align: right;">
+                        <span set:html={formatRecipients(award.recipients)} />
+                    </td>
+                </tr>
+            ))}
+        </tbody>
+    </table>
+</div>
+
+<style>
+    .table-wo-header table {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+    }
+</style>

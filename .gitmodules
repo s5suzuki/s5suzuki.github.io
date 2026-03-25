@@ -1,0 +1,3 @@
+[submodule "data/hapislab.org"]
+	path = data/hapislab.org
+	url = https://github.com/shinolab/hapislab.org.git
