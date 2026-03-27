@@ -20,7 +20,7 @@ jobs:
         run: |
           OLD_HASH=$(git rev-parse :data/hapislab.org)
           git submodule update --remote data/hapislab.org
-          NEW_HASH=$(git rev-parse :data/hapislab.org)
+          NEW_HASH=$(git -C data/hapislab.org rev-parse HEAD)
           if [ "$OLD_HASH" != "$NEW_HASH" ]; then
             cd data/hapislab.org
             if git diff --name-only $OLD_HASH $NEW_HASH | grep -E "src/data/(publications|awards)\.yml"; then
