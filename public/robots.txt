@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://hapislab.org/sitemap-index.xml
+Sitemap: https://s5suzuki.github.io/sitemap-index.xml
