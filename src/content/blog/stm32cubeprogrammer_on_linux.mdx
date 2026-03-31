@@ -1,0 +1,21 @@
+---
+title: Linux版のSTM32CubeProgrammerのUIサイズが小さい問題の解決方法
+date: '2026-03-31'
+tags:
+  - linux
+  - java
+katex: false
+toc: false
+---
+
+タイトル通り, Linux版のSTM32CubeProgrammerを起動したら, UIサイズが小さすぎて困ってしまった.
+
+ネットを調べると, 起動スクリプトに`-Dsun.java2d.dpiaware=false`や`-Dswt.autoScale=200`を追加しろとか, 環境変数に`GDK_SCALE=2`を追加しろとか書いてあったが, どれも効果がなかった.
+
+代わりに, `KDE System Settings > Display and Monitor > Displays Configuration > Legacy Applications (X11)`を`Scaled by the System`に変更したら, うまくいった.
+備忘録として, ここに書いておく.
+
+# 環境
+
+- OS: CachyOS
+– DE: KDE Plasma (wayland)
