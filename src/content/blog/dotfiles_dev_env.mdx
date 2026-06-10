@@ -71,7 +71,7 @@ NiriとかでMeta (Mod) キーとかを多用するので[keyd](https://github.c
 
 # ターミナル/シェル
 
-ターミナルは[WezTerm](https://wezfurlong.org/wezterm/), シェルは [fish](https://fishshell.com/), プロンプトは [starship](https://starship.rs/).
+ターミナルは[Ghostty](https://ghostty.org/), シェルは [fish](https://fishshell.com/), プロンプトは [starship](https://starship.rs/).
 ターミナルマルチプレクサは [zellij](hhttps://github.com/zellij-org/zellij) を使っている.
 
 CLI ツールは, 定番だが軒並み Rust 製のものに置き換えている.
@@ -162,6 +162,18 @@ end
 ## Zellijの設定
 
 zellij では `locked` モードでも, `Alt + hjkl` でペイン間を移動できるようにしている.
+
+zellijのセッションをコマンドラインからインタラクティブに管理できるように`fzf`を使った小さなFish関数を作ってある.
+
+```fish
+function zjls
+    zellij ls | fzf --ansi \
+        --bind 'j:down,k:up' \
+        --bind 'q:execute(zellij kill-session {1} >/dev/null 2>&1)+reload(zellij ls)' \
+        --bind 'd:execute(zellij delete-session {1} >/dev/null 2>&1)+reload(zellij ls)' \
+        --header 'j/k: Select | q: Kill | d: Delete | ESC/Ctrl-c: Exit'
+end
+```
 
 # エディタ
 
@@ -266,6 +278,12 @@ customCommands:
 ## Kanata
 
 キーリマップツールとして一瞬 [Kanata](https://github.com/jtroo/kanata) を試した見たけど, Home row modsくらいなら keyd のほうがシンプルに設定できたのでやめた.
+
+## WezTerm
+
+ターミナルは最初 [WezTerm](https://wezfurlong.org/wezterm/) を使っていたけど, メモリ使用量が異常に高い (1.5GiBとか) からGhosttyに乗り換えた. Ghosttyのメモリ使用量は500MiBくらい. これもちょっと高い気もしてる...
+
+Alacrittyのほうが軽いんだけど, 画像のインライン表示ができないからGhosttyにしてる.
 
 ## Anyrun/fuzzel
 
