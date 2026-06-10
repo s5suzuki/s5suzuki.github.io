@@ -1,0 +1,292 @@
+---
+title: 開発環境メモ (2026年版)
+date: '2026-06-10'
+tags:
+  - linux
+  - dotfiles
+  - CachyOS
+  - neovim
+toc: true
+---
+
+自分用のメモ. 現時点での開発環境をまとめておく.
+
+設定ファイルは [dotfiles](https://github.com/s5suzuki/.dotfiles.git) として管理してある.
+
+新しいマシンっても一発で開発環境をセットアップするために, `manage.sh` で
+
+- `install`: 必要なパッケージのインストール (`paru` 経由)
+- `backup`: 現在の `~/.config` を dotfiles にコピー
+- `deploy`: dotfiles から `~/.config` へシンボリックリンクを展開
+
+できるようにしてある.
+
+テーマはほぼ全て [Catppuccin](https://github.com/catppuccin/catppuccin) の Mocha で統一している.
+
+# OS / デスクトップ環境
+
+- OS: CachyOS
+- WM: [niri](https://github.com/YaLTeR/niri) (スクロール可能なタイル型WM, Wayland用)
+- Desktop shell: [noctalia](https://github.com/noctalia-dev/noctalia-shell)
+
+OSはArch 系の CachyOS に移行した. WMはniriを使っている. キーバインドを覚える必要はあるけど, 一回覚えてしまえばキーボードだけでほぼすべての操作が完了するので気に入っている.
+
+## Niriキーバインド
+
+Niriのキーバインドで設定しているのは以下の通り. 
+
+| 操作 | キーバインド |
+| --- | --- |
+| フォーカスの移動 | `Meta + hjkl` |
+| ウィンドウ間の移動 | `Meta + Ctrl + hjkl` |
+| モニター間の移動 | `Meta + Shift + hjkl` |
+| ウィンドウ一覧表示 | `Meta + o` |
+| ウィンドウのサイズ切り替え | `Meta + f` |
+| ウィンドウを全画面表示に | `Meta + m` |
+| ウィンドウのクローズ | `Meta + q` |
+| フローティングモード切り替え | `Meta + v` |
+| ターミナル起動 | `Meta + t` |
+| ランチャー起動 | `Meta + Space` |
+| 画面ロック | `Meta + Alt + l` |
+
+他にもあるけど, 大体このあたり覚えておけば困らない.
+細かい画面のリサイズもできるけど, `Meta + f`か`Meta + m`で事足りる.
+
+## noctalia設定
+
+noctaliaの設定ファイルは`~/.config/noctalia/config.toml`と`~/.local/state/nocatalia/settings.toml`がある. 前者のみをGit管理とし, モニターに依存する設定などマシン固有の設定は後者に書くようにしている.
+
+基本的にデフォルトのままで特に困ってない, 設定もGUIでできるので難しくはない. ただし, GUIから設定すると`~/.local/state/noctalia/settings.toml`の方に書き込まれるので, そこは注意が必要.
+
+noctaliaいれるまでは個別のツールで対応してたけど, タスクバーもランチャーも通知もロック画面もスクリーンセーバーもすべてnoctaliaに統一した.
+
+# keyd によるキーリマップ
+
+NiriとかでMeta (Mod) キーとかを多用するので[keyd](https://github.com/rvaiya/keyd) でHome row modsを設定している.
+
+- `CapsLock` を `Ctrl` に (基本的にHHKB使ってるけど, 一応)
+- ホームポジションの `a` `s` `d` `f` / `semicolon` を長押しで修飾キー, 単押しで通常のキーに
+  - `a/;` は Meta, `s` は Alt, `d` は Control, `f` は Shift に
+  - Vimで多用するので右手のj/k/lはリマップしない
+
+# ターミナル/シェル
+
+ターミナルは[WezTerm](https://wezfurlong.org/wezterm/), シェルは [fish](https://fishshell.com/), プロンプトは [starship](https://starship.rs/).
+ターミナルマルチプレクサは [zellij](hhttps://github.com/zellij-org/zellij) を使っている.
+
+CLI ツールは, 定番だが軒並み Rust 製のものに置き換えている.
+
+| 標準 | 置き換え |
+| --- | --- |
+| `ls` | [eza](https://github.com/eza-community/eza) |
+| `cat` | [bat](https://github.com/sharkdp/bat) |
+| `find` | [fd](https://github.com/sharkdp/fd) |
+| `grep` | [ripgrep](https://github.com/BurntSushi/ripgrep) |
+| `sed` | [sd](https://github.com/chmln/sd) |
+| `du` | [dust](https://github.com/bootandy/dust) |
+| `ps` | [procs](https://github.com/dalance/procs) |
+| `top` | [bottom](https://github.com/ClementTsang/bottom) |
+
+加えて, ディレクトリ移動には [zoxide](https://github.com/ajeetdsouza/zoxide), シェル履歴の管理には [atuin](https://github.com/atuinsh/atuin) を使っている. 
+
+## fish の vi バインドまわり
+
+fish は `fish_vi_key_bindings` で vi モードにしている. ただデフォルトのままだと使いづらいので, いくつか手を入れている.
+
+`jj` / `jk` でインサートモードを抜けられるようにしているのと, 日本語入力中の `っj` でも抜けられるようにしている.
+また, insertモードに戻ったときにIMEをオフにするようにしている.
+
+その他, `gh` / `gl` で行頭/行末に移動できるようにしている, ビジュアルモードで `ctrl-k` で抜けられるようにしている, インサートモードで `ctrl-l` でオートサジェストを受け入れられるようにしている, `k`でatuin起動, など.
+
+```fish
+function __fish_vi_fcitx_off --on-variable fish_bind_mode
+    if test "$fish_bind_mode" != "insert"
+        command -q fcitx5-remote; and fcitx5-remote -c
+    end
+end
+
+function fish_user_key_bindings
+    # jj, jk, っj to escape
+    bind -M insert j __fish_vi_escape_j
+    bind -M insert k __fish_vi_escape_k
+
+    # gh, gl to move to beginning/end of line
+    for mode in default visual
+        bind -M $mode gh beginning-of-line
+        bind -M $mode gl end-of-line
+    end
+    bind -M operator gh 'fish_vi_exec_motion beginning-of-line'
+    bind -M operator gl 'fish_vi_exec_motion end-of-line'
+
+    # ctrl-k to escape in visual mode
+    bind -M visual \ck 'set -g fish_bind_mode default; commandline -f force-repaint'
+
+    # ctrl-l to accept autosuggestion (replaces clear-screen)
+    bind -M insert \cl accept-autosuggestion
+
+    # Existing bindings
+    bind -M default k _atuin_search
+end
+
+function __fish_vi_escape_j
+    set -l cursor (commandline -C)
+    if test $cursor -gt 0
+        set -l cmd (commandline -b)
+        set -l last_char (string sub -s $cursor -l 1 -- "$cmd")
+        if test "$last_char" = "j" -o "$last_char" = "っ"
+            commandline -f backward-delete-char
+            set -g fish_bind_mode default
+            commandline -f force-repaint
+            return
+        end
+    end
+    commandline -i j
+end
+
+function __fish_vi_escape_k
+    set -l cursor (commandline -C)
+    if test $cursor -gt 0
+        set -l cmd (commandline -b)
+        set -l last_char (string sub -s $cursor -l 1 -- "$cmd")
+        if test "$last_char" = "j"
+            commandline -f backward-delete-char
+            set -g fish_bind_mode default
+            commandline -f force-repaint
+            return
+        end
+    end
+    commandline -i k
+end
+```
+
+## Zellijの設定
+
+zellij では `locked` モードでも, `Alt + hjkl` でペイン間を移動できるようにしている.
+
+# エディタ
+
+エディタは Neovim. プラグインマネージャは [lazy.nvim](https://github.com/folke/lazy.nvim).
+
+主に使っているプラグインは以下あたり.
+
+- 補完: [blink.cmp](https://github.com/saghen/blink.cmp)
+- LSP: [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig)
+- ファイラ: [neo-tree.nvim](https://github.com/nvim-neo-tree/neo-tree.nvim), [yazi.nvim](https://github.com/mikavilpas/yazi.nvim)
+- ファジーファインダ: [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim)
+- 移動: [flash.nvim](https://github.com/folke/flash.nvim)
+- Git: [gitsigns.nvim](https://github.com/lewis6991/gitsigns.nvim), [diffview.nvim](https://github.com/sindrets/diffview.nvim), [lazygit.nvim](https://github.com/kdheepak/lazygit.nvim)
+- UI: [noice.nvim](https://github.com/folke/noice.nvim), [lualine.nvim](https://github.com/nvim-lualine/lualine.nvim), [bufferline.nvim](https://github.com/akinsho/bufferline.nvim)
+- AI: [copilot.lua](https://github.com/zbirenbaum/copilot.lua)
+
+VSCode の Neovim 拡張からも使うので, `vim.g.vscode` のときは flash と mini だけ読むようにしている.
+
+# その他ターミナル系ツール
+
+- ファイラ: [yazi](https://github.com/sxyazi/yazi)
+- Git TUI: [lazygit](https://github.com/jesseduffield/lazygit)
+- diff: [delta](https://github.com/dandavison/delta)
+
+Git の diff は delta に通している. side-by-side 表示で, テーマは Catppuccin Mocha.
+
+```ini
+[delta]
+    navigate = true
+    dark = true
+    side-by-side = true
+    features = catppuccin-mocha
+
+[merge]
+    conflictStyle = zdiff3
+```
+
+## LazyGitでのAIコミットメッセージ生成
+
+ステージ済みの diff を AI に投げて, コミットメッセージの候補を5つ出させる小さなスクリプトを作ってLazyGitから呼び出せるようにしてある.
+コミットメッセージの生成にはAntigravity CLIを使っている.
+
+```bash
+#!/bin/bash
+MODEL=$1
+DIFF=$(git diff --cached)
+
+if [ -z "$DIFF" ]; then
+  echo "Staged changes not found."
+  exit 1
+fi
+
+PROMPT="Generate 5 concise and descriptive git commit messages for the following changes. 
+Output ONLY the messages, one per line, without any numbering, headers, or markdown formatting. 
+Focus on 'what' and 'why'."
+
+RESULT=$(echo "$DIFF" | agy -p "$PROMPT" 2> /dev/null)
+
+if [ -z "$RESULT" ]; then
+  RESULT=$(echo "$DIFF" | agy -p "$PROMPT" 2> /dev/null)
+fi
+
+if [ -z "$RESULT" ]; then
+  echo "AI generation failed or returned empty. Please enter manually."
+  exit 0
+fi
+
+echo "$RESULT"
+```
+
+lazygit のカスタムコマンドから呼び出して, 出てきた候補から選ぶ, という使い方をしている.
+
+
+```yaml
+customCommands:
+  - key: '<c-a>'
+    description: 'AIでコミットメッセージを生成'
+    context: 'global'
+    loadingText: 'AIがメッセージを生成中...'
+    command: "bash -c 'printf \"{{.Form.Msg}}\" > .git/COMMIT_EDITMSG && nvim .git/COMMIT_EDITMSG && [ -s .git/COMMIT_EDITMSG ] && git commit -F .git/COMMIT_EDITMSG || echo \"Commit aborted\"'"
+    prompts:
+      - type: 'menu'
+        title: 'AIモデルを選択'
+        key: 'Model'
+        options:
+          - name: 'Gemini 3.5 Flash (高速)'
+            value: 'gemini-3.5-flash-lite-preview'
+          - name: 'Gemini 3.1 Pro (高品質)'
+            value: 'gemini-3.1-pro-preview'
+      - type: 'menuFromCommand'
+        title: '候補を選択 (Enterで編集へ)'
+        key: 'Msg'
+        command: 'ai-commit-gen {{.Form.Model}}'
+        filter: '^(?P<raw>.+)$'
+        valueFormat: '{{ .raw }}'
+        labelFormat: '{{ .raw }}'
+    output: terminal
+```
+
+# 使ってたけど今は使ってないやつ
+
+## Kanata
+
+キーリマップツールとして一瞬 [Kanata](https://github.com/jtroo/kanata) を試した見たけど, Home row modsくらいなら keyd のほうがシンプルに設定できたのでやめた.
+
+## Anyrun/fuzzel
+
+ランチャーとして最初は[Anyrun](https://github.com/anyrun-org/anyrun) を使ってたけど, 動作が重い気がしたので[fuzzel](https://codeberg.org/dnkl/fuzzel)に乗り換えた. ただ, 最終的にnoctaliaに統一した.
+
+## ironbar/waybar
+
+ステータスバーとして, [ironbar](https://github.com/jakestanger/ironbar) が動かなかったので, [waybar](https://github.com/Alexays/Waybar/) を使っていた. これも最終的にnoctaliaに統一した.
+
+## mako
+
+通知用デーモンとして[mako](https://github.com/emersion/mako) を使っていたけど, これも最終的にnoctaliaに統一した.
+
+## hypridle/hyprlock
+
+アイドル状態管理とロックスクリーンの制御に[hypridle](https://github.com/hyprwm/hypridle) と [hyprlock](https://github.com/hyprwm/hyprlock) を使っていたけど, これも最終的にnoctaliaに統一.
+
+## nwg-bar
+
+念の為, waybarからマウス操作でシャットダウンとかできるように[nwg-bar](https://github.com/nwg-piotr/nwg-bar) を入れていたけど, これも最終的にnoctaliaに統一.
+
+## wlsunset
+
+画面の色温度を調整するために[wlsunset](https://github.com/kennylevinsen/wlsunset) を入れていたけど, これも最終的にnoctaliaに統一.
