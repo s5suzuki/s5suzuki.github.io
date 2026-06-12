@@ -1,0 +1,197 @@
+---
+title: Asahi ALARM (Arch Linux Arm) の M1 MacBook AirでUsb Type-C to HDMI アダプタ経由で外部ディスプレイを接続する 
+date: '2026-06-12'
+tags:
+  - linux
+  - arch linux arm
+  - m1 mac
+  - asahi linux
+toc: true
+---
+
+Asahi linuxの安定版は外部ディスプレイの接続に対応していない. 
+が, 最新 (2026年6月12日現在) の開発版Kernel (fairydust) を入れると, Usb Type-C to HDMI アダプタ経由で外部ディスプレイを接続できるようになる.
+これはその手順を記したメモ.
+
+> ⚠️ 開発版Kernelのインストールは自己責任でお願いします. 何かあっても保証できません.
+
+## 事前準備
+
+まずは, 現在のカーネルのバージョンを確認しておく.
+
+```bash
+uname -a
+```
+
+今回は, `6.19.14-2-1-ARCH` だった.
+
+次に, ビルド依存関係をインストールする.
+Rustのコンパイラはすでにインストールされている前提で, 以下のコマンドを実行する.
+他にも実はあるかもしれないが, 自分の環境で足りてないのはこのあたりだった.
+
+```bash
+rustup component add rust-src
+sudo pacman -S --needed bc dtc pahole rust-bindgen
+```
+
+ちなにみ, Rustのバージョンは`1.96.0`だった.
+
+## カーネルのビルド
+
+まず, 適当なディレクトリを用意する.
+
+```bash
+mkdir ~/fairydust-build && cd ~/fairydust-build
+```
+
+次に, 現在のカーネル設定をコピーしておく.
+
+```bash
+zcat /proc/config.gz > .config
+```
+
+次にPKGBUILDを以下の内容で作成する.
+これは, [`asahi-alarm/PKGBUILDs`のlinux-asahi/PKGBUILD](https://github.com/asahi-alarm/PKGBUILDs/blob/main/linux-asahi/PKGBUILD) をベースに, source を fairydust のものに書き換えたもの.
+(RAMが少ないので念の為並列数を減らしてある)
+
+```bash
+# AArch64 Apple Silicon (Asahi Linux) - fairydust branch (USB-C DisplayPort)
+# Derived from asahi-alarm/PKGBUILDs linux-asahi. Separate package so the
+# stable linux-asahi kernel stays installed as a fallback.
+
+_commit=77e0fe0c47e847221988f6397167bc23fec2a042
+_basever=7.0.11
+_asahirel=2
+pkgrel=1
+
+_m1n1_version=1.4.21
+
+pkgbase=linux-asahi-fairydust
+_srcname=linux-${_commit}
+_kernelname=${pkgbase#linux}
+_desc="AArch64 Apple Silicon (M1) - fairydust DisplayPort dev kernel"
+pkgver="${_basever}.fairydust"
+arch=('aarch64')
+url="https://github.com/AsahiLinux/linux/tree/fairydust"
+license=('GPL2')
+
+makedepends=(
+  base-devel bc dtc kmod libelf pahole cpio perl rustup rust-bindgen tar xz python
+)
+options=('!strip')
+source=(
+  ${pkgbase}-${_commit}.tar.gz::https://github.com/AsahiLinux/linux/archive/${_commit}.tar.gz
+  config         # the main kernel config file (current running config)
+)
+sha256sums=('SKIP'
+            'SKIP')
+
+export KBUILD_BUILD_HOST=archlinux
+export KBUILD_BUILD_USER=$pkgbase
+export KBUILD_BUILD_TIMESTAMP="$(date -Ru${SOURCE_DATE_EPOCH:+d @$SOURCE_DATE_EPOCH})"
+
+prepare() {
+  cd $_srcname
+
+  echo "Setting version..."
+  echo "-$_asahirel-$pkgrel" > localversion.10-pkgrel
+  echo "-fairydust" > localversion.20-fairydust
+
+  local src
+  for src in "${source[@]}"; do
+    src="${src%%::*}"
+    src="${src##*/}"
+    [[ $src = *.patch ]] || continue
+    echo "Applying patch $src..."
+    patch -Np1 < "../$src"
+  done
+
+  echo "Creating build directories..."
+  mkdir -p build/base
+
+  echo "Setting config (base)..."
+  cp ../config build/base/.config
+  make olddefconfig O=$PWD/build/base
+  make -s kernelrelease O=$PWD/build/base > build/base/version
+
+  echo "Prepared $pkgbase version $(<build/base/version)"
+}
+
+build() {
+  cd $_srcname
+  echo "Building base..."
+  make all O=$PWD/build/base -j4
+}
+
+_package_kernel() {
+  pkgdesc="The $pkgdesc kernel and modules"
+  depends=(coreutils kmod initramfs "m1n1>=$_m1n1_version")
+  optdepends=('linux-firmware: firmware images needed for some devices')
+  provides=(WIREGUARD-MODULE)
+
+  local kernver="$(<$O/version)"
+  local modulesdir="$pkgdir/usr/lib/modules/$kernver"
+
+  echo "Installing boot image..."
+  install -Dm644 "$O"/arch/arm64/boot/Image "$modulesdir/vmlinuz"
+
+  # Used by mkinitcpio to name the kernel
+  echo "$1" | install -Dm644 /dev/stdin "$modulesdir/pkgbase"
+
+  echo "Installing modules..."
+  make O="$O" INSTALL_MOD_PATH="$pkgdir/usr" INSTALL_MOD_STRIP=1 modules_install
+
+  echo "Installing device trees..."
+  install -Dt "$modulesdir/dtbs" "$O"/arch/arm64/boot/dts/apple/*.dtb
+
+  # remove build and source links
+  rm -f "$modulesdir"/{source,build}
+}
+
+_package() {
+  cd $_srcname
+  export O="$PWD/build/base"
+  _package_kernel "$pkgbase"
+}
+
+pkgname=("$pkgbase")
+package_linux-asahi-fairydust() {
+  _package
+}
+
+# vim:set ts=8 sts=2 sw=2 et:
+```
+
+で, 後はビルドする. まあまあ時間はかかる.
+
+```bash
+makepkg -f --noconfirm --skipinteg
+```
+
+ビルドが完了したら, ビルドしたカーネルをインストールする.
+
+```bash
+sudo pacman -U ~/fairydust-build/linux-asahi-fairydust-7.0.11.fairydust-1-aarch64.pkg.tar.xz
+```
+
+最後にGRUBエントリを追加する.
+
+```bash
+sudo grub-mkconfig -o /boot/grub/grub.cfg
+```
+
+後は再起動して確認.
+自動でfairydustのカーネルが選択されるはずだが, もし選択されない場合はGRUBのメニューから「Advanced options → linux-asahi-fairydust」を選択する.
+
+ちなみに, 注意点として, 左側面にある2つのUSB-Cポートのうち, 外部ディスプレイに接続できるのは手前のポートだけのよう.
+
+単に, 安定版のカーネルで起動したい場合は, GRUBのメニューから「Advanced options → linux-asahi」を選択すればOK.
+
+アンインストールする場合は, 以下のコマンドを実行する.
+
+```bash
+sudo pacman -R linux-asahi-fairydust
+sudo update-m1n1
+sudo grub-mkconfig -o /boot/grub/grub.cfg
+```
+
