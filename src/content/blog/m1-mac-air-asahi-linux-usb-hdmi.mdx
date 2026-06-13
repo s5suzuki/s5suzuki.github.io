@@ -13,14 +13,14 @@ Asahi linuxの安定版は外部ディスプレイの接続に対応していな
 が, 最新 (2026年6月12日現在) の開発版Kernel (fairydust) を入れると, Usb Type-C to HDMI アダプタ経由で外部ディスプレイを接続できるようになる.
 これはその手順を記したメモ.
 
-> ⚠️ 開発版Kernelのインストールは自己責任でお願いします. 何かあっても保証できません.
+> ⚠️ 開発版Kernelのインストールは自己責任で
 
 ## 事前準備
 
 まずは, 現在のカーネルのバージョンを確認しておく.
 
 ```bash
-uname -a
+uname -r
 ```
 
 今回は, `6.19.14-2-1-ARCH` だった.
@@ -34,7 +34,7 @@ rustup component add rust-src
 sudo pacman -S --needed bc dtc pahole rust-bindgen
 ```
 
-ちなにみ, Rustのバージョンは`1.96.0`だった.
+ちなみに, Rustのバージョンは`1.96.0`だった.
 
 ## カーネルのビルド
 
