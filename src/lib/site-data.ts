@@ -32,18 +32,21 @@ export interface Award {
 	external?: boolean;
 }
 
-const publicationsPath = 'data/hapislab.org/src/data/publications.yml';
+const publicationsDir = 'data/hapislab.org/src/data/publications';
+const publicationTypes = ['article', 'inproceedings', 'demos', 'domestic'] as const;
 const awardsPath = 'data/hapislab.org/src/data/awards.yml';
 
 const isTargetAuthor = (author: string) => {
 	return author.includes('鈴木 颯') || author.includes('Shun Suzuki');
 };
 
-const rawPublications = yaml.load(fs.readFileSync(publicationsPath, 'utf-8')) as any[] || [];
+const rawPublications = publicationTypes.flatMap((type) =>
+	((yaml.load(fs.readFileSync(`${publicationsDir}/${type}.yml`, 'utf-8')) as any[]) || []).map((row) => ({ ...row, type })),
+);
 export const publications: Publication[] = rawPublications
 	.map((row) => ({
 		year: typeof row.year === 'number' ? row.year : Number.parseInt(row.year as any, 10) || 0,
-		type: (row.type as any) || 'Others',
+		type: row.type,
 		title: row.title?.trim() || '',
 		refId: row.refId?.trim(),
 		authors: Array.isArray(row.authors) ? row.authors : [],
